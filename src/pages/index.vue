@@ -108,7 +108,7 @@ function connectButtonText(): string {
   <v-sheet
     id="homeContainer"
     class="position-relative"
-    :class="[{'premium-user': isPremiumUser}, vhApp.data.features.uiName, vhApp.data.userSettings.cultureCode]"
+    :class="[{'premium-user': isPremiumUser}, vhApp.data.features.uiTheme, vhApp.data.userSettings.cultureCode]"
   >
 
     <!-- In a landscape viewport the two body columns sit side by side (see the media query in the
@@ -151,7 +151,7 @@ function connectButtonText(): string {
           :tabindex="vhApp.data.isConnected ? '4' : '3'"
           :disabled="vhApp.data.connectionState !== AppConnectionState.None && !vhApp.data.state.canDisconnect"
           class="font-weight-bold mt-5 mb-4"
-          :class="[vhApp.isConnectApp() ? 'connect-app' : 'client-app',
+          :class="[vhApp.data.features.uiTheme,
           { 'connected': vhApp.data.isConnected },
           { 'tv-device': vhApp.data.isTvUi }
           ]"
@@ -326,19 +326,19 @@ function connectButtonText(): string {
   color: rgb(var(--v-theme-on-connect-btn-disconnected));
 }
 
-/*---- Client app ----*/
-#connectBtn.client-app {
+/*---- blue ----*/
+#connectBtn.blue {
   background-image: linear-gradient(to right, rgb(var(--v-theme-connect-btn-disconnected-grad-1)),
       rgb(var(--v-theme-connect-btn-disconnected-grad-2)) 90%) !important;
 }
 
-/*---- Connect app ----*/
-#connectBtn.connect-app {
+/*---- violet ----*/
+#connectBtn.violet {
   background: rgb(var(--v-theme-connect-btn-disconnected-grad-1)) !important;
 }
 
-/*---- Connect app only on TV ----*/
-#connectBtn.connect-app.tv-device:focus-visible {
+/*---- violet, only on TV ----*/
+#connectBtn.violet.tv-device:focus-visible {
   box-shadow: rgb(253 251 155 / 64%) 0 0 18px 0;
   border: rgba(255, 255, 255, 0.38) 1px solid;
   background: #ffd4a8 !important;
@@ -349,19 +349,19 @@ function connectButtonText(): string {
   color: rgb(var(--v-theme-on-connect-btn-connected));
 }
 
-/*---- Client app ----*/
-#connectBtn.client-app.connected {
+/*---- blue ----*/
+#connectBtn.blue.connected {
   background-image: linear-gradient(to right, rgb(var(--v-theme-connect-btn-connected)),
       rgb(var(--v-theme-connect-btn-connected)) 90%) !important;
 }
 
-/*---- Connect app ----*/
-#connectBtn.connect-app.connected {
+/*---- violet ----*/
+#connectBtn.violet.connected {
   background: rgb(var(--v-theme-connect-btn-connected)) !important;
 }
 
-/*---- Connect app only on TV ----*/
-#connectBtn.connect-app.connected.tv-device:focus-visible {
+/*---- violet, only on TV ----*/
+#connectBtn.violet.connected.tv-device:focus-visible {
   box-shadow: #a4a3ff 0 0 18px 0;
   border: rgba(255, 255, 255, 0.38) 1px solid;
   background: rgb(162 162 255) !important;

@@ -41,7 +41,7 @@ const isShowSplitCountryText = computed(() => !allowMultipleFlags.value || exclu
     tabindex="6"
     @click="router.push({ name: 'SPLIT_COUNTRIES' })"
   >
-    <span class="config-btn-title">{{ vhApp.isConnectApp() ? locale('SPLIT_COUNTRIES') : locale('SPLIT_COUNTRIES') }}</span>
+    <span class="config-btn-title">{{ locale('SPLIT_COUNTRIES') }}</span>
     <v-icon :icon="Util.getLocalizedRightChevron()" />
 
     <!-- Text related to selected option -->

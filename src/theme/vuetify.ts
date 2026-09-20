@@ -8,8 +8,7 @@ import { en, fa } from 'vuetify/locale';
 // Components rendered as <v-*> are imported by vite-plugin-vuetify's autoImport. These four are
 // imported by hand because the aliases below reference them as values, not as template tags.
 import { VCard, VAlert, VBtn, VSheet } from 'vuetify/components';
-import { AppName } from '@/helpers/UiConstants';
-import { vhClientThemeColors, vhConnectThemeColors } from '@/theme/themes';
+import { vhBlueThemeColors, vhVioletThemeColors } from '@/theme/themes';
 import { vuetifyDefaults, buttonAliases } from '@/theme/defaults';
 
 export default createVuetify({
@@ -33,20 +32,20 @@ export default createVuetify({
   },
   defaults: vuetifyDefaults,
   theme: {
-    defaultTheme: AppName.VpnHoodClient,
+    defaultTheme: 'blue',
     themes: {
-      VpnHoodClient: {
+      blue: {
         dark: true,
-        colors: vhClientThemeColors,
+        colors: vhBlueThemeColors,
         variables: {
           'medium-emphasis-opacity': '0.8',
           'border-opacity': '0.03',
           'disabled-opacity': '0.6',
         },
       },
-      VpnHoodConnect: {
+      violet: {
         dark: true,
-        colors: vhConnectThemeColors,
+        colors: vhVioletThemeColors,
         variables: {
           'medium-emphasis-opacity': '0.8',
           'border-opacity': '0.03',

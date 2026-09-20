@@ -17,7 +17,7 @@ const props = defineProps<{
 }>();
 
 function internalConnect(location: ServerLocationItem): void {
-  if (!vhApp.isConnectApp() && Util.isSingleLocation(props.locationsList.length))
+  if (!vhApp.isSingleProfileMode() && Util.isSingleLocation(props.locationsList.length))
     return;
 
   // User is currently connected to the selected location

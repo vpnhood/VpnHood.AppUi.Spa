@@ -25,7 +25,9 @@ const emit = defineEmits<{
 const documentHtml = ref<string>('');
 const documentTitle = ref<string>('');
 
-loadContentDocument(vhApp.isConnectApp() ? 'privacy-consent' : 'privacy-consent-client', i18n.global.locale.value)
+// Provisional: which product's promises to show is not the look's to choose - an open question;
+// until it is settled the violet look is the connect product.
+loadContentDocument(vhApp.data.features.uiTheme === 'violet' ? 'privacy-consent' : 'privacy-consent-client', i18n.global.locale.value)
   .then(document => {
     documentHtml.value = document.html;
     documentTitle.value = document.title;

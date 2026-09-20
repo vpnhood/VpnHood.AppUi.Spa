@@ -4,8 +4,8 @@ import type { ThemeColorNames } from './types';
 // Helper to enforce exact keys (TS 4.9+ recommended)
 const defineTheme = <T extends ThemeColorNames>(t: T) => t;
 
-// -- VpnHood Connect (dark) -- EXACT COPY of your values, but split out of vuetify.ts
-export const vhConnectThemeColors = defineTheme({
+// -- violet --
+export const vhVioletThemeColors = defineTheme({
   background: myColors.purple['500'],
   surface: myColors.purple['500'],
   'on-background':'#ffffff',
@@ -159,8 +159,8 @@ export const vhConnectThemeColors = defineTheme({
   'scroll-thumb-hover': myColors.purple['200'],
 } as const satisfies ThemeColorNames);
 
-// -- VpnHood Client (light) -- EXACT COPY of your values
-export const vhClientThemeColors = defineTheme({
+// -- blue, the default --
+export const vhBlueThemeColors = defineTheme({
   background: myColors.blue['330'],
   surface: myColors.blue['330'],
   'on-background': '#ffffff',

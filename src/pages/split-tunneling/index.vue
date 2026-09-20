@@ -144,7 +144,7 @@ const isEnabled = computed<boolean>({
     />
 
     <!-- Location -->
-    <settings-section-title :title="vhApp.isConnectApp() ? locale('LOCATIONS') : locale('LOCATIONS')" :is-show="true"/>
+    <settings-section-title :title="locale('LOCATIONS')" :is-show="true"/>
 
     <!-- Local network: exempt from the super toggle — LAN traffic cannot expose the public IP -->
     <settings-item

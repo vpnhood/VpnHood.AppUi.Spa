@@ -17,7 +17,7 @@ import {
   SessionSuppressType,
 } from '@/services/VpnHood.Client.Api';
 import { ClientApiFactory } from '@/services/ClientApiFactory';
-import { AppName, AuthProviderIds, ComponentName, RemoteAccessHint } from '@/helpers/UiConstants';
+import { AuthProviderIds, ComponentName, RemoteAccessHint } from '@/helpers/UiConstants';
 import type { ShowErrorActions } from '@/helpers/ErrorHandler';
 import { ComponentRouteController } from '@/services/ComponentRouteController';
 import { reactive } from 'vue';
@@ -393,12 +393,10 @@ export class VpnHoodApp {
     return clientProfileId === this.data.userSettings.clientProfileId;
   }
 
-  public isConnectApp(): boolean {
-    return this.data.features.uiName === AppName.VpnHoodConnect;
-  }
-
+  // One built-in profile, called "location", against a list of servers the user adds keys for:
+  // the list is fixed exactly when no key can be added.
   public isSingleProfileMode(): boolean {
-    return this.isConnectApp();
+    return !this.data.features.isAddAccessKeySupported;
   }
 
   // Decided entirely by the app (AppFeatures) - never by which product the SPA thinks it is.
@@ -575,12 +573,11 @@ export class VpnHoodApp {
             throw new Error(i18n.global.t('LOGIN_CONNECTION_ERROR_MSG'));
           }
 
-          // Just for VpnHoodConnect
-          // When the SPA is signed in, but the app could not find the user account in the local storage.
-          // Invalid credential.
+          // Only a build with an account: signed in here, but the app could not find the user
+          // account in its storage. Invalid credential.
           if (
             statusCode === 401 &&
-            VpnHoodApp.instance.isConnectApp() &&
+            VpnHoodApp.instance.data.features.isAccountSupported &&
             !VpnHoodApp.instance.data.userState.userAccount
           ) {
             await VpnHoodApp.instance.signOut();

@@ -5,7 +5,6 @@ import "regenerator-runtime/runtime";
 import {createApp} from 'vue'
 import App from './App.vue'
 import { VpnHoodApp } from './services/VpnHoodApp'
-import { AppName } from '@/helpers/UiConstants'
 import vuetify from './theme/vuetify'
 import i18n, { availableLocales, loadLocale } from './locales/i18n'
 import router from './services/router'
@@ -27,7 +26,7 @@ async function main(): Promise<void> {
     const app = createApp(App);
 
     // Set the app theme
-    vuetify.theme.change(vpnHoodApp.data.features.uiName ?? AppName.VpnHoodClient);
+    vuetify.theme.change(vpnHoodApp.data.features.uiTheme);
 
     // Set the default UI language. Its messages live in their own chunk, so they must arrive before
     // the app mounts — otherwise the first paint is in English and then snaps to the real language.

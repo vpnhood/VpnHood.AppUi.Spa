@@ -40,7 +40,7 @@ onMounted(async () => {
     const futureInstalledAppInfo: IListItemInfo = {
       id: "$",
       name: locale('ALL_FUTURE_APPS'),
-      icon: Util.getAssetPath(vhApp.isConnectApp() ? UiConstants.futureAppsIconConnect : UiConstants.futureAppsIconClient),
+      icon: Util.getAssetPath(`future-apps-${vhApp.data.features.uiTheme}.png`),
       isSelected: splitMode.value === SplitAppMode.All || splitMode.value === SplitAppMode.Exclude
     };
     appList.value.push(futureInstalledAppInfo);

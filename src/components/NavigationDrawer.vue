@@ -4,7 +4,7 @@ import router from '@/services/router';
 import { VpnHoodApp } from '@/services/VpnHoodApp';
 import i18n from '@/locales/i18n';
 import vuetify from '@/theme/vuetify';
-import { AppName, UiConstants } from '@/helpers/UiConstants';
+import { UiConstants } from '@/helpers/UiConstants';
 import { type RouteLocationRaw} from 'vue-router';
 import { ApiException } from '@/services/VpnHood.Client.Api';
 import { Util } from '@/helpers/Util';
@@ -138,8 +138,10 @@ function edgeToEdgeHeight(bottom: boolean): string{
     <!-- Header -->
     <div class="bg-navigation-drawer-header d-flex align-center pa-4" :style="edgeToEdgeHeight(false)">
 
+      <!-- Provisional: the logo carries the product's word, which the look should not choose for
+           it; an open question, with the privacy-consent document - the same case. -->
       <v-img
-        :src="Util.getAssetPath(`${vhApp.data.features.uiName ?? AppName.VpnHoodClient}-logo.png`)"
+        :src="Util.getAssetPath(vhApp.data.features.uiTheme === 'violet' ? 'VpnHoodConnect-logo.png' : 'VpnHoodClient-logo.png')"
         :eager="true"
         alt="logo"
         max-width="50"
@@ -273,7 +275,7 @@ function edgeToEdgeHeight(bottom: boolean): string{
 
       <!-- Create personal server -->
       <v-list-item
-        v-if="!vhApp.isConnectApp()"
+        v-if="vhApp.data.features.isAddAccessKeySupported"
         :nav="true"
         density="compact"
         class="opacity-80"

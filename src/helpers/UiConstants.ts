@@ -1,8 +1,5 @@
 export class UiConstants {
   static millisecondPerDay: number = 24 * 60 * 60 * 1000;
-  // the "all future apps" row's icon, one per product, in the assets folder (Util.getAssetPath)
-  static futureAppsIconClient: string = 'future-apps-client.png';
-  static futureAppsIconConnect: string = 'future-apps-connect.png';
   // Every feature illustration under assets/images is authored at 640x656 (checked across all eight
   // the settings pages use). Handing the ratio to v-img lets it reserve the box before the file
   // arrives, so the page stops re-flowing under the user when the image lands. A ratio and not a
@@ -62,11 +59,6 @@ export enum DebugCommand {
 export enum LanguagesCode {
   SystemDefault = 'sys',
   English = 'en',
-}
-
-export enum AppName {
-  VpnHoodClient = 'VpnHoodClient',
-  VpnHoodConnect = 'VpnHoodConnect',
 }
 
 // Lives here rather than beside VhFirebaseApp so that naming an event does not statically pull the
