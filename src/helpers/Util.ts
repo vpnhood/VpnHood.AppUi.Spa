@@ -39,7 +39,12 @@ export class Util {
   // A file of the assets folder (src/assets/images), by its own name: the folder is served as
   // it is - no hash, no inlining - and the same file is what the native UI reads from it.
   public static getAssetPath(fileName: string): string {
-    return `/assets/images/${fileName}`;
+    return Util.getStoreAssetPath(`images/${fileName}`);
+  }
+
+  /** An asset of the UI's store by its path there ("images/rocket.webp"), as the app's web host serves it. */
+  public static getStoreAssetPath(assetPath: string): string {
+    return `/assets/${assetPath}`;
   }
 
   public static protocolTitle(protocol: ChannelProtocol): string {

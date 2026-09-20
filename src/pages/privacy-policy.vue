@@ -19,15 +19,14 @@ const emit = defineEmits<{
 // only. Empty until it lands, which is a frame or two from the same bundle; a spinner would
 // flash for longer than the text takes to arrive.
 // Unlike WHETHER the screen is shown (the head's IsLicenseAgreementRequired), WHICH text is shown
-// must depend on the product: CONNECT's summary describes our servers and their logging, while
-// CLIENT has no servers of ours to describe — it summarizes the bring-your-own-key reality
-// instead. Showing CONNECT's promises to a CLIENT user would misstate who handles their traffic.
+// is the head's word too (privacyConsentAssetName): CONNECT's summary describes our servers and
+// their logging, while CLIENT has no servers of ours to describe — it summarizes the
+// bring-your-own-key reality instead. Showing CONNECT's promises to a CLIENT user would misstate
+// who handles their traffic, and the look (uiTheme) is not what decides that.
 const documentHtml = ref<string>('');
 const documentTitle = ref<string>('');
 
-// Provisional: which product's promises to show is not the look's to choose - an open question;
-// until it is settled the violet look is the connect product.
-loadContentDocument(vhApp.data.features.uiTheme === 'violet' ? 'privacy-consent' : 'privacy-consent-client', i18n.global.locale.value)
+loadContentDocument(vhApp.data.features.privacyConsentAssetName, i18n.global.locale.value)
   .then(document => {
     documentHtml.value = document.html;
     documentTitle.value = document.title;

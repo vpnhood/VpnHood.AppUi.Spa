@@ -1,5 +1,5 @@
 # Icons the native (Avalonia) UI draws, which the web UI's own pages may not: the code points of
-# Mdi.cs in VpnHood.AppLib.AvaloniaUI, as @mdi/font names. build/icon-font-plugin.ts subsets the
+# Mdi.cs in VpnHood.AppUi.Services, as @mdi/font names. build/icon-font-plugin.ts subsets the
 # icon font of the assets folder to the web UI's icons plus these, so both UIs draw from one file.
 # Written by _sync-native-assets.ps1 in that project - do not edit by hand.
 account

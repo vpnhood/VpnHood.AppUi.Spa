@@ -138,10 +138,9 @@ function edgeToEdgeHeight(bottom: boolean): string{
     <!-- Header -->
     <div class="bg-navigation-drawer-header d-flex align-center pa-4" :style="edgeToEdgeHeight(false)">
 
-      <!-- Provisional: the logo carries the product's word, which the look should not choose for
-           it; an open question, with the privacy-consent document - the same case. -->
+      <!-- the product's logo, by the store path the head named; not the look's to choose -->
       <v-img
-        :src="Util.getAssetPath(vhApp.data.features.uiTheme === 'violet' ? 'VpnHoodConnect-logo.png' : 'VpnHoodClient-logo.png')"
+        :src="Util.getStoreAssetPath(vhApp.data.features.logoAssetPath)"
         :eager="true"
         alt="logo"
         max-width="50"

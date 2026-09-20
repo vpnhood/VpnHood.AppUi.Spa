@@ -9,7 +9,7 @@ import type { Plugin } from 'vite';
  * language folders up to date); this plugin is the last step, deliberately placed AFTER
  * translation so a change here can never invalidate a translation.
  *
- * `import content from './content/en/privacy-consent.md'` yields the rendered HTML string, with
+ * `import content from './content/en/privacy-consent-connect.md'` yields the rendered HTML string, with
  * the front matter's `title` as a named export.
  */
 export function markdownContent(): Plugin {

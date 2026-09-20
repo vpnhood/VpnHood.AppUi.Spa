@@ -9,8 +9,6 @@ cloak-mode.webp
 extend-session.webp
 free-to-premium-account-icon.webp
 free-to-premium-servers.webp
-future-apps-client.png
-future-apps-connect.png
 kill-switch.webp
 more-location.webp
 no-ads.webp
@@ -26,6 +24,4 @@ rocket-smoke.webp
 rocket.webp
 split-ip.webp
 support.webp
-VpnHoodClient-logo.png
-VpnHoodConnect-logo.png
 you-are-premium.webp
