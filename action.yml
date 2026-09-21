@@ -7,9 +7,10 @@
 # point it at the same version the shipped client uses:
 #
 #   - uses: actions/checkout@v5
-#   - uses: vpnhood/VpnHood.Client.WebUI@v8.1.834
+#   - uses: vpnhood/VpnHood.AppUi.Spa@<ref>
 #
-# Everything renders inside the action's own copy (github.action_path): the SPA production build,
+# Everything renders inside the action's own copy of the SPA (github.action_path/src/
+# VpnHood.AppUi.Presentation.Classic.Spa): the SPA production build,
 # the mocked API from e2e/store/fixture.json plus e2e/store/project.mjs, and Chromium via
 # Playwright. The engine fails loudly — page errors, open dialogs, a hide selector matching
 # nothing, or a missing final all fail this action rather than shipping a broken PNG.
@@ -59,22 +60,22 @@ runs:
 
     - name: Install dependencies
       shell: bash
-      working-directory: ${{ github.action_path }}
+      working-directory: ${{ github.action_path }}/src/VpnHood.AppUi.Presentation.Classic.Spa
       run: npm ci
 
     - name: Install Chromium
       shell: bash
-      working-directory: ${{ github.action_path }}
+      working-directory: ${{ github.action_path }}/src/VpnHood.AppUi.Presentation.Classic.Spa
       run: npx playwright install --with-deps chromium
 
     - name: Build the SPA (production)
       shell: bash
-      working-directory: ${{ github.action_path }}
+      working-directory: ${{ github.action_path }}/src/VpnHood.AppUi.Presentation.Classic.Spa
       run: npm run build
 
     - name: Generate and install screenshots
       shell: bash
-      working-directory: ${{ github.action_path }}
+      working-directory: ${{ github.action_path }}/src/VpnHood.AppUi.Presentation.Classic.Spa
       run: >
         node e2e/store-screenshots.mjs
         ${{ inputs.install == 'true' && '--install' || '' }}

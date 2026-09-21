@@ -1,0 +1,25 @@
+node_modules/
+/dist
+
+# e2e smoke-test output (e2e/smoke.mjs)
+/test-results
+
+# local env files
+.env.local
+.env.*.local
+/.env.locale
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Per-machine local build counter, stepped by vite.config.ts on every local `vite build` and shown
+# in the app as "local · build #N". It must stay untracked — it is one developer's build count, not
+# a version, and committing it would conflict on every build.
+/.local-build-number
+
+# The icon font of the assets folder is generated on every build and dev start by
+# build/icon-font-plugin.ts (a subset of @mdi/font), never committed.
+/src/assets/fonts/MaterialDesignIcons.ttf
