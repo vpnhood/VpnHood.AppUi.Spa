@@ -1,100 +1,48 @@
-# VpnHood! WebUI
+# VpnHood.AppUi.Spa
 
-This repository contains the source code for the VpnHood! WebUI, built with **Vue 3** and **Vite**.
+The VpnHood app's web UI, kept as a **sample**. The products moved to the Avalonia UI in the main
+repo (`VpnHood.AppUi.Presentation.Classic.Avalonia`); this repo proves the other direction still
+works: a head built from the published VpnHood packages alone, showing a single-page web app as its
+UI. Nothing here references the main repo's source - what the samples get from NuGet is what any
+head outside that repo gets, so swapping the presentation is a matter of which package a head
+references and which page it places beside itself.
 
----
+## What is here
 
-## 🚀 Getting Started
+| Folder | What it is |
+| --- | --- |
+| `src/VpnHood.AppUi.Presentation.Classic.Spa/` | the UI: Vue 3, Vite, Vuetify. The files both UIs load by name at run time - images, flags, fonts, the words of every language, the content documents - are authored in its `src/assets`, `src/locales` and `src/content`; the main repo's `_sync-assets.ps1` takes them from this build. |
+| `src/VpnHood.AppLib.Api.SwaggerHost/` | poses the app API (`VpnHood.AppLib.Api`, from NuGet) to NSwag; its `_recreate-api.ps1` regenerates the SPA's TypeScript client. Never run in an app: every action throws. |
+| `src/AppUiSample.WinSpa/` | a Windows head: the SPA in a WebView2 window, over `VpnHood.AppUi.Hosting.WebView.Windows`. |
+| `src/AppUiSample.AndroidSpa/` | an Android head: the SPA in the system WebView, over `VpnHood.AppUi.Hosting.WebView.Android`. |
+| `src/SpaAssets.targets` | what both samples import: zips the SPA's `dist` into the two files a head places beside itself. |
+| `action.yml`, `…/e2e/store/` | the store screenshot and listing tooling that the store repos (`Vpnhood.App.Client`, `Vpnhood.App.Connect`) and the main repo's `publish_listing.yml` call by ref. Read `e2e/store/README.md` before touching any of it. |
 
-To get the project up and running, follow these steps.
+## Running a sample
 
-### 📋 Prerequisites
+1. Build the SPA: `npm ci` then `npm run build` in `src/VpnHood.AppUi.Presentation.Classic.Spa`.
+2. `dotnet build VpnHood.AppUi.Spa.slnx`, or open the solution and run `AppUiSample.WinSpa`.
 
-You'll need **Node.js (v16+)** installed on your system. You can download it from the official [Node.js website](https://nodejs.org/).
+Each sample's build zips the SPA's `dist` into `assets/ui.zip` - the store, which the app extracts
+once and its web host serves at `/assets/` - and `assets/web-root.zip`, the page. The IP-location
+database arrives the same way from `VpnHood.Core.IpLocations.Assets.Ip2LocationLite`. Nothing is
+copied by hand, and the samples never read the SPA's source.
 
-### 📥 Setup
+The Windows sample needs the Edge WebView2 runtime, which Windows 11 has. Connecting needs the
+WinDivert driver and elevation; the UI itself does not.
 
-1.  **Clone the repository:**
-    ```sh
-    git clone https://github.com/vpnhood/VpnHood.Client.WebUI.git
-    ```
-2.  **Install dependencies:**
-    ```sh
-    npm install
-    ```
+## Developing the SPA
 
-### ⚙️ Configuration
+`npm run dev` serves it at `http://localhost:8080`, with the assets from `src/`. Point
+`VITE_API_BASE_URL` in `.env.development` at a running app's API: a sample here serves its at
+`http://127.0.0.1:9090` (IPv4 - `localhost` resolves to `::1` first, where nothing listens), and
+every debug head of the main repo serves one too.
 
-The WebUI needs to know where to find the VpnHood API. The **`.env.development`** file already exists in the project.
-Open it and configure the `VITE_API_BASE_URL` to match your environment.
+After a change to the C# API, run `src/VpnHood.AppLib.Api.SwaggerHost/_recreate-api.ps1`; never edit
+`src/services/VpnHood.Client.Api.ts` by hand. Edit only `src/locales/en.json`; the translator writes
+every other locale at publish time.
 
-| Environment | VpnHood! Client | VpnHood! Connect |
-| :--- | :--- | :--- |
-| **Windows** | `VITE_API_BASE_URL=http://my-vpnhood:9571` | `VITE_API_BASE_URL=http://my-vpnhood-connect:9571` |
-| **Android** | `VITE_API_BASE_URL=http://<YOUR_DEVICE-IP>:9581` | `VITE_API_BASE_URL=http://<YOUR_DEVICE-IP>:9571` |
+## The one version pin
 
-> 💡 **Important:**
-> * Replace `<YOUR_DEVICE-IP>` with the IP address of the device hosting the VpnHood app.
-> * If you are connecting from a separate device, the VpnHood app must be running in **debug configuration**.
-
----
-
-## 🛠 Development & Building
-
-### 💻 Local Development
-
-To start a development server with **hot-reloading**:
-
-```sh
-npm run dev
-```
-### or
-```sh
-vite serve
-```
-
-## 🏗️ Production Build
-To build a production-ready version:
-```sh
-npm run build
-```
-### or
-```sh
-vite build
-```
-This command generates the compiled files in the `dist` directory.
-
-## 📦 Packaging
-
-After building the project, you'll need to package the output for use with the VpnHood app.
-1. Navigate to the `dist` directory.
-2. Compress the contents of the `dist` directory (not the folder itself) into a zip file named `SPA.zip`.
-3. Copy `SPA.zip` to the target project directory.
-
-## 🗂 The assets folder
-
-`dist/assets` is not Vite's output (that goes to `dist/bundle`): it is the folder of files the app
-loads **at runtime, by name** — and the native (Avalonia) UI, which the app can show instead of
-this SPA, reads the very same files from the same folder once the app has extracted the bundle.
-Nothing in it is hashed or inlined, so a name is a contract between the two UIs:
-
-| Path | Source | Loaded by |
-| --- | --- | --- |
-| `assets/images/*` | `src/assets/images` | `Util.getAssetPath(name)`, the few `url()`s in styles |
-| `assets/flags/<code>.png` | `src/assets/flags` | `VpnHoodApp.getCountryFlag(code)` |
-| `assets/fonts/*.ttf` | `src/assets/fonts` | the `@font-face` rules in `src/assets/styles` |
-| `assets/fonts/MaterialDesignIcons.ttf` | generated by `build/icon-font-plugin.ts` | `virtual:vh-icon-font.css` |
-| `assets/locales/<code>.json` | `src/locales` (the translator's) | `loadLocale(code)` |
-| `assets/content/<lang>/*.md` | `src/content` (the translator's) | the native UI only; this SPA compiles them |
-
-`build/assets-folder-plugin.ts` copies those folders into the bundle verbatim, serves them from
-`src/` while `vite dev` runs, and — because a name here is not an `import` the bundler would
-resolve — **checks at build time that every name either UI asks for is a file that exists**: the
-`/assets/…` URLs and bare file names in `src`, and the native UI's own names in
-`build/native-ui-images.txt`. A typo or a rename fails the build, naming the file that wrote it.
-
-The icon font is a subset of `@mdi/font`: the icons named in `src` and by Vuetify, plus the ones
-the native UI names in `build/native-ui-icons.txt`. A name that is not an icon fails the build.
-Both native-UI lists are written from the C# by `_sync-native-assets.ps1` in that project.
-Fonts stay `ttf` — the one format a WebView and Avalonia both read; `woff2` would only add a
-second copy.
+`Directory.Build.props` holds `VhPackageVersion`, the version of the VpnHood packages every project
+here consumes. Move it when the packages move; nothing else pins them.

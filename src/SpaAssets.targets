@@ -1,0 +1,70 @@
+<Project>
+	<!-- What a head that shows the SPA needs placed beside it, built from the SPA's own dist:
+
+	       assets/ui.zip        the store - images, flags, fonts, content, locales, branding - in the
+	                            layout VpnHood.AppUi.Assets.Classic ships. That package is not
+	                            published yet (packing it needs the SPA built beside the main repo,
+	                            which CI does not have), so a head outside that repo builds the store
+	                            here, from where the files are authored.
+	       assets/web-root.zip  the page: index.html and the hashed bundle - everything in dist but
+	                            the store, which the app's web host serves at /assets/ out of the
+	                            zip above.
+
+	     The app reads both at those asset paths through its platform's IAssetProvider, the way
+	     every head of the main repo does; the placement below is the one their packages' targets
+	     use. The two lists (locales, fonts) exist because a provider answers by name and never
+	     enumerates - they are what _sync-assets.ps1 writes in the main repo. -->
+	<PropertyGroup>
+		<SpaDir>$(MSBuildThisFileDirectory)VpnHood.AppUi.Presentation.Classic.Spa\</SpaDir>
+		<SpaDistDir>$(SpaDir)dist\</SpaDistDir>
+		<SpaZipDir>$(MSBuildProjectDirectory)\obj\spa\</SpaZipDir>
+		<SpaStoreDir>$(SpaZipDir)store\</SpaStoreDir>
+		<SpaWebRootDir>$(SpaZipDir)web-root\</SpaWebRootDir>
+		<SpaUiZip>$(SpaZipDir)ui.zip</SpaUiZip>
+		<SpaWebRootZip>$(SpaZipDir)web-root.zip</SpaWebRootZip>
+		<SpaIsAndroidApp>$(TargetFramework.Contains('-android'))</SpaIsAndroidApp>
+	</PropertyGroup>
+
+	<!-- Android: one entry in the package's assets, which is not split by CPU architecture. The
+	     folder's name twice on purpose: .NET for Android takes a leading assets\ in the link as the
+	     package's asset root and drops it, and the file must keep its folder under that root. -->
+	<ItemGroup Condition="'$(SpaIsAndroidApp)' == 'true'">
+		<AndroidAsset Include="$(SpaUiZip)" Link="assets\assets\ui.zip" Visible="false" />
+		<AndroidAsset Include="$(SpaWebRootZip)" Link="assets\assets\web-root.zip" Visible="false" />
+	</ItemGroup>
+
+	<!-- Windows: a file beside the executable, read in place. -->
+	<ItemGroup Condition="'$(SpaIsAndroidApp)' != 'true'">
+		<None Include="$(SpaUiZip)" Link="assets\ui.zip" CopyToOutputDirectory="PreserveNewest" Visible="false" />
+		<None Include="$(SpaWebRootZip)" Link="assets\web-root.zip" CopyToOutputDirectory="PreserveNewest" Visible="false" />
+	</ItemGroup>
+
+	<Target Name="VhBuildSpaZips" BeforeTargets="BeforeBuild">
+		<Error Condition="!Exists('$(SpaDistDir)index.html')"
+		       Text="The SPA is not built. Run 'npm run build' in $(SpaDir)" />
+
+		<ItemGroup>
+			<!-- not the film: an internal ad exactly one head plays, which carries it as its own asset -->
+			<_SpaStoreFile Include="$(SpaDistDir)assets\**" Exclude="$(SpaDistDir)assets\images\internal-ad.mp4" />
+			<_SpaBrandingFile Include="$(SpaDistDir)branding\**" />
+			<_SpaLocaleFile Include="$(SpaDistDir)assets\locales\*.json" />
+			<_SpaFontFile Include="$(SpaDistDir)assets\fonts\*.ttf" />
+			<_SpaWebRootFile Include="$(SpaDistDir)**" Exclude="$(SpaDistDir)assets\**" />
+		</ItemGroup>
+		<PropertyGroup>
+			<_SpaLocaleList>@(_SpaLocaleFile->'&quot;%(Filename)&quot;', ',')</_SpaLocaleList>
+			<_SpaFontList>@(_SpaFontFile->'&quot;%(Filename)%(Extension)&quot;', ',')</_SpaFontList>
+		</PropertyGroup>
+
+		<RemoveDir Directories="$(SpaStoreDir);$(SpaWebRootDir)" />
+		<Copy SourceFiles="@(_SpaStoreFile)" DestinationFiles="@(_SpaStoreFile->'$(SpaStoreDir)%(RecursiveDir)%(Filename)%(Extension)')" />
+		<Copy SourceFiles="@(_SpaBrandingFile)" DestinationFiles="@(_SpaBrandingFile->'$(SpaStoreDir)branding\%(RecursiveDir)%(Filename)%(Extension)')" />
+		<WriteLinesToFile File="$(SpaStoreDir)locales\index.json" Lines="[$(_SpaLocaleList)]" Overwrite="true" />
+		<WriteLinesToFile File="$(SpaStoreDir)fonts\index.json" Lines="[$(_SpaFontList)]" Overwrite="true" />
+		<Copy SourceFiles="@(_SpaWebRootFile)" DestinationFiles="@(_SpaWebRootFile->'$(SpaWebRootDir)%(RecursiveDir)%(Filename)%(Extension)')" />
+
+		<Delete Files="$(SpaUiZip);$(SpaWebRootZip)" />
+		<ZipDirectory SourceDirectory="$(SpaStoreDir)" DestinationFile="$(SpaUiZip)" />
+		<ZipDirectory SourceDirectory="$(SpaWebRootDir)" DestinationFile="$(SpaWebRootZip)" />
+	</Target>
+</Project>

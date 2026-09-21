@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<Description>A sample Windows head: the VpnHood app with the SPA as its UI, in a WebView2 window, built from the published packages alone</Description>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
+		<UseWPF>true</UseWPF>
+		<AssemblyName>VpnHoodSpaSample</AssemblyName>
+		<RootNamespace>AppUiSample.WinSpa</RootNamespace>
+		<SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+		<ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+		<!-- The tray draws the executable's own icon; a head without one does not start. -->
+		<ApplicationIcon>Resources\VpnHood.ico</ApplicationIcon>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<!-- The web UI in WPF's window: the WebView2 adapter and the window, over the tray, the single
+		     instance and the Windows device the app runs on. -->
+		<PackageReference Include="VpnHood.AppUi.Hosting.WebView.Windows" Version="$(VhPackageVersion)" />
+		<!-- The web host the page is served from, and that a paired browser reaches. -->
+		<PackageReference Include="VpnHood.AppLib.Api.WebHost" Version="$(VhPackageVersion)" />
+		<!-- The IP-location database, placed beside the app by its own package's targets. -->
+		<PackageReference Include="VpnHood.Core.IpLocations.Assets.Ip2LocationLite" Version="$(VhIpLocationsPackageVersion)" />
+	</ItemGroup>
+
+	<!-- The store and the page, zipped from the SPA's build and placed beside the app. -->
+	<Import Project="..\SpaAssets.targets" />
+</Project>

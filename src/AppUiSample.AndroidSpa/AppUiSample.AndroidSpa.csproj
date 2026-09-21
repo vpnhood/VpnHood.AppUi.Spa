@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<Description>A sample Android head: the VpnHood app with the SPA as its UI, in the system WebView, built from the published packages alone</Description>
+		<TargetFramework>net10.0-android36.1</TargetFramework>
+		<OutputType>Exe</OutputType>
+		<RootNamespace>AppUiSample.AndroidSpa</RootNamespace>
+		<ApplicationId>com.vpnhood.sample.spa.android</ApplicationId>
+		<ApplicationVersion>1</ApplicationVersion>
+		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+		<SupportedOSPlatformVersion>24.0</SupportedOSPlatformVersion>
+		<RuntimeIdentifiers>android-arm64;android-x64</RuntimeIdentifiers>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<!-- The web UI in the system WebView: the adapter and the activity handler, over the app's
+		     Android lifecycle and the Android device the app runs on. -->
+		<PackageReference Include="VpnHood.AppUi.Hosting.WebView.Android" Version="$(VhPackageVersion)" />
+		<!-- The web host the page is served from, and that a paired browser reaches. -->
+		<PackageReference Include="VpnHood.AppLib.Api.WebHost" Version="$(VhPackageVersion)" />
+		<!-- The IP-location database, packed into the APK by its own package's targets. -->
+		<PackageReference Include="VpnHood.Core.IpLocations.Assets.Ip2LocationLite" Version="$(VhIpLocationsPackageVersion)" />
+	</ItemGroup>
+
+	<!-- The store and the page, zipped from the SPA's build and packed into the APK. -->
+	<Import Project="..\SpaAssets.targets" />
+</Project>

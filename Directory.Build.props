@@ -1,10 +1,11 @@
 <Project>
-	<!-- The single <Version> the nuget project inherits. Stamped by pub/Bump-SpaVersion.ps1
-	     (adopt-or-self-bump against the monorepo) — do not edit by hand. package.json carries the
-	     identical number so the SPA and the package always agree.
-	     Keep it first in the file: the stamper rewrites the FIRST <Version> it finds. -->
+	<!-- The one version of the VpnHood packages every project here consumes. Nothing in this repo
+	     references the main repo's source: the Swagger host and the samples build against the
+	     published packages, so what they get is exactly what a head outside that repo gets. The
+	     IP-location database follows its own repo's version line. -->
 	<PropertyGroup>
-		<Version>8.1.852</Version>
+		<VhPackageVersion>8.2.851</VhPackageVersion>
+		<VhIpLocationsPackageVersion>8.2.852</VhIpLocationsPackageVersion>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -13,24 +14,14 @@
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
-	<!-- Package metadata shared by every packable project here. -->
+	<!-- NOTHING HERE IS EVER PUBLISHED. This repo is a sample: it consumes the VpnHood packages and
+	     produces none. The SPA bundle used to ship as VpnHood.AppLib.Assets.ClassicSpa; that package is
+	     retired, no head reads it, and the samples take the SPA from the folder beside them
+	     (src/SpaAssets.targets). So: no IsPackable=true on a project here, no PackageId, and no workflow
+	     running `dotnet pack` or `nuget push`. The libraries are published from the main repo
+	     (pub/lib/Publish-NugetPackages.ps1), which packs every project under its src/ that has not
+	     opted out - this line is that opt-out for everything in this tree. -->
 	<PropertyGroup>
-		<Authors>VpnHood</Authors>
-		<Company>OmegaHood LLC</Company>
-		<Copyright>© OmegaHood LLC. All rights reserved.</Copyright>
-		<NeutralLanguage>en</NeutralLanguage>
-		<PackageLicenseExpression>LGPL-2.1-only</PackageLicenseExpression>
-		<PackageIcon>VpnHood.png</PackageIcon>
-		<PackageProjectUrl>https://github.com/vpnhood/VpnHood.AppLib.Assets.ClassicSpa</PackageProjectUrl>
-		<RepositoryUrl>https://github.com/vpnhood/VpnHood.AppLib.Assets.ClassicSpa</RepositoryUrl>
-		<RepositoryType>git</RepositoryType>
-		<IncludeSymbols>true</IncludeSymbols>
-		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
-		<FileVersion>$([System.DateTime]::Now.ToString("yyyy.M.d.HHmm"))</FileVersion>
-	</PropertyGroup>
-
-	<!-- Reproducible builds when CI builds the package. -->
-	<PropertyGroup Condition="'$(GITHUB_ACTIONS)'=='true'">
-		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+		<IsPackable>false</IsPackable>
 	</PropertyGroup>
 </Project>
