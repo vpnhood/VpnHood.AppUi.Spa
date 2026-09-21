@@ -3,7 +3,7 @@ title: "Terms of Use and Privacy Policy"
 translate_prompt: "Legal disclosure shown on first run. Translate literally and completely; never shorten, simplify, or reword for marketing."
 ---
 
-VpnHood! CONNECT is a VPN you can use without an account. In brief:
+{appName} is a VPN you can use without an account. In brief:
 
 - We do not record your browsing. Our servers never extract the destinations you visit — domains, URLs or IP addresses — from your traffic.
 - Your IP address and connection times stay in server logs for 30 days, used only to act on abuse and copyright-infringement notices.

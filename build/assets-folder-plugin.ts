@@ -90,6 +90,7 @@ const contentTypes: Record<string, string> = {
 };
 
 const nativeUiImages = 'build/native-ui-images.txt';
+const brandingFolder = 'public/branding';
 
 function localeCodes(root: string): string[] {
   return readdirSync(path.join(root, folders.locales))
@@ -160,6 +161,11 @@ function referencedNames(root: string): Map<string, string> {
     for (const match of text.matchAll(/["'`]([\w.()-]+\.(?:webp|png|svg|mp4))["'`]/g))
       names.set(`images/${match[1]}`, where);
   }
+
+  // one picture per look, named at run time from the theme by both UIs (split-apps.vue,
+  // SplitAppsView.axaml.cs): every theme the branding folder declares must have its own
+  for (const theme of readdirSync(path.join(root, brandingFolder), { withFileTypes: true }).filter(entry => entry.isDirectory()))
+    names.set(`images/future-apps-${theme.name}.png`, `${brandingFolder}/${theme.name}`);
 
   // the native UI's names, exported from its C# by _sync-native-assets.ps1
   const nativeFile = path.join(root, nativeUiImages);

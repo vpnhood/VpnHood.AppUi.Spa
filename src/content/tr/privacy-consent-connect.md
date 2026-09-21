@@ -4,7 +4,7 @@ translate_prompt: "Legal disclosure shown on first run. Translate literally and 
 lang: tr
 auto_translated: true
 ---
-VpnHood! CONNECT, hesap olmadan kullanabileceğiniz bir VPN'dir. Kısaca:
+{appName}, hesap olmadan kullanabileceğiniz bir VPN'dir. Kısaca:
 
 - Gezinme geçmişinizi kaydetmeyiz. Sunucularımız trafiğinizden ziyaret ettiğiniz hedefleri (alan adları, URL'ler veya IP adresleri) asla ayıklamaz.
 - IP adresiniz ve bağlantı süreleriniz sunucu günlüklerinde 30 gün boyunca tutulur ve yalnızca bir telif hakkı ihlali bildirimine göre işlem yapmak için kullanılır.

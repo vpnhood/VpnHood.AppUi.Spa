@@ -4,7 +4,7 @@ translate_prompt: "Legal disclosure shown on first run. Translate literally and 
 lang: zh
 auto_translated: true
 ---
-VpnHood! CONNECT 是一款无需账户即可使用的 VPN。简而言之：
+{appName} 是一款无需账户即可使用的 VPN。简而言之：
 
 - 我们不会记录您的浏览活动。我们的服务器绝不会从您的流量中提取您访问的目的地（域名、URL 或 IP 地址）。
 - 您的 IP 地址和连接时间会在服务器日志中保留 30 天，仅用于处理侵犯版权的通知。

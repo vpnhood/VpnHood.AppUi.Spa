@@ -3,7 +3,7 @@ title: "Terms of Use and Privacy Policy"
 translate_prompt: "Legal disclosure shown on first run. Translate literally and completely; never shorten, simplify, or reword for marketing."
 ---
 
-VpnHood! CLIENT is VPN software, not a VPN service. In brief:
+{appName} is VPN software, not a VPN service. In brief:
 
 - The app comes with no VPN server. You add an access key and choose the server it connects to; that server's operator — not us — handles your connection under its own terms and privacy policy. Use an access key only from an operator you trust.
 - We never see your traffic, your browsing, or the server's records. The only data we can receive is what the app itself sends, described below.

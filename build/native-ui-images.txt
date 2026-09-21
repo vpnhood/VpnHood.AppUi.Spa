@@ -24,4 +24,6 @@ rocket-smoke.webp
 rocket.webp
 split-ip.webp
 support.webp
+VpnHoodClient-logo.png
+VpnHoodConnect-logo.png
 you-are-premium.webp

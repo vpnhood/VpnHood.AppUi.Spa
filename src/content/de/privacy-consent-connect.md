@@ -4,7 +4,7 @@ translate_prompt: "Legal disclosure shown on first run. Translate literally and 
 lang: de
 auto_translated: true
 ---
-VpnHood! CONNECT ist ein VPN, das Sie ohne Konto nutzen können. Kurz zusammengefasst:
+{appName} ist ein VPN, das Sie ohne Konto nutzen können. Kurz zusammengefasst:
 
 - Wir erfassen Ihr Surfverhalten nicht. Unsere Server extrahieren niemals die von Ihnen besuchten Ziele – Domains, URLs oder IP-Adressen – aus Ihrem Datenverkehr.
 - Ihre IP-Adresse und die Verbindungszeiten verbleiben für 30 Tage in den Serverprotokollen und werden ausschließlich verwendet, um auf Meldungen von Urheberrechtsverletzungen zu reagieren.
