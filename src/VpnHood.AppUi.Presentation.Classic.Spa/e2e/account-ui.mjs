@@ -13,7 +13,7 @@
 //   8  a code typed while signed OUT is uploaded by the sign-in that follows
 //   9  the account page refreshes from the portal when it opens
 //
-// Assertions are about STATE, never about a tunnel: connecting needs WinDivert and admin, so the
+// Assertions are about STATE, never about a tunnel: connecting needs admin, so the
 // connect attempt each code entry makes is expected to fail here and is dismissed. That a refused
 // code is KEPT is itself the rule (§8) — flow 1 checks it.
 //
@@ -135,7 +135,7 @@ async function goAccount(page) {
 }
 
 /** Type a code in the sheet and activate it. The connect attempt that follows is expected to fail
- *  here (no WinDivert/admin), so its error dialog is dismissed rather than asserted on. */
+ *  here (no admin), so its error dialog is dismissed rather than asserted on. */
 async function typeCode(page, code) {
   // A previous connect attempt leaves lastError set, and the app re-raises its dialog on every
   // page it renders — its scrim then swallows the click on Activate. Clear the error itself

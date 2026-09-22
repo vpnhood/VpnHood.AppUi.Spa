@@ -7,7 +7,7 @@
     <File Path="action.yml" />
   </Folder>
   <Folder Name="/src/">
-    <File Path="src/SpaAssets.targets" />
+    <File Path="src/SpaWebRoot.targets" />
   </Folder>
   <Folder Name="/src/VpnHood.AppUi.Presentation.Classic.Spa/">
     <File Path="src/VpnHood.AppUi.Presentation.Classic.Spa/package.json" />
@@ -15,6 +15,6 @@
     <File Path="src/VpnHood.AppUi.Presentation.Classic.Spa/index.html" />
   </Folder>
   <Project Path="src/VpnHood.AppLib.Api.SwaggerHost/VpnHood.AppLib.Api.SwaggerHost.csproj" />
-  <Project Path="src/AppUiSample.WinSpa/AppUiSample.WinSpa.csproj" />
-  <Project Path="src/AppUiSample.AndroidSpa/AppUiSample.AndroidSpa.csproj" />
+  <Project Path="src/AppUiSample.Spa.Windows/AppUiSample.Spa.Windows.csproj" />
+  <Project Path="src/AppUiSample.Spa.Android/AppUiSample.Spa.Android.csproj" />
 </Solution>

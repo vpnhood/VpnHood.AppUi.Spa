@@ -16,10 +16,22 @@
  * This file is the engine and should not need editing.
  *
  * Two phases, either runnable alone:
- *   capture  drives the SPA and writes supersampled raw PNGs to raw/<platform>/
+ *   capture  drives the UI and writes supersampled raw PNGs to raw/<platform>/
  *   frame    produces the store-ready files in final/<platform>/ — a device mockup (iOS), the bare
  *            capture at store size (Google Play), or a desktop window composite (Microsoft Store).
  *            raw/ is an intermediate, not a deliverable.
+ *
+ * Two renderers can draw the captures; the frame and install phases do not care which:
+ *   spa       (default) this repo's SPA production build in Chromium, its /api/** answered from
+ *             the fixture by the ROUTES of project.mjs
+ *   avalonia  the Avalonia UI (VpnHood.AppUi.Presentation.Classic.Avalonia in the main repo), drawn
+ *             headless by the VpnHoodStoreScreenshots harness (VpnHood/src/Apps/Tools/
+ *             StoreScreenshots) — one process per shot, given the same merged fixture as a file.
+ *             --harness names the built harness and --assets the UI's asset store (the folder
+ *             _sync-assets.ps1 leaves beside ui.zip in src/AppUi/Assets/Classic); both default to a
+ *             VpnHood checkout beside this repo. A shot's `hide` is a CSS selector list for the
+ *             SPA; this renderer reads `hideAvalonia`, control-name paths from the page down, and
+ *             refuses a shot that has the one without the other.
  *
  * Usage:
  *   npm run store:screenshots                              build + all platforms (no install)
@@ -31,11 +43,15 @@
  *   node e2e/store-screenshots.mjs --frame-only            re-frame without re-capturing
  *   node e2e/store-screenshots.mjs --locale fa             one locale (default: all in LOCALES)
  *   node e2e/store-screenshots.mjs --jobs 8                captures in flight at once (default 4)
- *   node e2e/store-screenshots.mjs --api http://127.0.0.1:4700   against a live Release client
+ *   node e2e/store-screenshots.mjs --api http://127.0.0.1:4700   against a live Release client (SPA only)
  *   node e2e/store-screenshots.mjs --project ../Vpnhood.App.Connect/store/project.mjs
+ *   node e2e/store-screenshots.mjs --renderer avalonia     the Avalonia UI from the main repo beside this one
+ *   node e2e/store-screenshots.mjs --renderer avalonia --harness <VpnHoodStoreScreenshots exe> --assets <store folder>
  *
- * Chromium once per machine: npx playwright install --with-deps chromium
+ * Chromium once per machine: npx playwright install --with-deps chromium (the frame phase and the
+ * project's prepare() draw in it whichever renderer captures)
  */
+import { spawn } from 'child_process';
 import { promises as fs, createReadStream } from 'fs';
 import http from 'http';
 import path from 'path';
@@ -83,6 +99,18 @@ const selectedLocales = localeFilter ? locales.filter(l => localeFilter.includes
 // Captures in flight at once. Most of a capture is waiting (load, network-idle, settle), not CPU,
 // so a small pool overlaps those waits; --jobs 1 restores the fully serial run.
 const JOBS = Math.max(1, parseInt(argValue('--jobs', '4'), 10) || 1);
+
+// Which UI draws the captures — see "Two renderers" above. The harness and the asset store live in
+// the main repo, which a developer's checkout has beside this one; CI names both explicitly.
+const RENDERER = argValue('--renderer', 'spa');
+if (RENDERER !== 'spa' && RENDERER !== 'avalonia')
+  throw new Error(`Unknown --renderer "${RENDERER}". Known: spa, avalonia.`);
+const mainRepo = path.resolve(projectRoot, '..', '..', '..', 'VpnHood');
+const HARNESS = path.resolve(argValue('--harness', null) ?? path.join(mainRepo, 'src', 'Apps', 'Tools', 'StoreScreenshots',
+  'bin', 'Release', 'net10.0', process.platform === 'win32' ? 'VpnHoodStoreScreenshots.exe' : 'VpnHoodStoreScreenshots'));
+const ASSETS = path.resolve(argValue('--assets', null) ?? path.join(mainRepo, 'src', 'AppUi', 'Assets', 'Classic', 'assets'));
+// What the harness reports about the fixture, once per run rather than once per shot.
+const fixtureDrift = { filled: new Set(), notes: new Set() };
 
 // Capture above the output scale: the app is drawn into a device narrower than the canvas, so it is
 // downscaled on the way in, and shooting at the output scale leaves visibly soft text.
@@ -213,101 +241,181 @@ async function runPool(thunks, size) {
   if (firstError) throw firstError;
 }
 
-async function captureDevice(browser, platform, device, origin, fixture, rawDir) {
+/**
+ * The SPA in Chromium: a context per shot, its /api/** answered from the fixture. Returns the
+ * endpoints the project never mocked.
+ */
+async function captureWithSpa(browser, device, origin, fixture, locale, shot, rawDir) {
+  const name = fileName(device, shot, locale);
+
+  // A context per shot, because the API patch differs per shot and the SPA reads it at startup.
+  const context = await browser.newContext({
+    viewport: { width: device.cssWidth, height: device.cssHeight - device.safeTop - device.safeBottom },
+    deviceScaleFactor: device.scale * CAPTURE_SUPERSAMPLE,
+    isMobile: device.isMobile ?? true,
+    hasTouch: device.hasTouch ?? true,
+    userAgent: device.userAgent,
+    reducedMotion: 'reduce', // no half-played transitions, and one less source of run-to-run drift
+  });
+  const page = await context.newPage();
+
+  // A broken mock shows up as an error dialog painted over the screenshot, which is easy to ship
+  // by accident. Surface it as a failure instead of leaving it to whoever eyeballs the PNG.
+  const failures = [];
+  const firstLine = (text) => String(text).split(/\r?\n/)[0];
+  // Keep the top of the stack, not just the message: a bare "Cannot read properties of null"
+  // with no location cost a real debugging round-trip (2026-08-29, the fixture's missing
+  // authProviderIds). The prod bundle is minified, so the frames are chunk:line:col rather than
+  // component names — still enough to bisect, and a SyntaxError shows which chunk failed to parse.
+  page.on('pageerror', (err) =>
+    failures.push(String(err?.stack ?? err).split(/\r?\n/).slice(0, 4).join('\n      ')));
+  page.on('console', (msg) => {
+    if (msg.type() !== 'error') return;
+    const { url = '', lineNumber } = msg.location() ?? {};
+    const at = url ? `  (${url.split('/').pop()}:${lineNumber})` : '';
+    failures.push(firstLine(msg.text()) + at);
+  });
+
+  const unhandled = liveApi
+    ? (await patchLiveApi(page, shot, locale), new Set())
+    : await mockApi(page, deepMerge(fixture, localePatch(locale)), shot);
+
+  await page.goto(origin + shot.route, { waitUntil: 'load', timeout: 30000 });
+  await page.waitForLoadState('networkidle', { timeout: 8000 }).catch(() => {});
+  // The app mounts only after its async startup (configure round-trip + locale chunk), so wait on
+  // the condition rather than a fixed delay.
+  await page.waitForFunction(() => document.querySelector('#app')?.children.length > 0,
+    { timeout: 15000 }).catch(() => {});
+  await page.waitForTimeout(500);
+
+  if (shot.hide?.length) {
+    const selector = shot.hide.join(', ');
+    // Fail rather than quietly ship the element: a Vuetify upgrade that renames these classes
+    // would otherwise silently put a hidden chip back into the listing.
+    const matched = await page.locator(selector).count();
+    if (matched === 0)
+      throw new Error(`${name}: nothing matched "${selector}", so it was not hidden.`);
+    await page.addStyleTag({ content: `${selector} { display: none !important; }` });
+    await page.waitForTimeout(150); // the row reflows without the chip
+  }
+
+  // The SPA routes thrown errors through ErrorHandler.processError into a dialog rather than the
+  // console, so a TS regression can produce a perfectly "successful" run with an error panel
+  // painted over the screen. No store screenshot is ever meant to have a dialog open, so treat any
+  // visible overlay as a failure — that catches app errors, review prompts and anything added later.
+  const openDialog = await page.evaluate(() => {
+    const visible = [...document.querySelectorAll('.v-overlay--active, .v-dialog')]
+      .find(el => el.getBoundingClientRect().width > 0 && getComputedStyle(el).visibility !== 'hidden');
+    return visible ? visible.innerText.replace(/\s+/g, ' ').trim().slice(0, 300) : null;
+  });
+  if (openDialog)
+    failures.push(`a dialog was open over the screen: "${openDialog}"`);
+
+  if (failures.length) {
+    // The two usual suspects, named in the error so the fix needs no log spelunking: an endpoint
+    // the project never mocked (answered null), or a fixture missing a field the SPA now reads.
+    const hint = unhandled.size
+      ? `\n  unmocked endpoints answered null during this shot (a likely cause — mock them in ROUTES, ` +
+        `or add the missing fixture field they stand in for): ${[...unhandled].join(', ')}`
+      : '';
+    throw new Error(
+      `${name}: the app errored while rendering, so the capture would show a ` +
+      'dialog over the screen.\n  ' + [...new Set(failures)].slice(0, 5).join('\n  ') + hint);
+  }
+
+  await page.screenshot({ path: path.join(rawDir, name) });
+  await context.close();
+  return unhandled;
+}
+
+/** Runs a process to completion with both streams captured; a non-zero exit is the caller's to judge. */
+const runProcess = (file, args) => new Promise((resolve, reject) => {
+  const child = spawn(file, args, { windowsHide: true });
+  let stdout = '';
+  let stderr = '';
+  child.stdout.on('data', chunk => { stdout += chunk; });
+  child.stderr.on('data', chunk => { stderr += chunk; });
+  child.on('error', reject);
+  child.on('close', code => resolve({ code, stdout, stderr }));
+});
+
+/**
+ * The Avalonia UI, drawn by the VpnHoodStoreScreenshots harness: one process per shot, given the
+ * merged fixture as a file (kept under fixture/<platform>/ beside raw/, so the exact input of any
+ * capture can be re-run by hand) and the viewport, scale, culture and hide list a browser context
+ * would get. The harness fails loudly on the SPA path's conditions — a dialog over the page, a
+ * logged error, a hide path matching nothing — and prints the API calls the fixture did not
+ * answer, returned here like the SPA's unmocked endpoints.
+ */
+async function captureWithAvalonia(device, fixture, locale, shot, rawDir, fixtureDir) {
+  const name = fileName(device, shot, locale);
+  // The SPA's selector says something must not be in this shot; without its Avalonia counterpart
+  // the element would ship. A shot may say so explicitly with hideAvalonia: [].
+  if (shot.hide?.length && !shot.hideAvalonia)
+    throw new Error(`${name}: the shot hides "${shot.hide.join(', ')}" in the SPA but names no hideAvalonia control path.`);
+
+  const fixtureFile = path.join(fixtureDir, name.replace(/\.png$/, '.json'));
+  await fs.writeFile(fixtureFile, JSON.stringify(shot.patch ? deepMerge(fixture, shot.patch) : fixture));
+
+  const args = [
+    '--fixture', fixtureFile,
+    '--assets', ASSETS,
+    '--route', shot.route,
+    '--width', String(device.cssWidth),
+    '--height', String(device.cssHeight - device.safeTop - device.safeBottom),
+    '--scale', String(device.scale * CAPTURE_SUPERSAMPLE),
+    '--culture', locale.culture,
+    '--out', path.join(rawDir, name),
+  ];
+  if (shot.hideAvalonia?.length)
+    args.push('--hide', shot.hideAvalonia.join(','));
+
+  const { code, stdout, stderr } = await runProcess(HARNESS, args);
+  const unhandled = new Set();
+  for (const line of stdout.split(/\r?\n/)) {
+    const [tag, ...rest] = line.trim().split(/\s+/);
+    const text = rest.join(' ');
+    if (!tag || tag === 'captured' || tag === 'opened' || tag === 'hidden')
+      continue; // the engine's own capture line names the device and the shot
+    if (tag === 'unmocked')
+      text.split(',').map(s => s.trim()).filter(Boolean).forEach(u => unhandled.add(u));
+    else if (tag === 'filled')
+      fixtureDrift.filled.add(text.replace(/\s*\(.*\)$/, ''));
+    else if (tag === 'warning' && text.startsWith('the fixture is behind'))
+      fixtureDrift.notes.add(text);
+    else
+      console.log(`${tag.padEnd(9)} ${device.label.padEnd(11)} ${name}  ${text}`);
+  }
+  if (code !== 0) {
+    const reason = (stderr.trim() || stdout.trim() || `exit code ${code}`).replace(/^FAILED\s+/, '');
+    throw new Error(`${name}: ${reason.split(/\r?\n/).join('\n  ')}`);
+  }
+  return unhandled;
+}
+
+async function captureDevice(browser, platform, device, origin, fixture, rawDir, fixtureDir) {
   const unhandledAll = new Set();
 
   const captureShot = async (locale, shot) => {
+    const name = fileName(device, shot, locale);
     // A static source is device-independent: the frame pass fits and crops it to each device's
     // content box, so one PNG serves every slot.
     if (shot.source) {
-      await fs.copyFile(path.resolve(projectRoot, shot.source), path.join(rawDir, fileName(device, shot, locale)));
-      console.log(`reused    ${device.label.padEnd(11)} ${fileName(device, shot, locale)}  ${shot.label}  <- ${path.basename(shot.source)}`);
+      await fs.copyFile(path.resolve(projectRoot, shot.source), path.join(rawDir, name));
+      console.log(`reused    ${device.label.padEnd(11)} ${name}  ${shot.label}  <- ${path.basename(shot.source)}`);
       return;
     }
 
-    // A context per shot, because the API patch differs per shot and the SPA reads it at startup.
-    const context = await browser.newContext({
-      viewport: { width: device.cssWidth, height: device.cssHeight - device.safeTop - device.safeBottom },
-      deviceScaleFactor: device.scale * CAPTURE_SUPERSAMPLE,
-      isMobile: device.isMobile ?? true,
-      hasTouch: device.hasTouch ?? true,
-      userAgent: device.userAgent,
-      reducedMotion: 'reduce', // no half-played transitions, and one less source of run-to-run drift
-    });
-    const page = await context.newPage();
-
-    // A broken mock shows up as an error dialog painted over the screenshot, which is easy to ship
-    // by accident. Surface it as a failure instead of leaving it to whoever eyeballs the PNG.
-    const failures = [];
-    const firstLine = (text) => String(text).split(/\r?\n/)[0];
-    // Keep the top of the stack, not just the message: a bare "Cannot read properties of null"
-    // with no location cost a real debugging round-trip (2026-08-29, the fixture's missing
-    // authProviderIds). The prod bundle is minified, so the frames are chunk:line:col rather than
-    // component names — still enough to bisect, and a SyntaxError shows which chunk failed to parse.
-    page.on('pageerror', (err) =>
-      failures.push(String(err?.stack ?? err).split(/\r?\n/).slice(0, 4).join('\n      ')));
-    page.on('console', (msg) => {
-      if (msg.type() !== 'error') return;
-      const { url = '', lineNumber } = msg.location() ?? {};
-      const at = url ? `  (${url.split('/').pop()}:${lineNumber})` : '';
-      failures.push(firstLine(msg.text()) + at);
-    });
-
-    const unhandled = liveApi
-      ? (await patchLiveApi(page, shot, locale), new Set())
-      : await mockApi(page, deepMerge(fixture, localePatch(locale)), shot);
-
-    await page.goto(origin + shot.route, { waitUntil: 'load', timeout: 30000 });
-    await page.waitForLoadState('networkidle', { timeout: 8000 }).catch(() => {});
-    // The app mounts only after its async startup (configure round-trip + locale chunk), so wait on
-    // the condition rather than a fixed delay.
-    await page.waitForFunction(() => document.querySelector('#app')?.children.length > 0,
-      { timeout: 15000 }).catch(() => {});
-    await page.waitForTimeout(500);
-
-    if (shot.hide?.length) {
-      const selector = shot.hide.join(', ');
-      // Fail rather than quietly ship the element: a Vuetify upgrade that renames these classes
-      // would otherwise silently put a hidden chip back into the listing.
-      const matched = await page.locator(selector).count();
-      if (matched === 0)
-        throw new Error(`${fileName(device, shot, locale)}: nothing matched "${selector}", so it was not hidden.`);
-      await page.addStyleTag({ content: `${selector} { display: none !important; }` });
-      await page.waitForTimeout(150); // the row reflows without the chip
-    }
-
-    // The SPA routes thrown errors through ErrorHandler.processError into a dialog rather than the
-    // console, so a TS regression can produce a perfectly "successful" run with an error panel
-    // painted over the screen. No store screenshot is ever meant to have a dialog open, so treat any
-    // visible overlay as a failure — that catches app errors, review prompts and anything added later.
-    const openDialog = await page.evaluate(() => {
-      const visible = [...document.querySelectorAll('.v-overlay--active, .v-dialog')]
-        .find(el => el.getBoundingClientRect().width > 0 && getComputedStyle(el).visibility !== 'hidden');
-      return visible ? visible.innerText.replace(/\s+/g, ' ').trim().slice(0, 300) : null;
-    });
-    if (openDialog)
-      failures.push(`a dialog was open over the screen: "${openDialog}"`);
-
-    if (failures.length) {
-      // The two usual suspects, named in the error so the fix needs no log spelunking: an endpoint
-      // the project never mocked (answered null), or a fixture missing a field the SPA now reads.
-      const hint = unhandled.size
-        ? `\n  unmocked endpoints answered null during this shot (a likely cause — mock them in ROUTES, ` +
-          `or add the missing fixture field they stand in for): ${[...unhandled].join(', ')}`
-        : '';
-      throw new Error(
-        `${fileName(device, shot, locale)}: the app errored while rendering, so the capture would show a ` +
-        'dialog over the screen.\n  ' + [...new Set(failures)].slice(0, 5).join('\n  ') + hint);
-    }
-
-    await page.screenshot({ path: path.join(rawDir, fileName(device, shot, locale)) });
-    console.log(`captured  ${device.label.padEnd(11)} ${fileName(device, shot, locale)}  ${shot.label}`);
+    const unhandled = RENDERER === 'avalonia'
+      ? await captureWithAvalonia(device, fixture, locale, shot, rawDir, fixtureDir)
+      : await captureWithSpa(browser, device, origin, fixture, locale, shot, rawDir);
+    console.log(`captured  ${device.label.padEnd(11)} ${name}  ${shot.label}`);
     unhandled.forEach(u => unhandledAll.add(u));
-    await context.close();
   };
 
-  // Every shot owns its browser context and route mock, and the pixels do not depend on timing,
-  // so a pooled run produces the same bytes as a serial one — only the log order varies.
+  // Every shot owns its browser context or harness process and its own view of the fixture, and
+  // the pixels do not depend on timing, so a pooled run produces the same bytes as a serial one —
+  // only the log order varies.
   await runPool(
     selectedLocales.flatMap(locale => selected(platform).map(shot => () => captureShot(locale, shot))),
     JOBS);
@@ -648,10 +756,10 @@ async function prune(dir, device, expected, pattern) {
   }
 }
 
-/** raw/ and final/ hold every locale side by side, locale-suffixed. */
-const pruneWorkDir = (dir, platform, device) => prune(dir, device,
-  new Set(platform.shots.flatMap(shot => locales.map(locale => fileName(device, shot, locale)))),
-  new RegExp(`^${device.prefix}\\d+_[A-Za-z][\\w-]*\\.png$`));
+/** raw/, final/ and fixture/ hold every locale side by side, locale-suffixed. */
+const pruneWorkDir = (dir, platform, device, ext = '.png') => prune(dir, device,
+  new Set(platform.shots.flatMap(shot => locales.map(locale => fileName(device, shot, locale).replace(/\.png$/, ext)))),
+  new RegExp(`^${device.prefix}\\d+_[A-Za-z][\\w-]*\\${ext}$`));
 
 /** The store folder a locale's set installs into on this platform's store: a `stores` override
  * wins (null: the store has no such locale, skip the set), the tag otherwise. */
@@ -714,14 +822,25 @@ async function installPlatform(platform, devices, finalDir) {
 }
 
 const selectedPlatforms = platformKeys.map(key => ({ key, ...PLATFORMS[key] }));
-const needsSpa = doCapture && selectedPlatforms.some(p => selected(p).some(shot => !shot.source));
+const needsRenderer = doCapture && selectedPlatforms.some(p => selected(p).some(shot => !shot.source));
+const needsSpa = needsRenderer && RENDERER === 'spa';
 if (needsSpa && !liveApi && !await fs.stat(path.join(distDir, 'index.html')).catch(() => null))
   throw new Error(`No production build at ${path.relative(projectRoot, distDir)}. Run 'npm run build' first.`);
+if (needsRenderer && RENDERER === 'avalonia') {
+  if (liveApi)
+    throw new Error('--api patches the SPA over a live client; the avalonia renderer draws the fixture only.');
+  if (!await fs.stat(HARNESS).then(s => s.isFile()).catch(() => false))
+    throw new Error(`No harness at ${HARNESS}. Build it (dotnet build -c Release src/Apps/Tools/StoreScreenshots in the VpnHood repo) or pass --harness.`);
+  if (!await fs.stat(ASSETS).then(s => s.isDirectory()).catch(() => false))
+    throw new Error(`No asset store at ${ASSETS}. Run src/AppUi/Assets/Classic/_sync-assets.ps1 in the VpnHood repo (after 'npm run build' here) or pass --assets.`);
+}
 
 const spa = needsSpa && !liveApi ? await serveSpa() : null;
 const origin = liveApi ?? spa?.origin ?? null;
 const baseFixture = liveApi ? null : JSON.parse(await fs.readFile(fixturePath, 'utf8'));
-console.log(liveApi ? `source: live client at ${liveApi}` : `source: mocked API over ${path.relative(projectRoot, distDir)}`);
+console.log(liveApi ? `source: live client at ${liveApi}`
+  : RENDERER === 'avalonia' ? `source: the Avalonia UI through ${HARNESS}, mocked from ${path.basename(fixturePath)}`
+  : `source: mocked API over ${path.relative(projectRoot, distDir)}`);
 
 // Only capture and frame render anything — an install-only run (--frame-only --capture-only
 // --install, e.g. a CI assemble job merging per-locale artifacts) needs no browser at all.
@@ -745,20 +864,27 @@ for (const platform of selectedPlatforms) {
 
   if (doCapture) {
     await fs.mkdir(rawDir, { recursive: true });
+    const fixtureDir = path.join(outDir, 'fixture', platform.key);
+    if (RENDERER === 'avalonia') await fs.mkdir(fixtureDir, { recursive: true });
     const fixture = baseFixture ? deepMerge(baseFixture, platform.patch ?? {}) : null;
     const unhandled = new Set();
     for (const device of devices) {
-      (await captureDevice(browser, platform, device, origin, fixture, rawDir)).forEach(u => unhandled.add(u));
+      (await captureDevice(browser, platform, device, origin, fixture, rawDir, fixtureDir)).forEach(u => unhandled.add(u));
       await pruneWorkDir(rawDir, platform, device);
+      if (RENDERER === 'avalonia') await pruneWorkDir(fixtureDir, platform, device, '.json');
     }
     if (unhandled.size)
-      console.log(`unmocked endpoints (answered null, add to ROUTES in e2e/store/project.mjs):\n  ${[...unhandled].join('\n  ')}`);
+      console.log(RENDERER === 'avalonia'
+        ? `unmocked API calls (the harness answers them by throwing — answer them in its fakes, VpnHood/src/Apps/Tools/StoreScreenshots, or add the fixture field they stand in for):\n  ${[...unhandled].join('\n  ')}`
+        : `unmocked endpoints (answered null, add to ROUTES in e2e/store/project.mjs):\n  ${[...unhandled].join('\n  ')}`);
   }
 
   if (doFrame) {
     await fs.mkdir(finalDir, { recursive: true });
     const resizer = await browser.newPage();
-    const font = await fs.readFile(path.join(projectRoot, 'src', 'assets', 'fonts', 'Poppins-SemiBold.ttf'));
+    // The app's own bold face (general.css): the SemiBold cut left the repo with the TV work
+    // (2026-09-14), and the frame pass was dead until this line followed it.
+    const font = await fs.readFile(path.join(projectRoot, 'src', 'assets', 'fonts', 'Poppins-Bold.ttf'));
     const fontDataUri = `data:font/ttf;base64,${font.toString('base64')}`;
     let total = 0;
     for (const device of devices) {
@@ -772,6 +898,16 @@ for (const platform of selectedPlatforms) {
 
   if (doInstall && platform.installDir)
     await installPlatform(platform, devices, finalDir);
+}
+
+// The harness fills a member the API contract now requires and the fixture predates with a plain
+// CLIENT default and says so per shot; said once here, because the fix is one re-recording.
+if (fixtureDrift.filled.size || fixtureDrift.notes.size) {
+  console.log(`\n${path.basename(fixturePath)} is behind the API contract — re-record it from a current client:`);
+  if (fixtureDrift.filled.size)
+    console.log(`  filled with CLIENT defaults: ${[...fixtureDrift.filled].join(', ')}`);
+  for (const note of fixtureDrift.notes)
+    console.log(`  ${note}`);
 }
 
 await browser?.close();

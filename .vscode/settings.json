@@ -1,0 +1,19 @@
+{
+  "git.enableSmartCommit": true,
+  "git.smartCommitChanges": "all",
+  "[vue]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "chat.tools.terminal.autoApprove": {
+    "/^git mv \"src/components/AppBar\\.vue\" \"src/components/PageHeader\\.vue\"; git mv \"src/components/Home/HomeAppBar\\.vue\" \"src/components/Home/HomeHeader\\.vue\"; New-Item -ItemType Directory -Force -Path \"src/helpers/ui-state\" \\| Out-Null; git mv \"src/components/ConfirmDialog/ConfirmDialogData\\.ts\" \"src/helpers/ui-state/ConfirmDialogState\\.ts\"; git mv \"src/components/ErrorDialog/ErrorDialogData\\.ts\" \"src/helpers/ui-state/ErrorDialogState\\.ts\"; git mv \"src/components/GeneralSnackbar/GeneralSnackbarData\\.ts\" \"src/helpers/ui-state/GeneralSnackbarState\\.ts\"$/": {
+      "approve": true,
+      "matchCommandLine": true
+    }
+  }
+}

@@ -132,6 +132,10 @@ onBeforeUnmount(() => {
         @click="internalAdDismissed(false)"
       />
 
+      <!-- The film is not in this repo and never was in the store: exactly one head plays it
+           (Connect.Android.Google) and carries it as its own asset, so the other heads do not ship
+           1.8 MB they never show. Asked for by name like any other asset - the head that has it
+           answers, the rest 404 here, which is what this page's error path is for. -->
       <video v-show="isVideoPlayed"
         ref="videoElement"
         width="100%"

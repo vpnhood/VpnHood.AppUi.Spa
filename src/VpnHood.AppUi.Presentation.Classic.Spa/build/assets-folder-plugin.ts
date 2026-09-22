@@ -25,6 +25,23 @@ export function assetsFolder(): Plugin {
   return {
     name: 'vh-assets-folder',
 
+    // A "/assets/..." URL names a file the bundler never sees: it is not in the graph, it is copied
+    // in verbatim by closeBundle below, and it must keep its name. Declaring the folder external is
+    // how Vite is told that - it is the one condition its css/asset resolver checks before logging
+    // "didn't resolve at build time" for every url() in the styles, once per file, on every build.
+    // Silencing that costs nothing here: checkNames already fails the BUILD on a name with no file
+    // behind it, which is stricter than the note being silenced, and it covers the names Vite never
+    // sees at all (the ones passed to Util.getAssetPath, and the native UI's).
+    config() {
+      return {
+        build: {
+          rollupOptions: {
+            external: new RegExp(`^/${assetsFolderName}/(?:${Object.keys(folders).join('|')})/`)
+          }
+        }
+      };
+    },
+
     configResolved(config) {
       root = config.root;
       outDir = path.resolve(config.root, config.build.outDir);
@@ -122,6 +139,21 @@ function copyFolder(source: string, target: string): void {
 }
 
 /**
+ * Names the SPA asks for but does NOT author: the head supplies them at run time, through its own
+ * asset provider, and a head that has nothing to give answers 404 - which the asking page must
+ * already handle, since it is asking for something optional.
+ *
+ * Keep this list at the length it is now. Every entry is a name no build here can check, so each one
+ * is a typo that ships. It exists for files a head owns because only that head shows them:
+ *
+ *   images/internal-ad.mp4  the promo film. Exactly one head plays it (Connect.Android.Google) and
+ *                           carries it from the product's own repo as its own asset; the other nine
+ *                           would ship 1.8 MB they never show, and this repo would carry it for the
+ *                           sake of one of them.
+ */
+const suppliedByTheHead = new Set(['images/internal-ad.mp4']);
+
+/**
  * Every name either UI asks for must be a file in the folder. A name is not an import any more, so
  * nothing else would catch a typo or a file removed from under a caller: here it fails the build,
  * where the bundler's own missing-import error used to be.
@@ -135,7 +167,7 @@ function checkNames(root: string): void {
 
   const missing: string[] = [];
   for (const [name, where] of referencedNames(root)) {
-    if (!present.has(name))
+    if (!present.has(name) && !suppliedByTheHead.has(name))
       missing.push(`${name} (${where})`);
   }
 

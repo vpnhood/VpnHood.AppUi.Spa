@@ -2,10 +2,12 @@
 	<!-- What a head that shows the SPA needs placed beside it, built from the SPA's own dist:
 
 	       assets/ui.zip        the store - images, flags, fonts, content, locales, branding - in the
-	                            layout VpnHood.AppUi.Assets.Classic ships. That package is not
-	                            published yet (packing it needs the SPA built beside the main repo,
-	                            which CI does not have), so a head outside that repo builds the store
-	                            here, from where the files are authored.
+	                            layout VpnHood.AppUi.Assets.Classic ships. Built HERE, from the SPA's
+	                            own dist, and deliberately not taken from that package: the files are
+	                            authored next door, so a sample that consumed the published ones would
+	                            show a store one publish behind whatever it was just edited to show.
+	                            A head outside this repo can reference the package instead; a sample
+	                            whose whole subject is these files should not.
 	       assets/web-root.zip  the page: index.html and the hashed bundle - everything in dist but
 	                            the store, which the app's web host serves at /assets/ out of the
 	                            zip above.

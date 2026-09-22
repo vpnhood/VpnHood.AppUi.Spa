@@ -10,9 +10,13 @@
 #   - uses: vpnhood/VpnHood.AppUi.Spa@<ref>
 #
 # Everything renders inside the action's own copy of the SPA (github.action_path/src/
-# VpnHood.AppUi.Presentation.Classic.Spa): the SPA production build,
-# the mocked API from e2e/store/fixture.json plus e2e/store/project.mjs, and Chromium via
-# Playwright. The engine fails loudly — page errors, open dialogs, a hide selector matching
+# VpnHood.AppUi.Presentation.Classic.Spa): the SPA production build, the mocked API from
+# e2e/store/fixture.json plus e2e/store/project.mjs, and Chromium via Playwright. With
+# `renderer: avalonia` the screens are drawn by the Avalonia UI instead: the caller checks out
+# vpnhood/VpnHood at the ref the shipped app was built from and names it in `vh-root`; this action
+# builds the VpnHoodStoreScreenshots harness there, syncs the UI's asset store out of the SPA
+# build, and the engine spawns the harness per shot (e2e/store/README.md, "Renderers"). Chromium
+# still frames. The engine fails loudly — page errors, open dialogs, a hide selector matching
 # nothing, or a missing final all fail this action rather than shipping a broken PNG.
 
 name: VpnHood store screenshots
@@ -49,6 +53,19 @@ inputs:
     description: Node.js version to build and run with (package.json engines wants 24+).
     required: false
     default: '24'
+  renderer:
+    description: >-
+      Which UI draws the captures: 'spa' (this repo's SPA build in Chromium) or 'avalonia' (the
+      Avalonia UI of vpnhood/VpnHood, headless, through its VpnHoodStoreScreenshots harness —
+      needs vh-root). See e2e/store/README.md, "Renderers".
+    required: false
+    default: 'spa'
+  vh-root:
+    description: >-
+      A checkout of vpnhood/VpnHood for renderer 'avalonia', at the ref the shipped app was built
+      from — a path relative to the workspace (e.g. .vh) or absolute.
+    required: false
+    default: ''
 
 runs:
   using: composite
@@ -73,11 +90,44 @@ runs:
       working-directory: ${{ github.action_path }}/src/VpnHood.AppUi.Presentation.Classic.Spa
       run: npm run build
 
+    # --- renderer 'avalonia': the harness and the UI's asset store, both out of the VpnHood checkout ---
+    - name: Locate the VpnHood checkout
+      if: inputs.renderer == 'avalonia'
+      shell: bash
+      run: |
+        if [ -z "${{ inputs.vh-root }}" ]; then
+          echo "::error title=vh-root missing::renderer 'avalonia' needs a vpnhood/VpnHood checkout named in vh-root."
+          exit 1
+        fi
+        echo "VH_ROOT=$(cd "${{ inputs.vh-root }}" && pwd)" >> "$GITHUB_ENV"
+
+    # The SDK the checkout itself names, as the VpnHood repo's own build workflows set it up.
+    - name: Set up .NET (the harness)
+      if: inputs.renderer == 'avalonia'
+      uses: actions/setup-dotnet@v5
+      with:
+        global-json-file: ${{ env.VH_ROOT }}/global.json
+
+    - name: Build the Avalonia screenshot harness
+      if: inputs.renderer == 'avalonia'
+      shell: bash
+      working-directory: ${{ env.VH_ROOT }}
+      run: dotnet build -c Release src/Apps/Tools/StoreScreenshots/VpnHood.App.StoreScreenshots.csproj
+
+    # The UI reads its images, fonts and words from the store _sync-assets.ps1 mirrors out of this
+    # SPA's build — the same store the shipped app carries as ui.zip.
+    - name: Sync the UI's asset store from the SPA build
+      if: inputs.renderer == 'avalonia'
+      shell: pwsh
+      working-directory: ${{ env.VH_ROOT }}
+      run: ./src/AppUi/Assets/Classic/_sync-assets.ps1 -WebUiDir "${{ github.action_path }}/src/VpnHood.AppUi.Presentation.Classic.Spa"
+
     - name: Generate and install screenshots
       shell: bash
       working-directory: ${{ github.action_path }}/src/VpnHood.AppUi.Presentation.Classic.Spa
       run: >
         node e2e/store-screenshots.mjs
+        ${{ inputs.renderer == 'avalonia' && '--renderer avalonia --harness "$VH_ROOT/src/Apps/Tools/StoreScreenshots/bin/Release/net10.0/VpnHoodStoreScreenshots" --assets "$VH_ROOT/src/AppUi/Assets/Classic/assets"' || '' }}
         ${{ inputs.install == 'true' && '--install' || '' }}
         --install-root "${{ inputs.install-root }}"
         ${{ inputs.platforms && format('--platform {0}', inputs.platforms) || '' }}

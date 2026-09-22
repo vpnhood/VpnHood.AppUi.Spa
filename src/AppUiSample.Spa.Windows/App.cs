@@ -8,7 +8,7 @@ using VpnHood.Core.Client.Abstractions;
 using VpnHood.Core.Toolkit.Assets;
 using VpnHood.Core.Toolkit.Logging;
 
-namespace AppUiSample.WinSpa;
+namespace AppUiSample.Spa.Windows;
 
 // A Windows head that shows the SPA: the app on the Windows device, and the web UI in a WebView2
 // window, from the published packages alone. What the main repo's heads do with the Avalonia UI

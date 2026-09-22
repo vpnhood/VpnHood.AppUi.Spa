@@ -3,7 +3,12 @@
 		<Description>A sample Android head: the VpnHood app with the SPA as its UI, in the system WebView, built from the published packages alone</Description>
 		<TargetFramework>net10.0-android36.1</TargetFramework>
 		<OutputType>Exe</OutputType>
-		<RootNamespace>AppUiSample.AndroidSpa</RootNamespace>
+		<!-- Droid, not Android, and deliberately unlike the project name: inside a namespace ending in
+		     .Android, C# resolves the name `Android` to the enclosing namespace before the global one,
+		     so `Android.App` would find this project's own App class instead of Mono.Android's. The
+		     main repo names VpnHood.AppUi.Hosting.WebView.Android's namespace ...WebView.Droid for the
+		     same reason. -->
+		<RootNamespace>AppUiSample.Spa.Droid</RootNamespace>
 		<ApplicationId>com.vpnhood.sample.spa.android</ApplicationId>
 		<ApplicationVersion>1</ApplicationVersion>
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
