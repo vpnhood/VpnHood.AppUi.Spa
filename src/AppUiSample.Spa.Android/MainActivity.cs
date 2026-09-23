@@ -3,7 +3,7 @@ using VpnHood.AppLib.Droid.Common.Activities;
 using VpnHood.AppLib.Droid.Common.Constants;
 using VpnHood.AppUi.Hosting.WebView.Droid;
 
-namespace AppUiSample.Spa.Droid;
+namespace AppUiSample.Spa.Android;
 
 [Activity(
     MainLauncher = true,

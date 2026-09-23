@@ -6,7 +6,7 @@ using VpnHood.AppLib.Droid.Common.Constants;
 using VpnHood.Core.Client.Abstractions;
 using VpnHood.Core.Toolkit.Assets;
 
-namespace AppUiSample.Spa.Droid;
+namespace AppUiSample.Spa.Android;
 
 // An Android head that shows the SPA: the app on the Android device, and the web UI in the system
 // WebView, from the published packages alone. What the main repo's heads do with the Avalonia UI
