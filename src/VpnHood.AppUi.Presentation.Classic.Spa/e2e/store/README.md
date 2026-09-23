@@ -84,11 +84,11 @@ the frame pass and the install are the same for both.
 | renderer | what draws | needs |
 |---|---|---|
 | `spa` (default) | this repo's SPA production build in Chromium, its `/api/**` answered from the fixture by the project's `ROUTES` | `npm run build`, Chromium |
-| `avalonia` (`--renderer avalonia`) | the Avalonia UI (`VpnHood.AppUi.Presentation.Classic.Avalonia`) drawn headless by the **VpnHoodStoreScreenshots** harness, main repo `src/Apps/Tools/StoreScreenshots` — one process per shot, given the merged fixture as a file | the harness built (`dotnet build -c Release` of that project), the UI's asset store synced (`src/AppUi/Assets/Classic/_sync-assets.ps1` in the main repo, after this repo's `npm run build`), Chromium for `prepare()` and the frame pass |
+| `avalonia` (`--renderer avalonia`) | the Avalonia UI (`VpnHood.AppUi.Presentation.Classic.Avalonia`) drawn headless by the **VpnHoodStoreScreenshots** harness, main repo `src/Apps/Tools/StoreScreenshots` — one process per shot, given the merged fixture as a file | the harness built (`dotnet build -c Release` of that project), the UI's asset store synced (`src/AppUi/VpnHood.AppUi.Assets.Classic/_sync-assets.ps1` in the main repo, after this repo's `npm run build`), Chromium for `prepare()` and the frame pass |
 
 `--harness` names the harness executable and `--assets` the store folder; both default to a
 `VpnHood` checkout beside this repo (`bin/Release/net10.0/VpnHoodStoreScreenshots[.exe]` and
-`src/AppUi/Assets/Classic/assets`). The harness takes a shot in the engine's own vocabulary — route,
+`src/AppUi/VpnHood.AppUi.Assets.Classic/assets`). The harness takes a shot in the engine's own vocabulary — route,
 viewport in logical pixels, scale (device ratio × supersample), culture, hide list, output path — so
 its raw PNG lands in `raw/<platform>/` at exactly the size the frame pass expects. It fails loudly
 on what the SPA path fails on: a dialog, snackbar or update notice over the page, an error the UI

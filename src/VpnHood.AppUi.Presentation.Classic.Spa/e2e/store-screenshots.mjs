@@ -28,7 +28,7 @@
  *             headless by the VpnHoodStoreScreenshots harness (VpnHood/src/Apps/Tools/
  *             StoreScreenshots) — one process per shot, given the same merged fixture as a file.
  *             --harness names the built harness and --assets the UI's asset store (the folder
- *             _sync-assets.ps1 leaves beside ui.zip in src/AppUi/Assets/Classic); both default to a
+ *             _sync-assets.ps1 leaves beside ui.zip in src/AppUi/VpnHood.AppUi.Assets.Classic); both default to a
  *             VpnHood checkout beside this repo. A shot's `hide` is a CSS selector list for the
  *             SPA; this renderer reads `hideAvalonia`, control-name paths from the page down, and
  *             refuses a shot that has the one without the other.
@@ -832,7 +832,7 @@ if (needsRenderer && RENDERER === 'avalonia') {
   if (!await fs.stat(HARNESS).then(s => s.isFile()).catch(() => false))
     throw new Error(`No harness at ${HARNESS}. Build it (dotnet build -c Release src/Apps/Tools/StoreScreenshots in the VpnHood repo) or pass --harness.`);
   if (!await fs.stat(ASSETS).then(s => s.isDirectory()).catch(() => false))
-    throw new Error(`No asset store at ${ASSETS}. Run src/AppUi/Assets/Classic/_sync-assets.ps1 in the VpnHood repo (after 'npm run build' here) or pass --assets.`);
+    throw new Error(`No asset store at ${ASSETS}. Run src/AppUi/VpnHood.AppUi.Assets.Classic/_sync-assets.ps1 in the VpnHood repo (after 'npm run build' here) or pass --assets.`);
 }
 
 const spa = needsSpa && !liveApi ? await serveSpa() : null;

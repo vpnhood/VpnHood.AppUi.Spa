@@ -120,14 +120,14 @@ runs:
       if: inputs.renderer == 'avalonia'
       shell: pwsh
       working-directory: ${{ env.VH_ROOT }}
-      run: ./src/AppUi/Assets/Classic/_sync-assets.ps1 -WebUiDir "${{ github.action_path }}/src/VpnHood.AppUi.Presentation.Classic.Spa"
+      run: ./src/AppUi/VpnHood.AppUi.Assets.Classic/_sync-assets.ps1 -WebUiDir "${{ github.action_path }}/src/VpnHood.AppUi.Presentation.Classic.Spa"
 
     - name: Generate and install screenshots
       shell: bash
       working-directory: ${{ github.action_path }}/src/VpnHood.AppUi.Presentation.Classic.Spa
       run: >
         node e2e/store-screenshots.mjs
-        ${{ inputs.renderer == 'avalonia' && '--renderer avalonia --harness "$VH_ROOT/src/Apps/Tools/StoreScreenshots/bin/Release/net10.0/VpnHoodStoreScreenshots" --assets "$VH_ROOT/src/AppUi/Assets/Classic/assets"' || '' }}
+        ${{ inputs.renderer == 'avalonia' && '--renderer avalonia --harness "$VH_ROOT/src/Apps/Tools/StoreScreenshots/bin/Release/net10.0/VpnHoodStoreScreenshots" --assets "$VH_ROOT/src/AppUi/VpnHood.AppUi.Assets.Classic/assets"' || '' }}
         ${{ inputs.install == 'true' && '--install' || '' }}
         --install-root "${{ inputs.install-root }}"
         ${{ inputs.platforms && format('--platform {0}', inputs.platforms) || '' }}
