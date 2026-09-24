@@ -31,7 +31,7 @@ references and which page it places beside itself.
 
 Each sample's build zips the SPA's `dist` into `assets/ui.zip` - the store, which the app extracts
 once and its web host serves at `/assets/` - and `assets/web-root.zip`, the page. The IP-location
-database arrives the same way from `VpnHood.Core.IpLocations.Assets.Ip2LocationLite`. Nothing is
+database arrives the same way from `VpnHood.Net.IpLocations.Assets.Ip2LocationLite`. Nothing is
 copied by hand, and the samples never read the SPA's source.
 
 The Windows sample needs the Edge WebView2 runtime, which Windows 11 has. Connecting needs elevation;

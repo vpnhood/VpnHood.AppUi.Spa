@@ -1,10 +1,10 @@
 using Android.Runtime;
-using VpnHood.AppLib;
 using VpnHood.AppLib.Api.WebHost;
-using VpnHood.AppLib.Droid.Common;
-using VpnHood.AppLib.Droid.Common.Constants;
+using VpnHood.AppLib.App;
+using VpnHood.AppLib.App.Android;
+using VpnHood.AppLib.App.Android.Constants;
 using VpnHood.Core.Client.Abstractions;
-using VpnHood.Core.Toolkit.Assets;
+using VpnHood.Net.Toolkit.Assets;
 
 namespace AppUiSample.Spa.Android;
 

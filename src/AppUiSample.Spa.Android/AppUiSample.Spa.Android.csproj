@@ -17,7 +17,7 @@
 		<!-- The web host the page is served from, and that a paired browser reaches. -->
 		<PackageReference Include="VpnHood.AppLib.Api.WebHost" Version="$(VhPackageVersion)" />
 		<!-- The IP-location database, packed into the APK by its own package's targets. -->
-		<PackageReference Include="VpnHood.Core.IpLocations.Assets.Ip2LocationLite" Version="$(VhIpLocationsPackageVersion)" />
+		<PackageReference Include="VpnHood.Net.IpLocations.Assets.Ip2LocationLite" Version="$(VhIpLocationsPackageVersion)" />
 	</ItemGroup>
 
 	<!-- The store and the page, zipped from the SPA's build and packed into the APK. -->

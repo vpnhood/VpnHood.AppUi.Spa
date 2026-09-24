@@ -1,7 +1,7 @@
 using Android.Content;
-using VpnHood.AppLib.Droid.Common.Activities;
-using VpnHood.AppLib.Droid.Common.Constants;
-using VpnHood.AppUi.Hosting.WebView.Droid;
+using VpnHood.AppLib.App.Android.Activities;
+using VpnHood.AppLib.App.Android.Constants;
+using VpnHood.AppUi.Hosting.WebView.Android;
 
 namespace AppUiSample.Spa.Android;
 

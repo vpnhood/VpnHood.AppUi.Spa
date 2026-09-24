@@ -7,7 +7,7 @@
     <File Path="action.yml" />
   </Folder>
   <Folder Name="/src/">
-    <File Path="src/SpaWebRoot.targets" />
+    <File Path="src/SpaAssets.targets" />
   </Folder>
   <Folder Name="/src/VpnHood.AppUi.Presentation.Classic.Spa/">
     <File Path="src/VpnHood.AppUi.Presentation.Classic.Spa/package.json" />

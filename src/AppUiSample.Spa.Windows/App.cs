@@ -1,12 +1,12 @@
 using System.Windows;
 using Microsoft.Extensions.Logging;
-using VpnHood.AppLib;
 using VpnHood.AppLib.Api.WebHost;
-using VpnHood.AppLib.Win.Common;
+using VpnHood.AppLib.App;
+using VpnHood.AppLib.App.Windows;
 using VpnHood.AppUi.Hosting.WebView.Windows;
 using VpnHood.Core.Client.Abstractions;
-using VpnHood.Core.Toolkit.Assets;
-using VpnHood.Core.Toolkit.Logging;
+using VpnHood.Net.Toolkit.Assets;
+using VpnHood.Net.Toolkit.Logging;
 
 namespace AppUiSample.Spa.Windows;
 
