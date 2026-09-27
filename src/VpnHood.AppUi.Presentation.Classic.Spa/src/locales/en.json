@@ -636,6 +636,7 @@
   "CONTINUE_ON_TV_TITLE": "Continue on your TV",
   "CONTINUE_ON_TV_DESC": "Finish this step on the TV screen. This page carries on by itself when it is done.",
   "SIGN_IN_ON_YOUR_PHONE": "Sign in on your phone",
+  "SIGN_IN_TYPE_ON_YOUR_PHONE": "Type it on your phone instead",
   "REMOTE_ACCESS_HINT_SIGN_IN": "On your phone, open the menu and sign in.",
   "MANAGE_FROM_YOUR_PHONE": "On your phone",
   "ACCEPT_AND_CONTINUE": "Accept and continue",
