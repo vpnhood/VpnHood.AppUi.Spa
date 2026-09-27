@@ -1,12 +1,12 @@
 import { VpnHoodApp } from '@/services/VpnHoodApp';
-import { ClientProfileInfo, ConnectPlanId, ServerLocationOptions } from '@/services/VpnHood.Client.Api';
+import { VpnProfileInfo, ConnectPlanId, ServerLocationOptions } from '@/services/VpnHood.Client.Api';
 import router from '@/services/router';
 
 export class ConnectManager {
-  public static async showPromoteDialog(clientProfileId: string, serverLocation: string, isPremium: boolean): Promise<boolean> {
+  public static async showPromoteDialog(vpnProfileId: string, serverLocation: string, isPremium: boolean): Promise<boolean> {
 
-    const clientProfileInfo: ClientProfileInfo = await VpnHoodApp.instance.clientProfileClient.get(clientProfileId);
-    const options: ServerLocationOptions | undefined = clientProfileInfo.locationInfos.find(
+    const vpnProfileInfo: VpnProfileInfo = await VpnHoodApp.instance.vpnProfileClient.get(vpnProfileId);
+    const options: ServerLocationOptions | undefined = vpnProfileInfo.locationInfos.find(
       x => x.serverLocation === serverLocation)?.options;
 
     // For developer
@@ -19,7 +19,7 @@ export class ConnectManager {
     await router.push({
       name: 'PROMOTE_PREMIUM',
       query: {
-        clientProfileId,
+        vpnProfileId,
         serverLocation,
         isPremiumLocation: String(isPremium),
       }
@@ -28,36 +28,36 @@ export class ConnectManager {
   }
 
   public static async connectWithCurrentProfile({isDiagnose = false}: {isDiagnose?: boolean} = {}): Promise<void> {
-    const clientProfileId = VpnHoodApp.instance.data.clientProfileId;
+    const vpnProfileId = VpnHoodApp.instance.data.vpnProfileId;
 
     // For developer
     console.debug('connectWithCurrentProfile');
-    console.debug(`ClientProfileId: ${clientProfileId}`);
+    console.debug(`VpnProfileId: ${vpnProfileId}`);
 
-    if (!clientProfileId) {
+    if (!vpnProfileId) {
       await router.push({name: 'SERVERS'});
       return;
     }
-    await this.connectWithProfile({clientProfileId, isDiagnose});
+    await this.connectWithProfile({vpnProfileId, isDiagnose});
   }
 
-  public static async connectWithProfile({clientProfileId, isDiagnose = false}: {clientProfileId: string; isDiagnose?: boolean}): Promise<void> {
-    const clientProfileInfo: ClientProfileInfo = await VpnHoodApp.instance.clientProfileClient.get(clientProfileId);
-    let serverLocation: string | null = clientProfileInfo.selectedLocationInfo?.serverLocation ?? null;
+  public static async connectWithProfile({vpnProfileId, isDiagnose = false}: {vpnProfileId: string; isDiagnose?: boolean}): Promise<void> {
+    const vpnProfileInfo: VpnProfileInfo = await VpnHoodApp.instance.vpnProfileClient.get(vpnProfileId);
+    let serverLocation: string | null = vpnProfileInfo.selectedLocationInfo?.serverLocation ?? null;
 
     // For developer
     console.debug('connectWithProfile');
     console.debug('Detected server location: ' + serverLocation);
 
-    if (!serverLocation && clientProfileInfo.selectedLocationInfo) {
+    if (!serverLocation && vpnProfileInfo.selectedLocationInfo) {
       await router.push({name: 'SERVERS'});
       return;
     }
 
-    const hasPremium = clientProfileInfo.selectedLocationInfo?.options.hasPremium;
-    const hasFree = clientProfileInfo.selectedLocationInfo?.options.hasFree;
+    const hasPremium = vpnProfileInfo.selectedLocationInfo?.options.hasPremium;
+    const hasFree = vpnProfileInfo.selectedLocationInfo?.options.hasFree;
 
-    let isPremiumLocationSelected = clientProfileInfo.isPremiumLocationSelected;
+    let isPremiumLocationSelected = vpnProfileInfo.isPremiumLocationSelected;
 
     if (hasPremium && !hasFree)
       isPremiumLocationSelected = true;
@@ -78,17 +78,17 @@ export class ConnectManager {
       serverLocation = VpnHoodApp.instance.data.uiState.autoLocationValue;
     }
 
-    await this.connectWithLocation({clientProfileId, serverLocation, isPremiumLocation: isPremiumLocationSelected, isDiagnose});
+    await this.connectWithLocation({vpnProfileId, serverLocation, isPremiumLocation: isPremiumLocationSelected, isDiagnose});
   }
 
   public static async connectWithLocation({
-    clientProfileId,
+    vpnProfileId,
     serverLocation,
     isPremiumLocation,
     isDiagnose,
     goToHome,
   }: {
-    clientProfileId: string;
+    vpnProfileId: string;
     serverLocation: string | null;
     isPremiumLocation: boolean;
     isDiagnose?: boolean;
@@ -97,11 +97,11 @@ export class ConnectManager {
     // For developer
     console.debug(`connectWithLocation: isPremiumLocation: ${isPremiumLocation}, goToHome: ${goToHome}`);
 
-    if (serverLocation && await this.showPromoteDialog(clientProfileId, serverLocation, isPremiumLocation))
+    if (serverLocation && await this.showPromoteDialog(vpnProfileId, serverLocation, isPremiumLocation))
       return;
 
     try {
-      await VpnHoodApp.instance.connect({clientProfileId, serverLocation, isPremium: isPremiumLocation, planId: ConnectPlanId.Normal, isDiagnose, goToHome});
+      await VpnHoodApp.instance.connect({vpnProfileId, serverLocation, isPremium: isPremiumLocation, planId: ConnectPlanId.Normal, isDiagnose, goToHome});
     }
     catch{
       // Ignore message

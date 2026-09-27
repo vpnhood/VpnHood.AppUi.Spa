@@ -61,7 +61,7 @@ function onAddServer(): void {
     />
 
     <!-- Show alert, if user does not have any server -->
-    <div v-if="vhApp.data.features.isAddAccessKeySupported && vhApp.data.clientProfileInfos.length === 0">
+    <div v-if="vhApp.data.features.isAddAccessKeySupported && vhApp.data.vpnProfileInfos.length === 0">
       <alert-warning :title="locale('WARNING')" :text="locale('NO_SERVER_AVAILABLE')" class="mb-4" />
       <config-card>
         <div v-html="getServerKeyMethodsHtml()" class="pa-4 text-body-small"></div>
@@ -69,7 +69,7 @@ function onAddServer(): void {
     </div>
 
     <!-- Single profile mode -->
-    <LocationList v-else-if="vhApp.isSingleProfileMode()" :client-profile="vhApp.data.clientProfileInfos[0]" />
+    <LocationList v-else-if="vhApp.isSingleProfileMode()" :vpn-profile="vhApp.data.vpnProfileInfos[0]" />
 
     <!-- Multi profile mode -->
     <ExpansionPanel v-else/>

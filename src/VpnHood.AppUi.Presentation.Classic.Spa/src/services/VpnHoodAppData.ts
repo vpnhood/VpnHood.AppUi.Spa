@@ -9,7 +9,7 @@ import {
   DeviceIntentFeatures,
   AppState,
   ChannelProtocol,
-  ClientProfileInfo,
+  VpnProfileInfo,
   DnsMode,
   SplitCountryMode,
   UiCultureInfo,
@@ -27,7 +27,7 @@ export class VpnHoodAppData {
   public userSettings: UserSettings;
   public features: AppFeatures;
   public intentFeatures: DeviceIntentFeatures;
-  public clientProfileInfos: ClientProfileInfo[];
+  public vpnProfileInfos: VpnProfileInfo[];
   public cultureInfos: UiCultureInfo[];
   public locale = i18n.global.t;
 
@@ -40,7 +40,7 @@ export class VpnHoodAppData {
     userSettings: UserSettings,
     features: AppFeatures,
     intentFeatures: DeviceIntentFeatures,
-    clientProfileInfos: ClientProfileInfo[],
+    vpnProfileInfos: VpnProfileInfo[],
     cultureInfos: UiCultureInfo[],
     isRemote: boolean
   ) {
@@ -48,7 +48,7 @@ export class VpnHoodAppData {
     this.userSettings = userSettings;
     this.features = features;
     this.intentFeatures = intentFeatures;
-    this.clientProfileInfos = clientProfileInfos;
+    this.vpnProfileInfos = vpnProfileInfos;
     this.cultureInfos = cultureInfos;
     this.isRemote = isRemote;
   }
@@ -196,16 +196,16 @@ export class VpnHoodAppData {
 
 
   get isCustomEndpointActive(): boolean {
-    const clientProfile = this.state.clientProfile;
-    if (!clientProfile?.isCustomServerEndpointsEnabled)
+    const vpnProfile = this.state.vpnProfile;
+    if (!vpnProfile?.isCustomServerEndpointsEnabled)
       return false;
 
-    const customServerEndpoints = clientProfile.customServerEndpoints;
+    const customServerEndpoints = vpnProfile.customServerEndpoints;
     return !!customServerEndpoints && customServerEndpoints.length > 0;
   }
 
   get isPremiumUser(): boolean {
-    return this.state.clientProfile?.isPremium == true;
+    return this.state.vpnProfile?.isPremium == true;
   }
   // Premium granted through the signed-in account's store subscription (Play or App Store —
   // whichever store the platform build bills on), as opposed to a premium code.
@@ -227,7 +227,7 @@ export class VpnHoodAppData {
   // half of it. NOT the location's premiumByCode: that answers "can this person upgrade" and is
   // false once they are already premium — which is precisely when Change code is offered.
   get canImportAccessCode(): boolean{
-    return this.state.clientProfile?.canImportAccessCode == true;
+    return this.state.vpnProfile?.canImportAccessCode == true;
   }
 
   // Reading the code this device already holds is a SEPARATE permission, and a wider one: the
@@ -235,14 +235,14 @@ export class VpnHoodAppData {
   // produced. They read it here and type it on their Android or Windows device — premium follows
   // the person, not the platform.
   get canViewAccessCode(): boolean{
-    return this.state.clientProfile?.canViewAccessCode == true;
+    return this.state.vpnProfile?.canViewAccessCode == true;
   }
 
   get canTryPremium(): boolean {
-    return this.state.clientProfile?.canTryPremium == true;
+    return this.state.vpnProfile?.canTryPremium == true;
   }
-  get clientProfileId(): string | null{
-    return this.state.clientProfile?.clientProfileId ?? this.userSettings.clientProfileId ?? null;
+  get vpnProfileId(): string | null{
+    return this.state.vpnProfile?.vpnProfileId ?? this.userSettings.vpnProfileId ?? null;
   }
 
   get edgeToEdgeTopHeight(): number | null {
@@ -338,7 +338,7 @@ export class VpnHoodAppData {
 
   public isLocationAutoSelected(value?: string): boolean {
     const autoSelectValues = ['*', '*/*'];
-    const locationToCheck = value ?? this.state.clientProfile?.selectedLocationInfo?.serverLocation;
+    const locationToCheck = value ?? this.state.vpnProfile?.selectedLocationInfo?.serverLocation;
 
     return autoSelectValues.includes(locationToCheck ?? '');
   }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ClientProfileInfo } from '@/services/VpnHood.Client.Api';
+import { VpnProfileInfo } from '@/services/VpnHood.Client.Api';
 import { VpnHoodApp } from '@/services/VpnHoodApp'
 import LocationListItem from '@/components/Servers/LocationListItem.vue'
 import i18n from '@/locales/i18n'
@@ -15,12 +15,12 @@ const vhApp = VpnHoodApp.instance;
 const locale = i18n.global.t;
 
 const props = defineProps<{
-  clientProfile: ClientProfileInfo
+  vpnProfile: VpnProfileInfo
 }>();
 
 // Locations groups
-const freeLocations = props.clientProfile.locationInfos.filter(x => x.options.hasFree);
-const premiumLocations = props.clientProfile.locationInfos.filter(x => x.options.hasPremium);
+const freeLocations = props.vpnProfile.locationInfos.filter(x => x.options.hasFree);
+const premiumLocations = props.vpnProfile.locationInfos.filter(x => x.options.hasPremium);
 
 // Group open state
 const openedListGroupsModel = ref<string[]>([locationListType.Free, locationListType.Premium]);
@@ -53,18 +53,18 @@ function isShowLocationGroups(): boolean{
       <location-group
         :list-type="locationListType.Free"
         :group-title="locale('FREE_LOCATIONS')"
-        :client-profile-id="props.clientProfile.clientProfileId"
+        :vpn-profile-id="props.vpnProfile.vpnProfileId"
         :location-list="freeLocations"
-        :is-premium-location-selected="props.clientProfile.isPremiumLocationSelected ?? false"
+        :is-premium-location-selected="props.vpnProfile.isPremiumLocationSelected ?? false"
       />
 
       <!-- Premium locations group -->
       <location-group
         :list-type="locationListType.Premium"
         :group-title="locale('PREMIUM_LOCATIONS')"
-        :client-profile-id="props.clientProfile.clientProfileId"
+        :vpn-profile-id="props.vpnProfile.vpnProfileId"
         :location-list="premiumLocations"
-        :is-premium-location-selected="props.clientProfile.isPremiumLocationSelected ?? false"
+        :is-premium-location-selected="props.vpnProfile.isPremiumLocationSelected ?? false"
       />
 
     </template>
@@ -75,20 +75,20 @@ function isShowLocationGroups(): boolean{
       color="config-card-on-expansion-panel"
     >
       <LocationListItem
-       :client-profile-id="props.clientProfile.clientProfileId"
+       :vpn-profile-id="props.vpnProfile.vpnProfileId"
        :locations-list="premiumLocations"
        :is-premium-group="premiumLocations.length > 0"
-       :is-premium-location-selected="props.clientProfile.isPremiumLocationSelected ?? false"
+       :is-premium-location-selected="props.vpnProfile.isPremiumLocationSelected ?? false"
       />
     </config-card>
 
 
     <!-- The locations does not have groups -->
     <LocationListItem v-else
-      :client-profile-id="props.clientProfile.clientProfileId"
-      :locations-list="props.clientProfile.locationInfos"
+      :vpn-profile-id="props.vpnProfile.vpnProfileId"
+      :locations-list="props.vpnProfile.locationInfos"
       :is-premium-group="premiumLocations.length > 0"
-      :is-premium-location-selected="props.clientProfile.isPremiumLocationSelected ?? false"
+      :is-premium-location-selected="props.vpnProfile.isPremiumLocationSelected ?? false"
     />
 
 

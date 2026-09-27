@@ -235,9 +235,9 @@
     },
     "connectRequestTime": "2026-07-31T02:37:23.0216873-07:00",
     "lastError": null,
-    "clientProfile": {
-      "clientProfileId": "00000000-0000-4000-8000-000000000200",
-      "clientProfileName": "My Server",
+    "vpnProfile": {
+      "vpnProfileId": "00000000-0000-4000-8000-000000000200",
+      "vpnProfileName": "My Server",
       "supportId": "1000",
       "customData": null,
       "isPremiumLocationSelected": true,
@@ -351,7 +351,7 @@
     "isQuickLaunchPrompted": false,
     "cultureCode": null,
     "countryCode": null,
-    "clientProfileId": "00000000-0000-4000-8000-000000000201",
+    "vpnProfileId": "00000000-0000-4000-8000-000000000201",
     "maxPacketChannelCount": 4,
     "splitTunneling": {
       "enabled": true,
@@ -390,10 +390,10 @@
     "customData": null,
     "dnsServers": []
   },
-  "clientProfileInfos": [
+  "vpnProfileInfos": [
     {
-      "clientProfileId": "00000000-0000-4000-8000-000000000202",
-      "clientProfileName": "My Public Profile",
+      "vpnProfileId": "00000000-0000-4000-8000-000000000202",
+      "vpnProfileName": "My Public Profile",
       "supportId": "1000",
       "customData": null,
       "isPremiumLocationSelected": true,
@@ -487,8 +487,8 @@
       }
     },
     {
-      "clientProfileId": "00000000-0000-4000-8000-000000000204",
-      "clientProfileName": "My Private Profile",
+      "vpnProfileId": "00000000-0000-4000-8000-000000000204",
+      "vpnProfileName": "My Private Profile",
       "supportId": "1000",
       "customData": null,
       "isPremiumLocationSelected": true,

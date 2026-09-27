@@ -16,7 +16,7 @@ const isRevealed = ref(false);
 // box does not forbid a buyer from reading the credential their own purchase produced — it is what
 // they carry to their other devices (keyring plan §8).
 const canShowCode = computed(() =>
-  vhApp.data.canViewAccessCode && vhApp.data.state.clientProfile?.hasAccessCode === true);
+  vhApp.data.canViewAccessCode && vhApp.data.state.vpnProfile?.hasAccessCode === true);
 
 // A secret stays covered until it is asked for. The mask is the shape of a code, not a redaction of
 // this one: nothing about the real digits is on screen before the eye is pressed.
@@ -29,13 +29,13 @@ async function loadPremiumCode(): Promise<string | null> {
   if (premiumCode.value !== null)
     return premiumCode.value;
 
-  const clientProfileId = vhApp.data.clientProfileId;
-  if (!clientProfileId) {
+  const vpnProfileId = vhApp.data.vpnProfileId;
+  if (!vpnProfileId) {
     premiumCode.value = locale('COULD_NOT_GET_CLIENT_PROFILE_ID');
     return null;
   }
 
-  const code = await vhApp.clientProfileClient.getAccessCode(clientProfileId);
+  const code = await vhApp.vpnProfileClient.getAccessCode(vpnProfileId);
   premiumCode.value = Validators.isEmptyString(code)
     ? locale('COULD_NOT_GET_PREMIUM_CODE')
     : code.match(/.{1,4}/g)?.join('-') ?? '';

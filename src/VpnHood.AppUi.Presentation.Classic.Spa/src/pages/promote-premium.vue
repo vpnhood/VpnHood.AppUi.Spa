@@ -3,7 +3,7 @@ import { VpnHoodApp } from '@/services/VpnHoodApp';
 import PromoteConnectButton from '@/components/Servers/PromoteConnectButton.vue';
 import i18n from '@/locales/i18n';
 import { computed, onMounted, ref } from 'vue';
-import { ClientProfileInfo, ConnectPlanId, ServerLocationOptions } from '@/services/VpnHood.Client.Api';
+import { VpnProfileInfo, ConnectPlanId, ServerLocationOptions } from '@/services/VpnHood.Client.Api';
 import { type MyConnectPlanId, MyPlanId } from '@/helpers/PromotePremium/MyConnectPlanIds';
 import router from '@/services/router';
 import { Util } from '@/helpers/Util';
@@ -15,7 +15,7 @@ const locale = i18n.global.t;
 const route = useRoute();
 
 // Query params passed by ConnectManager.showPromoteDialog
-const clientProfileId = route.query.clientProfileId as string;
+const vpnProfileId = route.query.vpnProfileId as string;
 const serverLocation = route.query.serverLocation as string;
 const isPremiumLocation = route.query.isPremiumLocation === 'true';
 
@@ -23,10 +23,10 @@ const isPremiumLocation = route.query.isPremiumLocation === 'true';
 const locationOptions = ref<ServerLocationOptions | null>(null);
 
 onMounted(async () => {
-  const clientProfileInfo: ClientProfileInfo = await vhApp.clientProfileClient.get(clientProfileId);
+  const vpnProfileInfo: VpnProfileInfo = await vhApp.vpnProfileClient.get(vpnProfileId);
 
   // Resolve the selected location again so this page stays driven by current server data.
-  locationOptions.value = clientProfileInfo.locationInfos.find(
+  locationOptions.value = vpnProfileInfo.locationInfos.find(
     x => x.serverLocation === serverLocation)?.options ?? null;
 });
 const promotionImageUrl: string = vhApp.data.serverUrl + UiConstants.promotionFileLocation;
@@ -49,13 +49,13 @@ function isFreeByRewardedAdAvailable(){
 async function actionByConnectPlan(planId: MyConnectPlanId): Promise<void> {
   // Open the PurchaseSubscription page
   if (planId === MyPlanId.premiumByPurchase || planId === MyPlanId.premiumByCode){
-    await router.push({name: 'PURCHASE_SUBSCRIPTION', query: {profileId: clientProfileId}});
+    await router.push({name: 'PURCHASE_SUBSCRIPTION', query: {profileId: vpnProfileId}});
     return;
   }
 
   try {
     // All other actions continue with a direct connect attempt using the current route context.
-    await vhApp.connect({clientProfileId, serverLocation, isPremium: isPremiumLocation, planId, isDiagnose: false});
+    await vhApp.connect({vpnProfileId, serverLocation, isPremium: isPremiumLocation, planId, isDiagnose: false});
   }
   catch{
     // Ignore message

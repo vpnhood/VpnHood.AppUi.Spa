@@ -35,7 +35,7 @@ public class BillingController : ControllerBase, IBillingApi
     }
 
     [HttpGet("purchase-options")]
-    public Task<AppPurchaseOptions> GetPurchaseOptions(Guid clientProfileId, CancellationToken cancellationToken)
+    public Task<AppPurchaseOptions> GetPurchaseOptions(Guid vpnProfileId, CancellationToken cancellationToken)
     {
         throw new SwaggerOnlyException();
     }

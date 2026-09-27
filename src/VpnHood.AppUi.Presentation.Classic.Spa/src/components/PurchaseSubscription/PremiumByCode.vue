@@ -1,7 +1,7 @@
 ﻿<script setup lang="ts">
 import { VpnHoodApp } from '@/services/VpnHoodApp';
 import i18n from '@/locales/i18n';
-import { ClientProfileUpdateParams, ConnectPlanId, PatchOfString } from '@/services/VpnHood.Client.Api';
+import { VpnProfileUpdateParams, ConnectPlanId, PatchOfString } from '@/services/VpnHood.Client.Api';
 import { ref } from 'vue';
 import PendingDialog from '@/components/PurchaseSubscription/PendingDialog.vue';
 import PremiumCodeCompleteDialog from '@/components/PurchaseSubscription/PremiumCodeCompleteDialog.vue';
@@ -53,16 +53,16 @@ const premiumCodeHandleInput = (event: Event) => {
 };
 
 async function updatePremiumCode(): Promise<void> {
-  const profileId = vhApp.data.state.clientProfile?.clientProfileId;
+  const profileId = vhApp.data.state.vpnProfile?.vpnProfileId;
   if (!profileId) {
     throw new Error(locale('PROFILE_ID_NOT_FOUND_DURING_VALIDATION_MSG'));
   }
 
   try {
-    // try to update premium code to client profile, if the code is invalid, it will throw error and show error message, if the code is valid, it will try to connect to access server with new code, if the connection is successful and premium by code is active, it will show complete dialog, otherwise it will remove the premium code from client profile
-    await vhApp.clientProfileClient.update(
+    // try to update premium code to VPN profile, if the code is invalid, it will throw error and show error message, if the code is valid, it will try to connect to access server with new code, if the connection is successful and premium by code is active, it will show complete dialog, otherwise it will remove the premium code from VPN profile
+    await vhApp.vpnProfileClient.update(
       profileId,
-      new ClientProfileUpdateParams({
+      new VpnProfileUpdateParams({
         accessCode: new PatchOfString({ value: premiumCodeRawNumber.value }),
       }),
     );
@@ -89,7 +89,7 @@ async function updatePremiumCode(): Promise<void> {
   try {
     emit('update:modelValue', false);
     isShowPendingDialog.value = true;
-    await vhApp.connect({clientProfileId: profileId, serverLocation: null, isPremium: true, planId: ConnectPlanId.Normal, isDiagnose: false, goToHome: false});
+    await vhApp.connect({vpnProfileId: profileId, serverLocation: null, isPremium: true, planId: ConnectPlanId.Normal, isDiagnose: false, goToHome: false});
 
     if (vhApp.data.isConnected && vhApp.data.isPremiumUser)
       isShowPremiumCodeCompleteDialog.value = true;

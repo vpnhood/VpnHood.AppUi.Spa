@@ -25,12 +25,12 @@ const premiumByCodeSheet = ref(new ComponentRouteController(ComponentName.EnterP
 // Named so the store-unavailable card can ask for it again: the catalog comes from the portal and
 // nothing stands in for it, so a failed load is only recoverable by loading it again.
 async function loadPurchaseOptions(): Promise<void> {
-    const clientProfileId = route.query.profileId as string ?? vhApp.data.clientProfileId;
-    if (!clientProfileId)
-      throw new Error('Client profile id is required.');
+    const vpnProfileId = route.query.profileId as string ?? vhApp.data.vpnProfileId;
+    if (!vpnProfileId)
+      throw new Error('VPN profile id is required.');
 
-    const clientProfileClient = ClientApiFactory.instance.createClientProfileClient();
-    purchaseOptions.value = await clientProfileClient.getPurchaseOptions(clientProfileId);
+    const vpnProfileClient = ClientApiFactory.instance.createVpnProfileClient();
+    purchaseOptions.value = await vpnProfileClient.getPurchaseOptions(vpnProfileId);
 }
 
 async function onRetry(): Promise<void> {

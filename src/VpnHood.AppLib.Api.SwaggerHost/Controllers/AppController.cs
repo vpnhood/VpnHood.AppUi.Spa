@@ -72,14 +72,14 @@ public class AppController : ControllerBase, IAppApi
     }
 
     [HttpPost("connect")]
-    public Task Connect(Guid? clientProfileId = null, string? serverLocation = null, 
+    public Task Connect(Guid? vpnProfileId = null, string? serverLocation = null, 
         ConnectPlanId planId = ConnectPlanId.Normal, CancellationToken cancellationToken = default)
     {
         throw new SwaggerOnlyException();
     }
 
     [HttpPost("diagnose")]
-    public Task Diagnose(Guid? clientProfileId = null, string? serverLocation = null, 
+    public Task Diagnose(Guid? vpnProfileId = null, string? serverLocation = null, 
         ConnectPlanId planId = ConnectPlanId.Normal, CancellationToken cancellationToken = default)
     {
         throw new SwaggerOnlyException();

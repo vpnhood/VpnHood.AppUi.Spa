@@ -12,7 +12,7 @@ const vhApp = VpnHoodApp.instance;
 const locale = i18n.global.t;
 
 const showLoadingAdDialog = ref<boolean>(false);
-const locationOptions = computed(() => vhApp.data.state.clientProfile?.selectedLocationInfo?.options);
+const locationOptions = computed(() => vhApp.data.state.vpnProfile?.selectedLocationInfo?.options);
 async function actionByConnectPlan(planId: MyConnectPlanId): Promise<void>{
   switch (planId) {
     case MyPlanId.premiumByPurchase:
@@ -75,7 +75,7 @@ async function showRewardedAd(){
         icon="mdi-play-box-lock-open-outline"
         :title="locale('WATCH_REWARDED_AD')"
         :description="locale('EXTEND_BY_REWARDED_AD_DESC', {minutes:
-            vhApp.data.state.clientProfile?.selectedLocationInfo?.options.premiumByRewardedAd})"
+            vhApp.data.state.vpnProfile?.selectedLocationInfo?.options.premiumByRewardedAd})"
         :button-text="locale('SHOW_AD')"
         :button-action-plan="ConnectPlanId.PremiumByRewardedAd"
         @action-by-plan="actionByConnectPlan"

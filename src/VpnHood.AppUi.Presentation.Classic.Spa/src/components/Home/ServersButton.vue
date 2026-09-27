@@ -11,7 +11,7 @@ const locale = i18n.global.t;
 function getActiveServerNameOrLocation(): string {
   // Show profile if the App is not single server mode
   if (!vhApp.isSingleProfileMode())
-    return (vhApp.data.state.clientProfile?.clientProfileName ?? i18n.global.t('NO_SERVER_SELECTED'));
+    return (vhApp.data.state.vpnProfile?.vpnProfileName ?? i18n.global.t('NO_SERVER_SELECTED'));
 
   // show user selected location
   const serverLocationInfo = vhApp.data.state.serverLocationInfo;
@@ -30,15 +30,15 @@ function getActiveServerNameOrLocation(): string {
 
 function buttonClickHandler() {
     // This is a special case that should not happen
-    if (!vhApp.data.features.isAddAccessKeySupported && vhApp.data.clientProfileInfos.length== 0) {
+    if (!vhApp.data.features.isAddAccessKeySupported && vhApp.data.vpnProfileInfos.length== 0) {
       vhApp.showErrorMessage(locale('NO_CLIENT_PROFILE_AVAILABLE'));
       return;
     }
 
     // The server does not have a list, and only one country is available
     if (!vhApp.data.features.isAddAccessKeySupported &&
-      vhApp.data.clientProfileInfos.length == 1 &&
-      vhApp.data.clientProfileInfos[0].locationInfos.length < 2) {
+      vhApp.data.vpnProfileInfos.length == 1 &&
+      vhApp.data.vpnProfileInfos[0].locationInfos.length < 2) {
       vhApp.showErrorMessage(locale('NO_ADDITIONAL_LOCATION_AVAILABLE'));
       return;
     }

@@ -23,8 +23,8 @@ const route = useRoute();
 // The relay belongs to one server profile, not to the app: the page is opened from a profile's menu
 // and carries that profile's id, so the name below says whose relay is being configured. A page
 // reached without one (a hand-typed URL) simply shows no name rather than guessing a profile.
-const clientProfileName = computed(() =>
-  vhApp.data.clientProfileInfos.find(x => x.clientProfileId === route.query.clientProfileId)?.clientProfileName);
+const vpnProfileName = computed(() =>
+  vhApp.data.vpnProfileInfos.find(x => x.vpnProfileId === route.query.vpnProfileId)?.vpnProfileName);
 
 // Which relay to connect to — none, one out on the internet, or one on this LAN.
 enum StarlinkRelayMode {
@@ -67,8 +67,8 @@ function findLocalRelay(): void {
     />
     <div class="mt-2 mb-5 px-3 text-body-small">
       <p class="text-disabled">{{ locale('STARLINK_TOOLS_DESC') }}</p>
-      <p v-if="clientProfileName" class="text-highlight">
-        {{ locale('STARLINK_TOOLS_PROFILE_SCOPE', {profileName: clientProfileName}) }}
+      <p v-if="vpnProfileName" class="text-highlight">
+        {{ locale('STARLINK_TOOLS_PROFILE_SCOPE', {profileName: vpnProfileName}) }}
       </p>
     </div>
 

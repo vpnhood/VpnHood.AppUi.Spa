@@ -7,7 +7,7 @@ const vhApp = VpnHoodApp.instance;
 const componentProps = defineProps<{
   listType: string,
   groupTitle: string,
-  clientProfileId: string,
+  vpnProfileId: string,
   locationList: ServerLocationItem[],
   isPremiumLocationSelected: boolean
 }>();
@@ -33,7 +33,7 @@ const componentProps = defineProps<{
 
           <!-- Group items -->
           <LocationListItem
-            :client-profile-id="componentProps.clientProfileId"
+            :vpn-profile-id="componentProps.vpnProfileId"
             :locations-list="componentProps.locationList"
             :is-premium-group="componentProps.listType === 'premium'"
             :is-premium-location-selected="componentProps.isPremiumLocationSelected"

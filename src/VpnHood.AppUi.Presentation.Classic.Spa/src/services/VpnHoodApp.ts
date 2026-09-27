@@ -5,9 +5,9 @@ import {
   SignInOptions,
   SignInResult,
   SignInState,
-  ClientProfileClient,
-  ClientProfileInfo,
-  ClientProfileUpdateParams,
+  VpnProfileClient,
+  VpnProfileInfo,
+  VpnProfileUpdateParams,
   ConfigParams,
   DeviceAppInfo,
   IntentsClient,
@@ -32,7 +32,7 @@ import { type ConnectParams } from '@/helpers/ConnectParams';
 export class VpnHoodApp {
   public data: VpnHoodAppData;
   public appClient: AppClient;
-  public clientProfileClient: ClientProfileClient;
+  public vpnProfileClient: VpnProfileClient;
   public intentsClient: IntentsClient;
   public proxyEndPointClient: ProxyEndPointClient;
   public vhFirebase: VhFirebaseApp | null;
@@ -48,7 +48,7 @@ export class VpnHoodApp {
 
   private constructor(
     appClient: AppClient,
-    clientProfileClient: ClientProfileClient,
+    vpnProfileClient: VpnProfileClient,
     intentsClient: IntentsClient,
     proxyEndPointClient: ProxyEndPointClient,
     appData: VpnHoodAppData,
@@ -58,7 +58,7 @@ export class VpnHoodApp {
 
     this.data = reactive(appData);
     this.appClient = appClient;
-    this.clientProfileClient = clientProfileClient;
+    this.vpnProfileClient = vpnProfileClient;
     this.intentsClient = intentsClient;
     this.proxyEndPointClient = proxyEndPointClient;
     this.vhFirebase = vhFirebase;
@@ -82,7 +82,7 @@ export class VpnHoodApp {
 
   public static async create(): Promise<VpnHoodApp> {
     const apiClient: AppClient = ClientApiFactory.instance.createAppClient();
-    const clientProfileClient: ClientProfileClient = ClientApiFactory.instance.createClientProfileClient();
+    const vpnProfileClient: VpnProfileClient = ClientApiFactory.instance.createVpnProfileClient();
     const intentsClient: IntentsClient = ClientApiFactory.instance.createIntentClient();
     const proxyEndpointClient: ProxyEndPointClient = ClientApiFactory.instance.createProxyEndPointClient();
     // availableLocales, not i18n.global.availableLocales: only the fallback is loaded at this point,
@@ -93,7 +93,7 @@ export class VpnHoodApp {
       config.userSettings,
       config.features,
       config.intentFeatures,
-      config.clientProfileInfos,
+      config.vpnProfileInfos,
       config.availableCultureInfos,
       config.isRemote,
     );
@@ -102,7 +102,7 @@ export class VpnHoodApp {
       ? null
       : await VpnHoodApp.createFirebase(config.features);
 
-    return new VpnHoodApp(apiClient, clientProfileClient, intentsClient, proxyEndpointClient, appData, firebase);
+    return new VpnHoodApp(apiClient, vpnProfileClient, intentsClient, proxyEndpointClient, appData, firebase);
   }
 
   // Firebase does analytics and report uploads. Loading it as its own chunk keeps the SDK out of
@@ -230,26 +230,26 @@ export class VpnHoodApp {
     if (userSettingsJson !== JSON.stringify(this.data.userSettings))
       this.data.userSettings = appInfo.userSettings;
     // Either way the fetch is the persisted truth, so it is what saveUserSetting diffs against.
-    // The clientProfileId repairs below stay after this line on purpose: they change local
+    // The vpnProfileId repairs below stay after this line on purpose: they change local
     // settings, and the stale snapshot is what makes the next saveUserSetting persist them.
     this.lastSavedUserSettingsJson = userSettingsJson;
 
-    // Remove the built-in client profile if the user is premium
-    if (JSON.stringify(appInfo.clientProfileInfos) !== JSON.stringify(this.data.clientProfileInfos))
-      this.data.clientProfileInfos = appInfo.clientProfileInfos;
+    // Remove the built-in VPN profile if the user is premium
+    if (JSON.stringify(appInfo.vpnProfileInfos) !== JSON.stringify(this.data.vpnProfileInfos))
+      this.data.vpnProfileInfos = appInfo.vpnProfileInfos;
 
     // userSettings just came back from the backend, so this is the one place that sees every change
     // to the analytics consent flag regardless of which page made it.
     await this.syncAnalyticsConsent();
 
-    if (appInfo.clientProfileInfos.length === 0) this.data.userSettings.clientProfileId = null;
+    if (appInfo.vpnProfileInfos.length === 0) this.data.userSettings.vpnProfileId = null;
 
     // select first profile if the current selected profile is not exist anymore after reload
     if (
-      this.data.userSettings.clientProfileId &&
-      !appInfo.clientProfileInfos.some((p) => p.clientProfileId === this.data.userSettings.clientProfileId)
+      this.data.userSettings.vpnProfileId &&
+      !appInfo.vpnProfileInfos.some((p) => p.vpnProfileId === this.data.userSettings.vpnProfileId)
     )
-      this.data.userSettings.clientProfileId = appInfo.clientProfileInfos[0]?.clientProfileId ?? null;
+      this.data.userSettings.vpnProfileId = appInfo.vpnProfileInfos[0]?.vpnProfileId ?? null;
   }
 
   public async connect(connectParams: ConnectParams): Promise<void> {
@@ -264,20 +264,20 @@ export class VpnHoodApp {
 
     try {
       if (connectParams.isDiagnose) await this.diagnose();
-      else await this.appClient.connect(connectParams.clientProfileId, connectParams.serverLocation, connectParams.planId);
+      else await this.appClient.connect(connectParams.vpnProfileId, connectParams.serverLocation, connectParams.planId);
 
-      // ClientProfile will be updated after connecting.
-      await this.updateClientProfile(
-        connectParams.clientProfileId,
-        new ClientProfileUpdateParams({
+      // VpnProfile will be updated after connecting.
+      await this.updateVpnProfile(
+        connectParams.vpnProfileId,
+        new VpnProfileUpdateParams({
           isPremiumLocationSelected: new PatchOfBoolean({ value: connectParams.isPremium }),
           selectedLocation: new PatchOfString({ value: connectParams.serverLocation }),
         }),
       );
-      this.data.userSettings.clientProfileId = connectParams.clientProfileId;
+      this.data.userSettings.vpnProfileId = connectParams.vpnProfileId;
       await this.saveUserSetting();
     } finally {
-      // Reload to apply the latest clientProfileInfos updates
+      // Reload to apply the latest vpnProfileInfos updates
       await this.reloadSettings();
       this.data.uiState.uiConnectInProgress = false;
     }
@@ -320,28 +320,28 @@ export class VpnHoodApp {
   }
 
   // Select a profile by user
-  public async updateClientProfile(
-    clientProfileId: string,
-    clientProfileUpdateParam: ClientProfileUpdateParams,
+  public async updateVpnProfile(
+    vpnProfileId: string,
+    vpnProfileUpdateParam: VpnProfileUpdateParams,
   ): Promise<void> {
-    await this.clientProfileClient.update(clientProfileId, clientProfileUpdateParam);
+    await this.vpnProfileClient.update(vpnProfileId, vpnProfileUpdateParam);
     await this.reloadSettings();
   }
 
-  public async addAccessKey(accessKey: string): Promise<ClientProfileInfo> {
-    const clientProfileInfo = await this.clientProfileClient.addByAccessKey(accessKey);
+  public async addAccessKey(accessKey: string): Promise<VpnProfileInfo> {
+    const vpnProfileInfo = await this.vpnProfileClient.addByAccessKey(accessKey);
     await this.reloadSettings();
-    return clientProfileInfo;
+    return vpnProfileInfo;
   }
 
-  public async deleteClientProfile(clientProfileId: string): Promise<void> {
-    await this.clientProfileClient.delete(clientProfileId);
+  public async deleteVpnProfile(vpnProfileId: string): Promise<void> {
+    await this.vpnProfileClient.delete(vpnProfileId);
     await this.reloadSettings();
   }
 
   public async diagnose(): Promise<void> {
     try {
-      await this.appClient.diagnose(this.data.userSettings.clientProfileId);
+      await this.appClient.diagnose(this.data.userSettings.vpnProfileId);
     } catch (err: unknown) {
       console.log(err);
     }
@@ -389,8 +389,8 @@ export class VpnHoodApp {
     return `/assets/flags/${code ? code : 'no-flag'}.png`;
   }
 
-  public isActiveClientProfile(clientProfileId: string): boolean {
-    return clientProfileId === this.data.userSettings.clientProfileId;
+  public isActiveVpnProfile(vpnProfileId: string): boolean {
+    return vpnProfileId === this.data.userSettings.vpnProfileId;
   }
 
   // One built-in profile, called "location", against a list of servers the user adds keys for:
@@ -483,11 +483,11 @@ export class VpnHoodApp {
   }
 
   public async removePremiumCode(): Promise<void> {
-    const clientProfile = this.data.state.clientProfile;
+    const vpnProfile = this.data.state.vpnProfile;
 
-    if (!clientProfile) throw new Error('Could not find the profile in the state for remove premium code.');
+    if (!vpnProfile) throw new Error('Could not find the profile in the state for remove premium code.');
 
-    if (!clientProfile.hasAccessCode) throw new Error('The profile does not have a premium code.');
+    if (!vpnProfile.hasAccessCode) throw new Error('The profile does not have a premium code.');
 
     // Signed-out only (keyring plan §7): there the device's copy is the only one that exists, so
     // removing it here removes it everywhere it was. Signed in there is no Remove at all — the
@@ -497,9 +497,9 @@ export class VpnHoodApp {
     try {
       if (this.data.isConnected) await this.disconnect();
 
-      await this.clientProfileClient.update(
-        clientProfile.clientProfileId,
-        new ClientProfileUpdateParams({ accessCode: new PatchOfString({ value: null }) }),
+      await this.vpnProfileClient.update(
+        vpnProfile.vpnProfileId,
+        new VpnProfileUpdateParams({ accessCode: new PatchOfString({ value: null }) }),
       );
     } finally {
       this.data.uiState.showLoadingDialog = false;
@@ -700,7 +700,7 @@ export class VpnHoodApp {
       ' IsPremiumByAccount: ',
       this.data.isPremiumByAccount,
       ' CanGoPremium: ',
-      this.data.state.clientProfile?.canGoPremium,
+      this.data.state.vpnProfile?.canGoPremium,
       ' isPremiumSupported: ',
       this.data.isPremiumSupported,
       'User Account: ',

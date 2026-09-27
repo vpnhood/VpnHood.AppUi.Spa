@@ -34,7 +34,7 @@ async function saveDebugDataSetting(): Promise<void> {
 
       <!-- Support id -->
       <template v-slot:subtitle>
-        <p class="text-disabled text-body-small">{{ 'Support ID: ' + vhApp.data.state.clientProfile?.supportId }}</p>
+        <p class="text-disabled text-body-small">{{ 'Support ID: ' + vhApp.data.state.vpnProfile?.supportId }}</p>
       </template>
 
       <v-card-item>

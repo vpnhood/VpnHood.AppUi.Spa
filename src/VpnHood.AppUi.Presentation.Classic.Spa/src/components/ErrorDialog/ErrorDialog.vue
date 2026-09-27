@@ -2,7 +2,7 @@
 import { VpnHoodApp } from '@/services/VpnHoodApp';
 import { computed, ref } from 'vue';
 import i18n from '@/locales/i18n';
-import { ClientProfileUpdateParams, ConnectPlanId, PatchOfBoolean, PatchOfString } from '@/services/VpnHood.Client.Api';
+import { VpnProfileUpdateParams, ConnectPlanId, PatchOfBoolean, PatchOfString } from '@/services/VpnHood.Client.Api';
 import { UiConstants } from '@/helpers/UiConstants';
 import LearningButton from '@/components/LearningButton.vue';
 import PremiumByCode from '@/components/PurchaseSubscription/PremiumByCode.vue';
@@ -23,26 +23,26 @@ const emit = defineEmits<{
   (e: 'update:modelValue', value: boolean): void,
 }>();
 
-const updateParams = new ClientProfileUpdateParams({
+const updateParams = new VpnProfileUpdateParams({
   selectedLocation: new PatchOfString({value: vhApp.data.uiState.autoLocationValue})
 });
 const dialogState = computed(() => vhApp.data.uiState.errorDialogState);
 const showChangeCodeSheet = ref(false);
 
 // Reconnect by Auto Location
-async function changeLocationToAuto(clientProfileId: string): Promise<void> {
+async function changeLocationToAuto(vpnProfileId: string): Promise<void> {
   updateParams.isPremiumLocationSelected = new PatchOfBoolean({value: false});
-  await vhApp.clientProfileClient.update(clientProfileId, updateParams);
+  await vhApp.vpnProfileClient.update(vpnProfileId, updateParams);
   await closeDialog();
-  await vhApp.connect({clientProfileId, serverLocation: vhApp.data.uiState.autoLocationValue, isPremium: false, planId: ConnectPlanId.Normal});
+  await vhApp.connect({vpnProfileId, serverLocation: vhApp.data.uiState.autoLocationValue, isPremium: false, planId: ConnectPlanId.Normal});
 }
 
 // Reconnect by Try Premium
-async function tryPremium(clientProfileId: string): Promise<void> {
+async function tryPremium(vpnProfileId: string): Promise<void> {
   updateParams.isPremiumLocationSelected = new PatchOfBoolean({value: true});
-  await vhApp.clientProfileClient.update(clientProfileId, updateParams);
+  await vhApp.vpnProfileClient.update(vpnProfileId, updateParams);
   await closeDialog();
-  await vhApp.connect({clientProfileId, serverLocation: vhApp.data.uiState.autoLocationValue, isPremium: true, planId: ConnectPlanId.PremiumByTrial});
+  await vhApp.connect({vpnProfileId, serverLocation: vhApp.data.uiState.autoLocationValue, isPremium: true, planId: ConnectPlanId.PremiumByTrial});
 }
 
 async function diagnose(): Promise<void> {
@@ -106,7 +106,7 @@ async function closeDialog(): Promise<void> {
         {{ dialogState.message }}
 
         <learning-button
-          v-if="dialogState.showTryPremium && vhApp.data.clientProfileId"
+          v-if="dialogState.showTryPremium && vhApp.data.vpnProfileId"
           :action="{ name: 'FREE_SERVERS_DISRUPTIONS' }"
         />
 
@@ -126,18 +126,18 @@ async function closeDialog(): Promise<void> {
           >
 
           <!-- Change location to auto -->
-          <v-btn v-if="dialogState.showChangeServerToAutoButton && vhApp.data.clientProfileId"
+          <v-btn v-if="dialogState.showChangeServerToAutoButton && vhApp.data.vpnProfileId"
             variant="flat"
             :text="locale('CHANGE_TO_AUTO_AND_RECONNECT')"
-            @click="changeLocationToAuto(vhApp.data.clientProfileId)"
+            @click="changeLocationToAuto(vhApp.data.vpnProfileId)"
           />
 
           <!-- Try premium -->
           <v-btn
-            v-if="dialogState.showTryPremium && vhApp.data.clientProfileId"
+            v-if="dialogState.showTryPremium && vhApp.data.vpnProfileId"
            variant="flat"
            :text="locale('TRY_PREMIUM_FOR_FREE')"
-           @click="tryPremium(vhApp.data.clientProfileId)"
+           @click="tryPremium(vhApp.data.vpnProfileId)"
           />
 
           <!-- The refused code is KEPT; what is offered is what exists (keyring plan §8). -->

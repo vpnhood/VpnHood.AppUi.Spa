@@ -38,7 +38,7 @@ const skipLang = process.argv.includes('--no-lang');
 // dated; each entry should disappear when the underlying issue is fixed.
 const knownIssues = [
   // 2026-07: visiting the page directly has no profile context; it errors by design today.
-  { route: '/promote-premium', pattern: /clientProfileId.*must be defined/ },
+  { route: '/promote-premium', pattern: /vpnProfileId.*must be defined/ },
 ];
 
 async function readRoutes() {

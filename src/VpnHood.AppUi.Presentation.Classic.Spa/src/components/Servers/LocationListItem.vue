@@ -10,7 +10,7 @@ const vhApp = VpnHoodApp.instance;
 const locale = i18n.global.t;
 
 const props = defineProps<{
-  clientProfileId: string,
+  vpnProfileId: string,
   locationsList: ServerLocationItem[],
   isPremiumGroup: boolean,
   isPremiumLocationSelected: boolean,
@@ -26,14 +26,14 @@ function internalConnect(location: ServerLocationItem): void {
     return;
   }
 
-  ConnectManager.connectWithLocation({clientProfileId: props.clientProfileId, serverLocation: location.serverLocation, isPremiumLocation: props.isPremiumGroup, isDiagnose: false});
+  ConnectManager.connectWithLocation({vpnProfileId: props.vpnProfileId, serverLocation: location.serverLocation, isPremiumLocation: props.isPremiumGroup, isDiagnose: false});
 }
 function isActiveItem(location: ServerLocationItem): boolean{
   // This situation happened in the Client app
-  if (!vhApp.isActiveClientProfile(props.clientProfileId))
+  if (!vhApp.isActiveVpnProfile(props.vpnProfileId))
     return false;
 
-  const serverLocation = vhApp.data.state.clientProfile?.selectedLocationInfo?.serverLocation;
+  const serverLocation = vhApp.data.state.vpnProfile?.selectedLocationInfo?.serverLocation;
 
   // Check premium items
   if (props.isPremiumLocationSelected){

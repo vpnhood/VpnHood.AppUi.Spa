@@ -72,7 +72,7 @@ const CONNECTED = {
 
 // The CLIENT app ships with no servers — users bring their own key, and the store page must not
 // suggest a bundled server list (that is the VpnHood! CONNECT story).
-const NO_SERVERS = { clientProfileInfos: [] };
+const NO_SERVERS = { vpnProfileInfos: [] };
 
 /**
  * The Apps Filter page calls GET /api/app/installed-apps, which on a real device returns the
@@ -492,7 +492,7 @@ export const ROUTES = {
   'PATCH /api/app/configure': (fixture) => fixture,
   'GET /api/app/config': (fixture) => fixture,
   'GET /api/app/state': (fixture) => fixture.state,
-  'GET /api/client-profiles': (fixture) => fixture.clientProfileInfos,
+  'GET /api/vpn-profiles': (fixture) => fixture.vpnProfileInfos,
   'GET /api/app/installed-apps': (fixture) => fixture.installedApps ?? [],
   'PUT /api/app/user-settings': () => null, // void
 };

@@ -30,8 +30,8 @@ async function addAccessKey(): Promise<void> {
 
   try {
     // Add accessKey
-    const clientProfileInfo = await vhApp.addAccessKey(accessKey.value);
-    await connect(clientProfileInfo.clientProfileId);
+    const vpnProfileInfo = await vhApp.addAccessKey(accessKey.value);
+    await connect(vpnProfileInfo.vpnProfileId);
 
   } catch (err) {
     console.error(err);
@@ -39,7 +39,7 @@ async function addAccessKey(): Promise<void> {
   }
 }
 
-async function connect(clientProfileId:string): Promise<void>{
+async function connect(vpnProfileId:string): Promise<void>{
   // Close current dialog
   emit('update:modelValue', false);
 
@@ -49,7 +49,7 @@ async function connect(clientProfileId:string): Promise<void>{
   vhApp.showGeneralSnackbar(locale('NEW_SERVER_ADDED'), "active", true, undefined, false);
 
   // Connect to server
-  await ConnectManager.connectWithProfile({clientProfileId, isDiagnose: false});
+  await ConnectManager.connectWithProfile({vpnProfileId, isDiagnose: false});
 }
 
 </script>

@@ -218,7 +218,7 @@ export class ErrorHandler {
           // Nothing to remove and nothing to choose (keyring plan §7, §8): the code is KEPT, and
           // what the person is offered is what exists — Restore Premium, plus Change code wherever
           // this build may take a typed one.
-          const profile = VpnHoodApp.instance.data.state.clientProfile;
+          const profile = VpnHoodApp.instance.data.state.vpnProfile;
           return { localeKey: 'PREMIUM_ACCESS_EXPIRED_MSG', action: {
             showAccessCodeActions: profile?.hasAccessCode === true,
             showChangeAccessCode: VpnHoodApp.instance.data.canImportAccessCode }
@@ -242,7 +242,7 @@ export class ErrorHandler {
         if (VpnHoodApp.instance.data.isPremiumByAccount)
           return { localeKey: 'SUBSCRIPTION_NOT_PROVISIONED_MSG' };
 
-        const profile = VpnHoodApp.instance.data.state.clientProfile;
+        const profile = VpnHoodApp.instance.data.state.vpnProfile;
         return { localeKey: 'INVALID_ACCESS_CODE', action: {
           showAccessCodeActions: profile?.hasAccessCode === true,
           showChangeAccessCode: VpnHoodApp.instance.data.canImportAccessCode }

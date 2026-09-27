@@ -3,8 +3,8 @@ import { Util } from '@/helpers/Util'
 import { VpnHoodApp } from '@/services/VpnHoodApp'
 import {
   ApiException,
-  ClientProfileInfo,
-  ClientProfileUpdateParams,
+  VpnProfileInfo,
+  VpnProfileUpdateParams,
   PatchOfBoolean,
   PatchOfString,
   PatchOfStringOf
@@ -24,76 +24,76 @@ const locale = i18n.global.t;
 const confirmDeleteServerDialogModel = ref(new ComponentRouteController(ComponentName.ConfirmDeleteServerDialog));
 const renameServerDialogModel = ref(new ComponentRouteController(ComponentName.RenameServerDialog));
 const customEndpointModel = ref(new ComponentRouteController(ComponentName.CustomEndpoint));
-const currentClientProfileInfo = ref<ClientProfileInfo>(new ClientProfileInfo());
-const newClientProfileName = ref<string>("");
+const currentVpnProfileInfo = ref<VpnProfileInfo>(new VpnProfileInfo());
+const newVpnProfileName = ref<string>("");
 const expandedPanels = ref<number[]>([]);
 const customEndpoint = ref<string | null>(null);
 const isCustomEndpointEnabled = ref<boolean>(true);
 const invalidIpError = ref<string | null>(null);
 
 onMounted(() => {
-  // Create open state if client profile is active or has a single location
-  expandedPanels.value = vhApp.data.clientProfileInfos.map(x => {
-     return vhApp.isActiveClientProfile(x.clientProfileId) || Util.isSingleLocation(x.locationInfos.length) ?
+  // Create open state if VPN profile is active or has a single location
+  expandedPanels.value = vhApp.data.vpnProfileInfos.map(x => {
+     return vhApp.isActiveVpnProfile(x.vpnProfileId) || Util.isSingleLocation(x.locationInfos.length) ?
        0 : 1
   });
 });
 
 // Show confirm dialog for delete server
-async function showConfirmDeleteDialog(clientProfileInfo: ClientProfileInfo): Promise<void> {
-  currentClientProfileInfo.value = clientProfileInfo;
+async function showConfirmDeleteDialog(vpnProfileInfo: VpnProfileInfo): Promise<void> {
+  currentVpnProfileInfo.value = vpnProfileInfo;
   await confirmDeleteServerDialogModel.value.show();
 }
 
 // Delete server by user
-async function removeServer(clientProfileId: string): Promise<void> {
+async function removeServer(vpnProfileId: string): Promise<void> {
   await confirmDeleteServerDialogModel.value.show(false);
-  await vhApp.deleteClientProfile(clientProfileId);
+  await vhApp.deleteVpnProfile(vpnProfileId);
 }
 
 // Show rename server dialog
-async function showRenameDialog(clientProfileInfo: ClientProfileInfo): Promise<void> {
-  currentClientProfileInfo.value = clientProfileInfo;
-  newClientProfileName.value = clientProfileInfo.clientProfileName;
+async function showRenameDialog(vpnProfileInfo: VpnProfileInfo): Promise<void> {
+  currentVpnProfileInfo.value = vpnProfileInfo;
+  newVpnProfileName.value = vpnProfileInfo.vpnProfileName;
   await renameServerDialogModel.value.show();
 }
 
 // Show endpoint dialog
-async function showEndpointDialog(clientProfileInfo: ClientProfileInfo): Promise<void> {
-  currentClientProfileInfo.value = clientProfileInfo;
-  const endpoint = clientProfileInfo.customServerEndpoints;
+async function showEndpointDialog(vpnProfileInfo: VpnProfileInfo): Promise<void> {
+  currentVpnProfileInfo.value = vpnProfileInfo;
+  const endpoint = vpnProfileInfo.customServerEndpoints;
   customEndpoint.value = (endpoint && endpoint.length > 0) ? endpoint[0] : null;
-  isCustomEndpointEnabled.value = clientProfileInfo.isCustomServerEndpointsEnabled;
+  isCustomEndpointEnabled.value = vpnProfileInfo.isCustomServerEndpointsEnabled;
   invalidIpError.value = null;
   await customEndpointModel.value.show();
 }
 
 // Is the profile custom endpoint set and enabled
-function isCustomEndpointActive(clientProfileInfo: ClientProfileInfo): boolean {
-  const endpoint = clientProfileInfo.customServerEndpoints;
-  return clientProfileInfo.isCustomServerEndpointsEnabled && !!endpoint && endpoint.length > 0;
+function isCustomEndpointActive(vpnProfileInfo: VpnProfileInfo): boolean {
+  const endpoint = vpnProfileInfo.customServerEndpoints;
+  return vpnProfileInfo.isCustomServerEndpointsEnabled && !!endpoint && endpoint.length > 0;
 }
 
 // Rename server by user
-async function saveNewClientProfileName(): Promise<void> {
+async function saveNewVpnProfileName(): Promise<void> {
   await renameServerDialogModel.value.show(false);
-  await vhApp.updateClientProfile(currentClientProfileInfo.value.clientProfileId, new
-    ClientProfileUpdateParams({
-    clientProfileName: new PatchOfString({ value: newClientProfileName.value })
+  await vhApp.updateVpnProfile(currentVpnProfileInfo.value.vpnProfileId, new
+    VpnProfileUpdateParams({
+    vpnProfileName: new PatchOfString({ value: newVpnProfileName.value })
     })
   );
 }
 
-// Change client profile custom endpoint
+// Change VPN profile custom endpoint
 async function saveCustomEndpoint(): Promise<void> {
   try {
     const endpointValue = customEndpoint.value?.trim();
     const newEndpoint = endpointValue ? [endpointValue] : null;
-    const params = new ClientProfileUpdateParams({
+    const params = new VpnProfileUpdateParams({
       customServerEndpoints: new PatchOfStringOf({ value: newEndpoint }),
       isCustomServerEndpointsEnabled: new PatchOfBoolean({ value: isCustomEndpointEnabled.value })
     });
-    await vhApp.updateClientProfile(currentClientProfileInfo.value.clientProfileId, params);
+    await vhApp.updateVpnProfile(currentVpnProfileInfo.value.vpnProfileId, params);
     await closeCustomEndpointDialog();
   }
   catch(err: unknown){
@@ -109,16 +109,16 @@ async function closeCustomEndpointDialog(): Promise<void> {
   await customEndpointModel.value.show(false);
 }
 
-function expansionPanelClick(clientProfileInfo: ClientProfileInfo): void{
-  if (!Util.isSingleLocation(clientProfileInfo.locationInfos.length))
+function expansionPanelClick(vpnProfileInfo: VpnProfileInfo): void{
+  if (!Util.isSingleLocation(vpnProfileInfo.locationInfos.length))
     return;
-  ConnectManager.connectWithProfile({clientProfileId: clientProfileInfo.clientProfileId, isDiagnose: false});
+  ConnectManager.connectWithProfile({vpnProfileId: vpnProfileInfo.vpnProfileId, isDiagnose: false});
 }
 </script>
 
 <template>
   <v-expansion-panels
-    v-for="(clientProfileInfo, index) in vhApp.data.clientProfileInfos"
+    v-for="(vpnProfileInfo, index) in vhApp.data.vpnProfileInfos"
     :key="index"
     v-model="expandedPanels[index]"
     flat
@@ -127,17 +127,17 @@ function expansionPanelClick(clientProfileInfo: ClientProfileInfo): void{
     class="mb-4"
   >
     <v-expansion-panel
-      :readonly="Util.isSingleLocation(clientProfileInfo.locationInfos.length)"
+      :readonly="Util.isSingleLocation(vpnProfileInfo.locationInfos.length)"
       hide-actions
       class="py-4"
-      @click="expansionPanelClick(clientProfileInfo)"
+      @click="expansionPanelClick(vpnProfileInfo)"
     >
 
       <!-- Country flag on collapse state -->
       <expansion-panel-collapsed
-        v-if="!Util.isSingleLocation(clientProfileInfo.locationInfos.length) && expandedPanels[index] !== 0"
+        v-if="!Util.isSingleLocation(vpnProfileInfo.locationInfos.length) && expandedPanels[index] !== 0"
         @click="expandedPanels[index] = 0"
-        :client-profile-info="clientProfileInfo"
+        :vpn-profile-info="vpnProfileInfo"
       />
 
       <!-- Profile title row -->
@@ -148,7 +148,7 @@ function expansionPanelClick(clientProfileInfo: ClientProfileInfo): void{
           <v-col cols="auto">
               <!-- Active -->
               <v-icon
-                v-if="vhApp.isActiveClientProfile(clientProfileInfo.clientProfileId)"
+                v-if="vhApp.isActiveVpnProfile(vpnProfileInfo.vpnProfileId)"
                 icon="mdi-check-circle-outline"
                 size="28"
                 color="active-profile-radio"
@@ -168,9 +168,9 @@ function expansionPanelClick(clientProfileInfo: ClientProfileInfo): void{
           <v-col class="px-0 text-truncate limited-width-to-truncate">
             <h4
               class="text-truncate text-capitalize"
-              :class="{'opacity-60': !vhApp.isActiveClientProfile(clientProfileInfo.clientProfileId)}"
+              :class="{'opacity-60': !vhApp.isActiveVpnProfile(vpnProfileInfo.vpnProfileId)}"
             >
-              {{ clientProfileInfo.clientProfileName }}
+              {{ vpnProfileInfo.vpnProfileName }}
             </h4>
           </v-col>
 
@@ -185,18 +185,18 @@ function expansionPanelClick(clientProfileInfo: ClientProfileInfo): void{
 
                   <!-- Rename item -->
                   <v-list-item
-                    v-if="!clientProfileInfo.isBuiltIn"
+                    v-if="!vpnProfileInfo.isBuiltIn"
                     :title="locale('RENAME')" prepend-icon="mdi-pencil"
-                    @click="showRenameDialog(clientProfileInfo)"
+                    @click="showRenameDialog(vpnProfileInfo)"
                   />
-                  <v-divider v-if="!clientProfileInfo.isBuiltIn"/>
+                  <v-divider v-if="!vpnProfileInfo.isBuiltIn"/>
 
                   <!-- Diagnose item -->
                   <v-list-item
                     :title="locale('DIAGNOSE')"
                     :disabled="!vhApp.data.state.canDiagnose"
                     prepend-icon="mdi-speedometer"
-                    @click="ConnectManager.connectWithProfile({clientProfileId: clientProfileInfo.clientProfileId, isDiagnose: true})"
+                    @click="ConnectManager.connectWithProfile({vpnProfileId: vpnProfileInfo.vpnProfileId, isDiagnose: true})"
                   />
                   <v-divider v-if="vhApp.data.features.isAddAccessKeySupported"/>
 
@@ -204,7 +204,7 @@ function expansionPanelClick(clientProfileInfo: ClientProfileInfo): void{
                   <v-list-item
                     :title="locale('CUSTOM_ENDPOINT')"
                     prepend-icon="mdi-ip-outline"
-                    @click="showEndpointDialog(clientProfileInfo)"
+                    @click="showEndpointDialog(vpnProfileInfo)"
                   />
                   <v-divider />
 
@@ -215,7 +215,7 @@ function expansionPanelClick(clientProfileInfo: ClientProfileInfo): void{
                     <v-list-item
                       :title="locale('STARLINK_TOOLS')"
                       prepend-icon="mdi-satellite-uplink"
-                      @click="router.push({name: 'STARLINK_TOOLS', query: {clientProfileId: clientProfileInfo.clientProfileId}})"
+                      @click="router.push({name: 'STARLINK_TOOLS', query: {vpnProfileId: vpnProfileInfo.vpnProfileId}})"
                     />
                     <v-divider />
                   </template>
@@ -224,7 +224,7 @@ function expansionPanelClick(clientProfileInfo: ClientProfileInfo): void{
                   <v-list-item v-if="vhApp.data.features.isAddAccessKeySupported"
                                :title="locale('REMOVE')"
                                prepend-icon="mdi-delete"
-                               @click="showConfirmDeleteDialog(clientProfileInfo)"
+                               @click="showConfirmDeleteDialog(vpnProfileInfo)"
                   />
                 </v-list>
               </v-menu>
@@ -233,7 +233,7 @@ function expansionPanelClick(clientProfileInfo: ClientProfileInfo): void{
 
           <!-- Expand/Collapse mark. The +/- circles, kept after trying a chevron (the location groups
                beneath already use one as their own mark), the unfold pair and the caret pair. -->
-          <v-col v-if="!Util.isSingleLocation(clientProfileInfo.locationInfos.length)" cols="auto" class="ps-0">
+          <v-col v-if="!Util.isSingleLocation(vpnProfileInfo.locationInfos.length)" cols="auto" class="ps-0">
               <v-icon v-if="expandedPanels[index] === 0" size="27" opacity=".6" icon="mdi-minus-circle-outline" />
               <v-icon v-else icon="mdi-plus-circle-outline" opacity=".6" size="27" />
           </v-col>
@@ -243,15 +243,15 @@ function expansionPanelClick(clientProfileInfo: ClientProfileInfo): void{
 
       <!-- Countries list -->
       <template v-slot:text>
-        <LocationList :client-profile="clientProfileInfo"/>
+        <LocationList :vpn-profile="vpnProfileInfo"/>
       </template>
 
       <!-- Support id & redacted host with custom server address badge -->
       <div class="d-flex align-center justify-space-between text-disabled text-body-small px-4 mt-2">
-        <span>SID:{{ clientProfileInfo.supportId }}</span>
+        <span>SID:{{ vpnProfileInfo.supportId }}</span>
         <span class="d-flex align-center ga-1">
-          <v-icon v-if="isCustomEndpointActive(clientProfileInfo)" icon="mdi-ip-network" size="16" />
-          {{ clientProfileInfo.hostNames[0] }}
+          <v-icon v-if="isCustomEndpointActive(vpnProfileInfo)" icon="mdi-ip-network" size="16" />
+          {{ vpnProfileInfo.hostNames[0] }}
         </span>
       </div>
     </v-expansion-panel>
@@ -264,7 +264,7 @@ function expansionPanelClick(clientProfileInfo: ClientProfileInfo): void{
       <v-card-text class="text-general-dialog-text">
         <!-- Name text field -->
         <v-text-field
-          v-model="newClientProfileName"
+          v-model="newVpnProfileName"
           spellcheck="false"
           autocomplete="off"
           color="highlight"
@@ -283,7 +283,7 @@ function expansionPanelClick(clientProfileInfo: ClientProfileInfo): void{
         />
 
         <!-- Save button -->
-        <v-btn :text="locale('SAVE')" @click="saveNewClientProfileName" variant="plain"/>
+        <v-btn :text="locale('SAVE')" @click="saveNewVpnProfileName" variant="plain"/>
 
       </v-card-actions>
     </v-card>
@@ -354,7 +354,7 @@ function expansionPanelClick(clientProfileInfo: ClientProfileInfo): void{
 
       <v-card-text class="text-general-dialog-text">
         <p class="text-body-small mb-3">{{ locale("CONFIRM_REMOVE_SERVER") }}</p>
-        <strong>{{ currentClientProfileInfo.clientProfileName }}</strong>
+        <strong>{{ currentVpnProfileInfo.vpnProfileName }}</strong>
       </v-card-text>
 
       <!-- Dialog buttons -->
@@ -366,7 +366,7 @@ function expansionPanelClick(clientProfileInfo: ClientProfileInfo): void{
         />
 
         <!-- Confirm delete button -->
-        <v-btn :text="locale('YES')" @click="removeServer(currentClientProfileInfo.clientProfileId)" variant="plain"/>
+        <v-btn :text="locale('YES')" @click="removeServer(currentVpnProfileInfo.vpnProfileId)" variant="plain"/>
 
       </v-card-actions>
     </v-card>

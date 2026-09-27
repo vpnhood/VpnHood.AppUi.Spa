@@ -1,16 +1,16 @@
-import { ChannelProtocol, ClientProfileInfo } from '@/services/VpnHood.Client.Api';
+import { ChannelProtocol, VpnProfileInfo } from '@/services/VpnHood.Client.Api';
 import vuetify from '@/theme/vuetify';
 import i18n from '@/locales/i18n';
 
 export class Util {
-  // Client profile has a single location
+  // VPN profile has a single location
   public static isSingleLocation(locationCount: number): boolean {
     return locationCount < 2;
   }
 
-  // Location count of client profile
-  public static calcLocationCount(clientProfileInfo: ClientProfileInfo): number {
-    const excludeAutoSelect = clientProfileInfo.locationInfos.filter(
+  // Location count of VPN profile
+  public static calcLocationCount(vpnProfileInfo: VpnProfileInfo): number {
+    const excludeAutoSelect = vpnProfileInfo.locationInfos.filter(
       x => x.countryCode !== '*' && !x.isNestedCountry
     );
     return excludeAutoSelect.length;

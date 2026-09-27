@@ -23,7 +23,7 @@ const showDeleteDialog = ref(false);
 // The access server refused the kept code (keyring plan §6): say "expired" only when the server
 // said AccessExpired; a generic rejection is described as a rejection.
 function codeRefusedNotice(): string {
-  const refused = vhApp.data.state.clientProfile?.accessCodeRefusal;
+  const refused = vhApp.data.state.vpnProfile?.accessCodeRefusal;
   if (!refused) return '';
   const date = Util.getShortDate(refused.refusedTime);
   return refused.errorCode === SessionErrorCode.AccessExpired
@@ -87,12 +87,12 @@ async function removeCode(): Promise<void> {
     </template>
 
     <!-- Premium user by code -->
-    <template v-else-if="vhApp.data.state.clientProfile?.hasAccessCode">
+    <template v-else-if="vhApp.data.state.vpnProfile?.hasAccessCode">
 
       <!-- The access server refused this code (keyring plan §6): it is KEPT — refusal never
            deletes the credential — so the notice explains instead of a silent downgrade. -->
       <alert-warning
-        v-if="vhApp.data.state.clientProfile?.accessCodeRefusal"
+        v-if="vhApp.data.state.vpnProfile?.accessCodeRefusal"
         class="my-4"
         :text="codeRefusedNotice()"
       />
@@ -126,7 +126,7 @@ async function removeCode(): Promise<void> {
     </template>
 
     <!-- Go premium -->
-    <config-card v-else-if="vhApp.data.state.clientProfile?.canGoPremium">
+    <config-card v-else-if="vhApp.data.state.vpnProfile?.canGoPremium">
       <v-card-title>{{locale('UPGRADE')}}</v-card-title>
       <v-card-text class="d-flex align-center justify-space-between">
         <v-img

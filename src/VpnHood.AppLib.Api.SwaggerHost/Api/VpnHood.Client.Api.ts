@@ -705,10 +705,10 @@ export class AppClient {
         return Promise.resolve<AppState>(null as any);
     }
 
-    connect(clientProfileId?: string | null | undefined, serverLocation?: string | null | undefined, planId?: ConnectPlanId | undefined, cancelToken?: CancelToken): Promise<void> {
+    connect(vpnProfileId?: string | null | undefined, serverLocation?: string | null | undefined, planId?: ConnectPlanId | undefined, cancelToken?: CancelToken): Promise<void> {
         let url_ = this.baseUrl + "/api/app/connect?";
-        if (clientProfileId !== undefined && clientProfileId !== null)
-            url_ += "clientProfileId=" + encodeURIComponent("" + clientProfileId) + "&";
+        if (vpnProfileId !== undefined && vpnProfileId !== null)
+            url_ += "vpnProfileId=" + encodeURIComponent("" + vpnProfileId) + "&";
         if (serverLocation !== undefined && serverLocation !== null)
             url_ += "serverLocation=" + encodeURIComponent("" + serverLocation) + "&";
         if (planId === null)
@@ -757,10 +757,10 @@ export class AppClient {
         return Promise.resolve<void>(null as any);
     }
 
-    diagnose(clientProfileId?: string | null | undefined, serverLocation?: string | null | undefined, planId?: ConnectPlanId | undefined, cancelToken?: CancelToken): Promise<void> {
+    diagnose(vpnProfileId?: string | null | undefined, serverLocation?: string | null | undefined, planId?: ConnectPlanId | undefined, cancelToken?: CancelToken): Promise<void> {
         let url_ = this.baseUrl + "/api/app/diagnose?";
-        if (clientProfileId !== undefined && clientProfileId !== null)
-            url_ += "clientProfileId=" + encodeURIComponent("" + clientProfileId) + "&";
+        if (vpnProfileId !== undefined && vpnProfileId !== null)
+            url_ += "vpnProfileId=" + encodeURIComponent("" + vpnProfileId) + "&";
         if (serverLocation !== undefined && serverLocation !== null)
             url_ += "serverLocation=" + encodeURIComponent("" + serverLocation) + "&";
         if (planId === null)
@@ -1930,334 +1930,12 @@ export class BillingClient {
         return Promise.resolve<void>(null as any);
     }
 
-    getPurchaseOptions(clientProfileId: string, cancelToken?: CancelToken): Promise<AppPurchaseOptions> {
+    getPurchaseOptions(vpnProfileId: string, cancelToken?: CancelToken): Promise<AppPurchaseOptions> {
         let url_ = this.baseUrl + "/api/billing/purchase-options?";
-        if (clientProfileId === undefined || clientProfileId === null)
-            throw new globalThis.Error("The parameter 'clientProfileId' must be defined and cannot be null.");
+        if (vpnProfileId === undefined || vpnProfileId === null)
+            throw new globalThis.Error("The parameter 'vpnProfileId' must be defined and cannot be null.");
         else
-            url_ += "clientProfileId=" + encodeURIComponent("" + clientProfileId) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: AxiosRequestConfig = {
-            method: "GET",
-            url: url_,
-            headers: {
-                "Accept": "application/json"
-            },
-            cancelToken
-        };
-
-        return this.instance.request(options_).catch((_error: any) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            } else {
-                throw _error;
-            }
-        }).then((_response: AxiosResponse) => {
-            return this.processGetPurchaseOptions(_response);
-        });
-    }
-
-    protected processGetPurchaseOptions(response: AxiosResponse): Promise<AppPurchaseOptions> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (const k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200  = _responseText;
-            result200 = AppPurchaseOptions.fromJS(resultData200);
-            return Promise.resolve<AppPurchaseOptions>(result200);
-
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<AppPurchaseOptions>(null as any);
-    }
-}
-
-export class ClientProfileClient {
-    protected instance: AxiosInstance;
-    protected baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(baseUrl?: string, instance?: AxiosInstance) {
-
-        this.instance = instance || axios.create();
-
-        this.baseUrl = baseUrl ?? "";
-
-    }
-
-    addByAccessKey(accessKey: string, cancelToken?: CancelToken): Promise<ClientProfileInfo> {
-        let url_ = this.baseUrl + "/api/client-profiles/access-keys?";
-        if (accessKey === undefined || accessKey === null)
-            throw new globalThis.Error("The parameter 'accessKey' must be defined and cannot be null.");
-        else
-            url_ += "accessKey=" + encodeURIComponent("" + accessKey) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: AxiosRequestConfig = {
-            method: "PUT",
-            url: url_,
-            headers: {
-                "Accept": "application/json"
-            },
-            cancelToken
-        };
-
-        return this.instance.request(options_).catch((_error: any) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            } else {
-                throw _error;
-            }
-        }).then((_response: AxiosResponse) => {
-            return this.processAddByAccessKey(_response);
-        });
-    }
-
-    protected processAddByAccessKey(response: AxiosResponse): Promise<ClientProfileInfo> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (const k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200  = _responseText;
-            result200 = ClientProfileInfo.fromJS(resultData200);
-            return Promise.resolve<ClientProfileInfo>(result200);
-
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<ClientProfileInfo>(null as any);
-    }
-
-    get(clientProfileId: string, cancelToken?: CancelToken): Promise<ClientProfileInfo> {
-        let url_ = this.baseUrl + "/api/client-profiles/{clientProfileId}";
-        if (clientProfileId === undefined || clientProfileId === null)
-            throw new globalThis.Error("The parameter 'clientProfileId' must be defined.");
-        url_ = url_.replace("{clientProfileId}", encodeURIComponent("" + clientProfileId));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: AxiosRequestConfig = {
-            method: "GET",
-            url: url_,
-            headers: {
-                "Accept": "application/json"
-            },
-            cancelToken
-        };
-
-        return this.instance.request(options_).catch((_error: any) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            } else {
-                throw _error;
-            }
-        }).then((_response: AxiosResponse) => {
-            return this.processGet(_response);
-        });
-    }
-
-    protected processGet(response: AxiosResponse): Promise<ClientProfileInfo> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (const k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200  = _responseText;
-            result200 = ClientProfileInfo.fromJS(resultData200);
-            return Promise.resolve<ClientProfileInfo>(result200);
-
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<ClientProfileInfo>(null as any);
-    }
-
-    update(clientProfileId: string, updateParams: ClientProfileUpdateParams, cancelToken?: CancelToken): Promise<ClientProfileInfo> {
-        let url_ = this.baseUrl + "/api/client-profiles/{clientProfileId}";
-        if (clientProfileId === undefined || clientProfileId === null)
-            throw new globalThis.Error("The parameter 'clientProfileId' must be defined.");
-        url_ = url_.replace("{clientProfileId}", encodeURIComponent("" + clientProfileId));
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(updateParams);
-
-        let options_: AxiosRequestConfig = {
-            data: content_,
-            method: "PATCH",
-            url: url_,
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            },
-            cancelToken
-        };
-
-        return this.instance.request(options_).catch((_error: any) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            } else {
-                throw _error;
-            }
-        }).then((_response: AxiosResponse) => {
-            return this.processUpdate(_response);
-        });
-    }
-
-    protected processUpdate(response: AxiosResponse): Promise<ClientProfileInfo> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (const k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200  = _responseText;
-            result200 = ClientProfileInfo.fromJS(resultData200);
-            return Promise.resolve<ClientProfileInfo>(result200);
-
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<ClientProfileInfo>(null as any);
-    }
-
-    delete(clientProfileId: string, cancelToken?: CancelToken): Promise<void> {
-        let url_ = this.baseUrl + "/api/client-profiles/{clientProfileId}";
-        if (clientProfileId === undefined || clientProfileId === null)
-            throw new globalThis.Error("The parameter 'clientProfileId' must be defined.");
-        url_ = url_.replace("{clientProfileId}", encodeURIComponent("" + clientProfileId));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: AxiosRequestConfig = {
-            method: "DELETE",
-            url: url_,
-            headers: {
-            },
-            cancelToken
-        };
-
-        return this.instance.request(options_).catch((_error: any) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            } else {
-                throw _error;
-            }
-        }).then((_response: AxiosResponse) => {
-            return this.processDelete(_response);
-        });
-    }
-
-    protected processDelete(response: AxiosResponse): Promise<void> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (const k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            return Promise.resolve<void>(null as any);
-
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<void>(null as any);
-    }
-
-    getAccessCode(clientProfileId: string, cancelToken?: CancelToken): Promise<string> {
-        let url_ = this.baseUrl + "/api/client-profiles/{clientProfileId}/access-code";
-        if (clientProfileId === undefined || clientProfileId === null)
-            throw new globalThis.Error("The parameter 'clientProfileId' must be defined.");
-        url_ = url_.replace("{clientProfileId}", encodeURIComponent("" + clientProfileId));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: AxiosRequestConfig = {
-            method: "GET",
-            url: url_,
-            headers: {
-                "Accept": "application/json"
-            },
-            cancelToken
-        };
-
-        return this.instance.request(options_).catch((_error: any) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            } else {
-                throw _error;
-            }
-        }).then((_response: AxiosResponse) => {
-            return this.processGetAccessCode(_response);
-        });
-    }
-
-    protected processGetAccessCode(response: AxiosResponse): Promise<string> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (const k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200  = _responseText;
-                result200 = resultData200 !== undefined ? resultData200 : null as any;
-    
-            return Promise.resolve<string>(result200);
-
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<string>(null as any);
-    }
-
-    getPurchaseOptions(clientProfileId: string, cancelToken?: CancelToken): Promise<AppPurchaseOptions> {
-        let url_ = this.baseUrl + "/api/client-profiles/{clientProfileId}/purchase-options";
-        if (clientProfileId === undefined || clientProfileId === null)
-            throw new globalThis.Error("The parameter 'clientProfileId' must be defined.");
-        url_ = url_.replace("{clientProfileId}", encodeURIComponent("" + clientProfileId));
+            url_ += "vpnProfileId=" + encodeURIComponent("" + vpnProfileId) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: AxiosRequestConfig = {
@@ -3314,6 +2992,328 @@ export class ProxyEndPointClient {
     }
 }
 
+export class VpnProfileClient {
+    protected instance: AxiosInstance;
+    protected baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, instance?: AxiosInstance) {
+
+        this.instance = instance || axios.create();
+
+        this.baseUrl = baseUrl ?? "";
+
+    }
+
+    addByAccessKey(accessKey: string, cancelToken?: CancelToken): Promise<VpnProfileInfo> {
+        let url_ = this.baseUrl + "/api/vpn-profiles/access-keys?";
+        if (accessKey === undefined || accessKey === null)
+            throw new globalThis.Error("The parameter 'accessKey' must be defined and cannot be null.");
+        else
+            url_ += "accessKey=" + encodeURIComponent("" + accessKey) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "PUT",
+            url: url_,
+            headers: {
+                "Accept": "application/json"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processAddByAccessKey(_response);
+        });
+    }
+
+    protected processAddByAccessKey(response: AxiosResponse): Promise<VpnProfileInfo> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            result200 = VpnProfileInfo.fromJS(resultData200);
+            return Promise.resolve<VpnProfileInfo>(result200);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<VpnProfileInfo>(null as any);
+    }
+
+    get(vpnProfileId: string, cancelToken?: CancelToken): Promise<VpnProfileInfo> {
+        let url_ = this.baseUrl + "/api/vpn-profiles/{vpnProfileId}";
+        if (vpnProfileId === undefined || vpnProfileId === null)
+            throw new globalThis.Error("The parameter 'vpnProfileId' must be defined.");
+        url_ = url_.replace("{vpnProfileId}", encodeURIComponent("" + vpnProfileId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "application/json"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processGet(_response);
+        });
+    }
+
+    protected processGet(response: AxiosResponse): Promise<VpnProfileInfo> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            result200 = VpnProfileInfo.fromJS(resultData200);
+            return Promise.resolve<VpnProfileInfo>(result200);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<VpnProfileInfo>(null as any);
+    }
+
+    update(vpnProfileId: string, updateParams: VpnProfileUpdateParams, cancelToken?: CancelToken): Promise<VpnProfileInfo> {
+        let url_ = this.baseUrl + "/api/vpn-profiles/{vpnProfileId}";
+        if (vpnProfileId === undefined || vpnProfileId === null)
+            throw new globalThis.Error("The parameter 'vpnProfileId' must be defined.");
+        url_ = url_.replace("{vpnProfileId}", encodeURIComponent("" + vpnProfileId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(updateParams);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "PATCH",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processUpdate(_response);
+        });
+    }
+
+    protected processUpdate(response: AxiosResponse): Promise<VpnProfileInfo> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            result200 = VpnProfileInfo.fromJS(resultData200);
+            return Promise.resolve<VpnProfileInfo>(result200);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<VpnProfileInfo>(null as any);
+    }
+
+    delete(vpnProfileId: string, cancelToken?: CancelToken): Promise<void> {
+        let url_ = this.baseUrl + "/api/vpn-profiles/{vpnProfileId}";
+        if (vpnProfileId === undefined || vpnProfileId === null)
+            throw new globalThis.Error("The parameter 'vpnProfileId' must be defined.");
+        url_ = url_.replace("{vpnProfileId}", encodeURIComponent("" + vpnProfileId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "DELETE",
+            url: url_,
+            headers: {
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processDelete(_response);
+        });
+    }
+
+    protected processDelete(response: AxiosResponse): Promise<void> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            return Promise.resolve<void>(null as any);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<void>(null as any);
+    }
+
+    getAccessCode(vpnProfileId: string, cancelToken?: CancelToken): Promise<string> {
+        let url_ = this.baseUrl + "/api/vpn-profiles/{vpnProfileId}/access-code";
+        if (vpnProfileId === undefined || vpnProfileId === null)
+            throw new globalThis.Error("The parameter 'vpnProfileId' must be defined.");
+        url_ = url_.replace("{vpnProfileId}", encodeURIComponent("" + vpnProfileId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "application/json"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processGetAccessCode(_response);
+        });
+    }
+
+    protected processGetAccessCode(response: AxiosResponse): Promise<string> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+                result200 = resultData200 !== undefined ? resultData200 : null as any;
+    
+            return Promise.resolve<string>(result200);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<string>(null as any);
+    }
+
+    getPurchaseOptions(vpnProfileId: string, cancelToken?: CancelToken): Promise<AppPurchaseOptions> {
+        let url_ = this.baseUrl + "/api/vpn-profiles/{vpnProfileId}/purchase-options";
+        if (vpnProfileId === undefined || vpnProfileId === null)
+            throw new globalThis.Error("The parameter 'vpnProfileId' must be defined.");
+        url_ = url_.replace("{vpnProfileId}", encodeURIComponent("" + vpnProfileId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "application/json"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processGetPurchaseOptions(_response);
+        });
+    }
+
+    protected processGetPurchaseOptions(response: AxiosResponse): Promise<AppPurchaseOptions> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            result200 = AppPurchaseOptions.fromJS(resultData200);
+            return Promise.resolve<AppPurchaseOptions>(result200);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<AppPurchaseOptions>(null as any);
+    }
+}
+
 export class Account implements IAccount {
     userId!: string;
     name?: string | null;
@@ -3574,7 +3574,7 @@ export class AppInfo implements IAppInfo {
     intentFeatures!: DeviceIntentFeatures;
     state!: AppState;
     userSettings!: UserSettings;
-    clientProfileInfos!: ClientProfileInfo[];
+    vpnProfileInfos!: VpnProfileInfo[];
     availableCultureInfos!: UiCultureInfo[];
     isRemote!: boolean;
 
@@ -3590,7 +3590,7 @@ export class AppInfo implements IAppInfo {
             this.intentFeatures = new DeviceIntentFeatures();
             this.state = new AppState();
             this.userSettings = new UserSettings();
-            this.clientProfileInfos = [];
+            this.vpnProfileInfos = [];
             this.availableCultureInfos = [];
         }
     }
@@ -3601,13 +3601,13 @@ export class AppInfo implements IAppInfo {
             this.intentFeatures = _data["intentFeatures"] ? DeviceIntentFeatures.fromJS(_data["intentFeatures"]) : new DeviceIntentFeatures();
             this.state = _data["state"] ? AppState.fromJS(_data["state"]) : new AppState();
             this.userSettings = _data["userSettings"] ? UserSettings.fromJS(_data["userSettings"]) : new UserSettings();
-            if (Array.isArray(_data["clientProfileInfos"])) {
-                this.clientProfileInfos = [] as any;
-                for (let item of _data["clientProfileInfos"])
-                    this.clientProfileInfos!.push(ClientProfileInfo.fromJS(item));
+            if (Array.isArray(_data["vpnProfileInfos"])) {
+                this.vpnProfileInfos = [] as any;
+                for (let item of _data["vpnProfileInfos"])
+                    this.vpnProfileInfos!.push(VpnProfileInfo.fromJS(item));
             }
             else {
-                this.clientProfileInfos = null as any;
+                this.vpnProfileInfos = null as any;
             }
             if (Array.isArray(_data["availableCultureInfos"])) {
                 this.availableCultureInfos = [] as any;
@@ -3634,10 +3634,10 @@ export class AppInfo implements IAppInfo {
         data["intentFeatures"] = this.intentFeatures ? this.intentFeatures.toJSON() : null as any;
         data["state"] = this.state ? this.state.toJSON() : null as any;
         data["userSettings"] = this.userSettings ? this.userSettings.toJSON() : null as any;
-        if (Array.isArray(this.clientProfileInfos)) {
-            data["clientProfileInfos"] = [];
-            for (let item of this.clientProfileInfos)
-                data["clientProfileInfos"].push(item ? item.toJSON() : null as any);
+        if (Array.isArray(this.vpnProfileInfos)) {
+            data["vpnProfileInfos"] = [];
+            for (let item of this.vpnProfileInfos)
+                data["vpnProfileInfos"].push(item ? item.toJSON() : null as any);
         }
         if (Array.isArray(this.availableCultureInfos)) {
             data["availableCultureInfos"] = [];
@@ -3654,7 +3654,7 @@ export interface IAppInfo {
     intentFeatures: DeviceIntentFeatures;
     state: AppState;
     userSettings: UserSettings;
-    clientProfileInfos: ClientProfileInfo[];
+    vpnProfileInfos: VpnProfileInfo[];
     availableCultureInfos: UiCultureInfo[];
     isRemote: boolean;
 }
@@ -3662,6 +3662,7 @@ export interface IAppInfo {
 export class AppFeatures implements IAppFeatures {
     appId!: string;
     appName!: string;
+    packageTitle!: string;
     companyName!: string;
     isExcludeAppsSupported!: boolean;
     isIncludeAppsSupported!: boolean;
@@ -3690,7 +3691,6 @@ export class AppFeatures implements IAppFeatures {
     debugCommands!: string[];
     isProxySupported!: boolean;
     isRemoteAccessSupported!: boolean;
-    adjustForSystemBars!: boolean;
     allowEndPointStrategy!: boolean;
     isAdSupported!: boolean;
     isRewardedAdSupported!: boolean;
@@ -3717,6 +3717,7 @@ export class AppFeatures implements IAppFeatures {
         if (_data) {
             this.appId = _data["appId"] !== undefined ? _data["appId"] : null as any;
             this.appName = _data["appName"] !== undefined ? _data["appName"] : null as any;
+            this.packageTitle = _data["packageTitle"] !== undefined ? _data["packageTitle"] : null as any;
             this.companyName = _data["companyName"] !== undefined ? _data["companyName"] : null as any;
             this.isExcludeAppsSupported = _data["isExcludeAppsSupported"] !== undefined ? _data["isExcludeAppsSupported"] : null as any;
             this.isIncludeAppsSupported = _data["isIncludeAppsSupported"] !== undefined ? _data["isIncludeAppsSupported"] : null as any;
@@ -3759,7 +3760,6 @@ export class AppFeatures implements IAppFeatures {
             }
             this.isProxySupported = _data["isProxySupported"] !== undefined ? _data["isProxySupported"] : null as any;
             this.isRemoteAccessSupported = _data["isRemoteAccessSupported"] !== undefined ? _data["isRemoteAccessSupported"] : null as any;
-            this.adjustForSystemBars = _data["adjustForSystemBars"] !== undefined ? _data["adjustForSystemBars"] : null as any;
             this.allowEndPointStrategy = _data["allowEndPointStrategy"] !== undefined ? _data["allowEndPointStrategy"] : null as any;
             this.isAdSupported = _data["isAdSupported"] !== undefined ? _data["isAdSupported"] : null as any;
             this.isRewardedAdSupported = _data["isRewardedAdSupported"] !== undefined ? _data["isRewardedAdSupported"] : null as any;
@@ -3788,6 +3788,7 @@ export class AppFeatures implements IAppFeatures {
         data = typeof data === 'object' ? data : {};
         data["appId"] = this.appId !== undefined ? this.appId : null as any;
         data["appName"] = this.appName !== undefined ? this.appName : null as any;
+        data["packageTitle"] = this.packageTitle !== undefined ? this.packageTitle : null as any;
         data["companyName"] = this.companyName !== undefined ? this.companyName : null as any;
         data["isExcludeAppsSupported"] = this.isExcludeAppsSupported !== undefined ? this.isExcludeAppsSupported : null as any;
         data["isIncludeAppsSupported"] = this.isIncludeAppsSupported !== undefined ? this.isIncludeAppsSupported : null as any;
@@ -3824,7 +3825,6 @@ export class AppFeatures implements IAppFeatures {
         }
         data["isProxySupported"] = this.isProxySupported !== undefined ? this.isProxySupported : null as any;
         data["isRemoteAccessSupported"] = this.isRemoteAccessSupported !== undefined ? this.isRemoteAccessSupported : null as any;
-        data["adjustForSystemBars"] = this.adjustForSystemBars !== undefined ? this.adjustForSystemBars : null as any;
         data["allowEndPointStrategy"] = this.allowEndPointStrategy !== undefined ? this.allowEndPointStrategy : null as any;
         data["isAdSupported"] = this.isAdSupported !== undefined ? this.isAdSupported : null as any;
         data["isRewardedAdSupported"] = this.isRewardedAdSupported !== undefined ? this.isRewardedAdSupported : null as any;
@@ -3843,6 +3843,7 @@ export class AppFeatures implements IAppFeatures {
 export interface IAppFeatures {
     appId: string;
     appName: string;
+    packageTitle: string;
     companyName: string;
     isExcludeAppsSupported: boolean;
     isIncludeAppsSupported: boolean;
@@ -3871,7 +3872,6 @@ export interface IAppFeatures {
     debugCommands: string[];
     isProxySupported: boolean;
     isRemoteAccessSupported: boolean;
-    adjustForSystemBars: boolean;
     allowEndPointStrategy: boolean;
     isAdSupported: boolean;
     isRewardedAdSupported: boolean;
@@ -4049,7 +4049,7 @@ export class AppState implements IAppState {
     serverLocationInfo!: CurrentServerLocationInfo | null;
     connectRequestTime!: Date | null;
     lastError!: ApiError | null;
-    clientProfile!: ClientProfileBaseInfo | null;
+    vpnProfile!: VpnProfileBaseInfo | null;
     isIdle!: boolean;
     promptForLog!: boolean;
     logExists!: boolean;
@@ -4102,7 +4102,7 @@ export class AppState implements IAppState {
             this.serverLocationInfo = _data["serverLocationInfo"] ? CurrentServerLocationInfo.fromJS(_data["serverLocationInfo"]) : null as any;
             this.connectRequestTime = _data["connectRequestTime"] ? new Date(_data["connectRequestTime"].toString()) : null as any;
             this.lastError = _data["lastError"] ? ApiError.fromJS(_data["lastError"]) : null as any;
-            this.clientProfile = _data["clientProfile"] ? ClientProfileBaseInfo.fromJS(_data["clientProfile"]) : null as any;
+            this.vpnProfile = _data["vpnProfile"] ? VpnProfileBaseInfo.fromJS(_data["vpnProfile"]) : null as any;
             this.isIdle = _data["isIdle"] !== undefined ? _data["isIdle"] : null as any;
             this.promptForLog = _data["promptForLog"] !== undefined ? _data["promptForLog"] : null as any;
             this.logExists = _data["logExists"] !== undefined ? _data["logExists"] : null as any;
@@ -4149,7 +4149,7 @@ export class AppState implements IAppState {
         data["serverLocationInfo"] = this.serverLocationInfo ? this.serverLocationInfo.toJSON() : null as any;
         data["connectRequestTime"] = this.connectRequestTime ? this.connectRequestTime.toISOString() : null as any;
         data["lastError"] = this.lastError ? this.lastError.toJSON() : null as any;
-        data["clientProfile"] = this.clientProfile ? this.clientProfile.toJSON() : null as any;
+        data["vpnProfile"] = this.vpnProfile ? this.vpnProfile.toJSON() : null as any;
         data["isIdle"] = this.isIdle !== undefined ? this.isIdle : null as any;
         data["promptForLog"] = this.promptForLog !== undefined ? this.promptForLog : null as any;
         data["logExists"] = this.logExists !== undefined ? this.logExists : null as any;
@@ -4189,7 +4189,7 @@ export interface IAppState {
     serverLocationInfo: CurrentServerLocationInfo | null;
     connectRequestTime: Date | null;
     lastError: ApiError | null;
-    clientProfile: ClientProfileBaseInfo | null;
+    vpnProfile: VpnProfileBaseInfo | null;
     isIdle: boolean;
     promptForLog: boolean;
     logExists: boolean;
@@ -5038,9 +5038,9 @@ export interface IApiError {
     innerMessage?: string | null;
 }
 
-export class ClientProfileBaseInfo implements IClientProfileBaseInfo {
-    clientProfileId!: string;
-    clientProfileName!: string;
+export class VpnProfileBaseInfo implements IVpnProfileBaseInfo {
+    vpnProfileId!: string;
+    vpnProfileName!: string;
     supportId!: string | null;
     customData!: string | null;
     isPremiumLocationSelected!: boolean;
@@ -5055,7 +5055,7 @@ export class ClientProfileBaseInfo implements IClientProfileBaseInfo {
     customServerEndpoints?: string[] | null;
     isCustomServerEndpointsEnabled!: boolean;
 
-    constructor(data?: IClientProfileBaseInfo) {
+    constructor(data?: IVpnProfileBaseInfo) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -5066,8 +5066,8 @@ export class ClientProfileBaseInfo implements IClientProfileBaseInfo {
 
     init(_data?: any) {
         if (_data) {
-            this.clientProfileId = _data["clientProfileId"] !== undefined ? _data["clientProfileId"] : null as any;
-            this.clientProfileName = _data["clientProfileName"] !== undefined ? _data["clientProfileName"] : null as any;
+            this.vpnProfileId = _data["vpnProfileId"] !== undefined ? _data["vpnProfileId"] : null as any;
+            this.vpnProfileName = _data["vpnProfileName"] !== undefined ? _data["vpnProfileName"] : null as any;
             this.supportId = _data["supportId"] !== undefined ? _data["supportId"] : null as any;
             this.customData = _data["customData"] !== undefined ? _data["customData"] : null as any;
             this.isPremiumLocationSelected = _data["isPremiumLocationSelected"] !== undefined ? _data["isPremiumLocationSelected"] : null as any;
@@ -5091,17 +5091,17 @@ export class ClientProfileBaseInfo implements IClientProfileBaseInfo {
         }
     }
 
-    static fromJS(data: any): ClientProfileBaseInfo {
+    static fromJS(data: any): VpnProfileBaseInfo {
         data = typeof data === 'object' ? data : {};
-        let result = new ClientProfileBaseInfo();
+        let result = new VpnProfileBaseInfo();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["clientProfileId"] = this.clientProfileId !== undefined ? this.clientProfileId : null as any;
-        data["clientProfileName"] = this.clientProfileName !== undefined ? this.clientProfileName : null as any;
+        data["vpnProfileId"] = this.vpnProfileId !== undefined ? this.vpnProfileId : null as any;
+        data["vpnProfileName"] = this.vpnProfileName !== undefined ? this.vpnProfileName : null as any;
         data["supportId"] = this.supportId !== undefined ? this.supportId : null as any;
         data["customData"] = this.customData !== undefined ? this.customData : null as any;
         data["isPremiumLocationSelected"] = this.isPremiumLocationSelected !== undefined ? this.isPremiumLocationSelected : null as any;
@@ -5123,9 +5123,9 @@ export class ClientProfileBaseInfo implements IClientProfileBaseInfo {
     }
 }
 
-export interface IClientProfileBaseInfo {
-    clientProfileId: string;
-    clientProfileName: string;
+export interface IVpnProfileBaseInfo {
+    vpnProfileId: string;
+    vpnProfileName: string;
     supportId: string | null;
     customData: string | null;
     isPremiumLocationSelected: boolean;
@@ -5793,7 +5793,7 @@ export class UserSettings implements IUserSettings {
     isQuickLaunchPrompted!: boolean;
     cultureCode?: string | null;
     countryCode?: string | null;
-    clientProfileId?: string | null;
+    vpnProfileId?: string | null;
     splitTunneling!: SplitTunnelingSettings;
     channelProtocol!: ChannelProtocol;
     dropUdp!: boolean;
@@ -5830,7 +5830,7 @@ export class UserSettings implements IUserSettings {
             this.isQuickLaunchPrompted = _data["isQuickLaunchPrompted"] !== undefined ? _data["isQuickLaunchPrompted"] : null as any;
             this.cultureCode = _data["cultureCode"] !== undefined ? _data["cultureCode"] : null as any;
             this.countryCode = _data["countryCode"] !== undefined ? _data["countryCode"] : null as any;
-            this.clientProfileId = _data["clientProfileId"] !== undefined ? _data["clientProfileId"] : null as any;
+            this.vpnProfileId = _data["vpnProfileId"] !== undefined ? _data["vpnProfileId"] : null as any;
             this.splitTunneling = _data["splitTunneling"] ? SplitTunnelingSettings.fromJS(_data["splitTunneling"]) : new SplitTunnelingSettings();
             this.channelProtocol = _data["channelProtocol"] !== undefined ? _data["channelProtocol"] : null as any;
             this.dropUdp = _data["dropUdp"] !== undefined ? _data["dropUdp"] : null as any;
@@ -5869,7 +5869,7 @@ export class UserSettings implements IUserSettings {
         data["isQuickLaunchPrompted"] = this.isQuickLaunchPrompted !== undefined ? this.isQuickLaunchPrompted : null as any;
         data["cultureCode"] = this.cultureCode !== undefined ? this.cultureCode : null as any;
         data["countryCode"] = this.countryCode !== undefined ? this.countryCode : null as any;
-        data["clientProfileId"] = this.clientProfileId !== undefined ? this.clientProfileId : null as any;
+        data["vpnProfileId"] = this.vpnProfileId !== undefined ? this.vpnProfileId : null as any;
         data["splitTunneling"] = this.splitTunneling ? this.splitTunneling.toJSON() : null as any;
         data["channelProtocol"] = this.channelProtocol !== undefined ? this.channelProtocol : null as any;
         data["dropUdp"] = this.dropUdp !== undefined ? this.dropUdp : null as any;
@@ -5898,7 +5898,7 @@ export interface IUserSettings {
     isQuickLaunchPrompted: boolean;
     cultureCode?: string | null;
     countryCode?: string | null;
-    clientProfileId?: string | null;
+    vpnProfileId?: string | null;
     splitTunneling: SplitTunnelingSettings;
     channelProtocol: ChannelProtocol;
     dropUdp: boolean;
@@ -6141,9 +6141,9 @@ export interface IProxyAutoUpdateOptions {
     removeDuplicateIps: boolean;
 }
 
-export class ClientProfileInfo implements IClientProfileInfo {
-    clientProfileId!: string;
-    clientProfileName!: string;
+export class VpnProfileInfo implements IVpnProfileInfo {
+    vpnProfileId!: string;
+    vpnProfileName!: string;
     supportId!: string | null;
     customData!: string | null;
     isPremiumLocationSelected!: boolean;
@@ -6164,7 +6164,7 @@ export class ClientProfileInfo implements IClientProfileInfo {
     selectedLocationInfo!: ServerLocationItem | null;
     clientPolicy!: ClientPolicy | null;
 
-    constructor(data?: IClientProfileInfo) {
+    constructor(data?: IVpnProfileInfo) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -6179,8 +6179,8 @@ export class ClientProfileInfo implements IClientProfileInfo {
 
     init(_data?: any) {
         if (_data) {
-            this.clientProfileId = _data["clientProfileId"] !== undefined ? _data["clientProfileId"] : null as any;
-            this.clientProfileName = _data["clientProfileName"] !== undefined ? _data["clientProfileName"] : null as any;
+            this.vpnProfileId = _data["vpnProfileId"] !== undefined ? _data["vpnProfileId"] : null as any;
+            this.vpnProfileName = _data["vpnProfileName"] !== undefined ? _data["vpnProfileName"] : null as any;
             this.supportId = _data["supportId"] !== undefined ? _data["supportId"] : null as any;
             this.customData = _data["customData"] !== undefined ? _data["customData"] : null as any;
             this.isPremiumLocationSelected = _data["isPremiumLocationSelected"] !== undefined ? _data["isPremiumLocationSelected"] : null as any;
@@ -6224,17 +6224,17 @@ export class ClientProfileInfo implements IClientProfileInfo {
         }
     }
 
-    static fromJS(data: any): ClientProfileInfo {
+    static fromJS(data: any): VpnProfileInfo {
         data = typeof data === 'object' ? data : {};
-        let result = new ClientProfileInfo();
+        let result = new VpnProfileInfo();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["clientProfileId"] = this.clientProfileId !== undefined ? this.clientProfileId : null as any;
-        data["clientProfileName"] = this.clientProfileName !== undefined ? this.clientProfileName : null as any;
+        data["vpnProfileId"] = this.vpnProfileId !== undefined ? this.vpnProfileId : null as any;
+        data["vpnProfileName"] = this.vpnProfileName !== undefined ? this.vpnProfileName : null as any;
         data["supportId"] = this.supportId !== undefined ? this.supportId : null as any;
         data["customData"] = this.customData !== undefined ? this.customData : null as any;
         data["isPremiumLocationSelected"] = this.isPremiumLocationSelected !== undefined ? this.isPremiumLocationSelected : null as any;
@@ -6270,9 +6270,9 @@ export class ClientProfileInfo implements IClientProfileInfo {
     }
 }
 
-export interface IClientProfileInfo {
-    clientProfileId: string;
-    clientProfileName: string;
+export interface IVpnProfileInfo {
+    vpnProfileId: string;
+    vpnProfileName: string;
     supportId: string | null;
     customData: string | null;
     isPremiumLocationSelected: boolean;
@@ -6806,6 +6806,7 @@ export class SubscriptionPlan implements ISubscriptionPlan {
     planToken!: string;
     currencySymbol!: string;
     currencyCode!: string;
+    checkoutUrl?: string | null;
 
     constructor(data?: ISubscriptionPlan) {
         if (data) {
@@ -6825,6 +6826,7 @@ export class SubscriptionPlan implements ISubscriptionPlan {
             this.planToken = _data["planToken"] !== undefined ? _data["planToken"] : null as any;
             this.currencySymbol = _data["currencySymbol"] !== undefined ? _data["currencySymbol"] : null as any;
             this.currencyCode = _data["currencyCode"] !== undefined ? _data["currencyCode"] : null as any;
+            this.checkoutUrl = _data["checkoutUrl"] !== undefined ? _data["checkoutUrl"] : null as any;
         }
     }
 
@@ -6844,6 +6846,7 @@ export class SubscriptionPlan implements ISubscriptionPlan {
         data["planToken"] = this.planToken !== undefined ? this.planToken : null as any;
         data["currencySymbol"] = this.currencySymbol !== undefined ? this.currencySymbol : null as any;
         data["currencyCode"] = this.currencyCode !== undefined ? this.currencyCode : null as any;
+        data["checkoutUrl"] = this.checkoutUrl !== undefined ? this.checkoutUrl : null as any;
         return data;
     }
 }
@@ -6856,6 +6859,7 @@ export interface ISubscriptionPlan {
     planToken: string;
     currencySymbol: string;
     currencyCode: string;
+    checkoutUrl?: string | null;
 }
 
 export class PurchaseParams implements IPurchaseParams {
@@ -6958,189 +6962,6 @@ export interface IAppPurchaseOptions {
     subscriptionPlans: SubscriptionPlan[];
     purchaseUrl: string | null;
     canGoPremiumByCode: boolean;
-}
-
-export class ClientProfileUpdateParams implements IClientProfileUpdateParams {
-    clientProfileName?: PatchOfString | null;
-    isFavorite?: PatchOfBoolean | null;
-    selectedLocation?: PatchOfString | null;
-    customData?: PatchOfString | null;
-    isPremiumLocationSelected?: PatchOfBoolean | null;
-    accessCode?: PatchOfString | null;
-    customServerEndpoints?: PatchOfStringOf | null;
-    isCustomServerEndpointsEnabled?: PatchOfBoolean | null;
-
-    constructor(data?: IClientProfileUpdateParams) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.clientProfileName = _data["clientProfileName"] ? PatchOfString.fromJS(_data["clientProfileName"]) : null as any;
-            this.isFavorite = _data["isFavorite"] ? PatchOfBoolean.fromJS(_data["isFavorite"]) : null as any;
-            this.selectedLocation = _data["selectedLocation"] ? PatchOfString.fromJS(_data["selectedLocation"]) : null as any;
-            this.customData = _data["customData"] ? PatchOfString.fromJS(_data["customData"]) : null as any;
-            this.isPremiumLocationSelected = _data["isPremiumLocationSelected"] ? PatchOfBoolean.fromJS(_data["isPremiumLocationSelected"]) : null as any;
-            this.accessCode = _data["accessCode"] ? PatchOfString.fromJS(_data["accessCode"]) : null as any;
-            this.customServerEndpoints = _data["customServerEndpoints"] ? PatchOfStringOf.fromJS(_data["customServerEndpoints"]) : null as any;
-            this.isCustomServerEndpointsEnabled = _data["isCustomServerEndpointsEnabled"] ? PatchOfBoolean.fromJS(_data["isCustomServerEndpointsEnabled"]) : null as any;
-        }
-    }
-
-    static fromJS(data: any): ClientProfileUpdateParams {
-        data = typeof data === 'object' ? data : {};
-        let result = new ClientProfileUpdateParams();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["clientProfileName"] = this.clientProfileName ? this.clientProfileName.toJSON() : null as any;
-        data["isFavorite"] = this.isFavorite ? this.isFavorite.toJSON() : null as any;
-        data["selectedLocation"] = this.selectedLocation ? this.selectedLocation.toJSON() : null as any;
-        data["customData"] = this.customData ? this.customData.toJSON() : null as any;
-        data["isPremiumLocationSelected"] = this.isPremiumLocationSelected ? this.isPremiumLocationSelected.toJSON() : null as any;
-        data["accessCode"] = this.accessCode ? this.accessCode.toJSON() : null as any;
-        data["customServerEndpoints"] = this.customServerEndpoints ? this.customServerEndpoints.toJSON() : null as any;
-        data["isCustomServerEndpointsEnabled"] = this.isCustomServerEndpointsEnabled ? this.isCustomServerEndpointsEnabled.toJSON() : null as any;
-        return data;
-    }
-}
-
-export interface IClientProfileUpdateParams {
-    clientProfileName?: PatchOfString | null;
-    isFavorite?: PatchOfBoolean | null;
-    selectedLocation?: PatchOfString | null;
-    customData?: PatchOfString | null;
-    isPremiumLocationSelected?: PatchOfBoolean | null;
-    accessCode?: PatchOfString | null;
-    customServerEndpoints?: PatchOfStringOf | null;
-    isCustomServerEndpointsEnabled?: PatchOfBoolean | null;
-}
-
-export class PatchOfString implements IPatchOfString {
-    value?: string | null;
-
-    constructor(data?: IPatchOfString) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.value = _data["value"] !== undefined ? _data["value"] : null as any;
-        }
-    }
-
-    static fromJS(data: any): PatchOfString {
-        data = typeof data === 'object' ? data : {};
-        let result = new PatchOfString();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["value"] = this.value !== undefined ? this.value : null as any;
-        return data;
-    }
-}
-
-export interface IPatchOfString {
-    value?: string | null;
-}
-
-export class PatchOfBoolean implements IPatchOfBoolean {
-    value!: boolean;
-
-    constructor(data?: IPatchOfBoolean) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.value = _data["value"] !== undefined ? _data["value"] : null as any;
-        }
-    }
-
-    static fromJS(data: any): PatchOfBoolean {
-        data = typeof data === 'object' ? data : {};
-        let result = new PatchOfBoolean();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["value"] = this.value !== undefined ? this.value : null as any;
-        return data;
-    }
-}
-
-export interface IPatchOfBoolean {
-    value: boolean;
-}
-
-export class PatchOfStringOf implements IPatchOfStringOf {
-    value?: string[] | null;
-
-    constructor(data?: IPatchOfStringOf) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            if (Array.isArray(_data["value"])) {
-                this.value = [] as any;
-                for (let item of _data["value"])
-                    this.value!.push(item);
-            }
-            else {
-                this.value = null as any;
-            }
-        }
-    }
-
-    static fromJS(data: any): PatchOfStringOf {
-        data = typeof data === 'object' ? data : {};
-        let result = new PatchOfStringOf();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.value)) {
-            data["value"] = [];
-            for (let item of this.value)
-                data["value"].push(item);
-        }
-        return data;
-    }
-}
-
-export interface IPatchOfStringOf {
-    value?: string[] | null;
 }
 
 export class AppProxyEndPointInfo implements IAppProxyEndPointInfo {
@@ -7444,6 +7265,189 @@ export interface IProxyEndPointDefaults {
     port?: number | null;
     username?: string | null;
     password?: string | null;
+}
+
+export class VpnProfileUpdateParams implements IVpnProfileUpdateParams {
+    vpnProfileName?: PatchOfString | null;
+    isFavorite?: PatchOfBoolean | null;
+    selectedLocation?: PatchOfString | null;
+    customData?: PatchOfString | null;
+    isPremiumLocationSelected?: PatchOfBoolean | null;
+    accessCode?: PatchOfString | null;
+    customServerEndpoints?: PatchOfStringOf | null;
+    isCustomServerEndpointsEnabled?: PatchOfBoolean | null;
+
+    constructor(data?: IVpnProfileUpdateParams) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.vpnProfileName = _data["vpnProfileName"] ? PatchOfString.fromJS(_data["vpnProfileName"]) : null as any;
+            this.isFavorite = _data["isFavorite"] ? PatchOfBoolean.fromJS(_data["isFavorite"]) : null as any;
+            this.selectedLocation = _data["selectedLocation"] ? PatchOfString.fromJS(_data["selectedLocation"]) : null as any;
+            this.customData = _data["customData"] ? PatchOfString.fromJS(_data["customData"]) : null as any;
+            this.isPremiumLocationSelected = _data["isPremiumLocationSelected"] ? PatchOfBoolean.fromJS(_data["isPremiumLocationSelected"]) : null as any;
+            this.accessCode = _data["accessCode"] ? PatchOfString.fromJS(_data["accessCode"]) : null as any;
+            this.customServerEndpoints = _data["customServerEndpoints"] ? PatchOfStringOf.fromJS(_data["customServerEndpoints"]) : null as any;
+            this.isCustomServerEndpointsEnabled = _data["isCustomServerEndpointsEnabled"] ? PatchOfBoolean.fromJS(_data["isCustomServerEndpointsEnabled"]) : null as any;
+        }
+    }
+
+    static fromJS(data: any): VpnProfileUpdateParams {
+        data = typeof data === 'object' ? data : {};
+        let result = new VpnProfileUpdateParams();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["vpnProfileName"] = this.vpnProfileName ? this.vpnProfileName.toJSON() : null as any;
+        data["isFavorite"] = this.isFavorite ? this.isFavorite.toJSON() : null as any;
+        data["selectedLocation"] = this.selectedLocation ? this.selectedLocation.toJSON() : null as any;
+        data["customData"] = this.customData ? this.customData.toJSON() : null as any;
+        data["isPremiumLocationSelected"] = this.isPremiumLocationSelected ? this.isPremiumLocationSelected.toJSON() : null as any;
+        data["accessCode"] = this.accessCode ? this.accessCode.toJSON() : null as any;
+        data["customServerEndpoints"] = this.customServerEndpoints ? this.customServerEndpoints.toJSON() : null as any;
+        data["isCustomServerEndpointsEnabled"] = this.isCustomServerEndpointsEnabled ? this.isCustomServerEndpointsEnabled.toJSON() : null as any;
+        return data;
+    }
+}
+
+export interface IVpnProfileUpdateParams {
+    vpnProfileName?: PatchOfString | null;
+    isFavorite?: PatchOfBoolean | null;
+    selectedLocation?: PatchOfString | null;
+    customData?: PatchOfString | null;
+    isPremiumLocationSelected?: PatchOfBoolean | null;
+    accessCode?: PatchOfString | null;
+    customServerEndpoints?: PatchOfStringOf | null;
+    isCustomServerEndpointsEnabled?: PatchOfBoolean | null;
+}
+
+export class PatchOfString implements IPatchOfString {
+    value?: string | null;
+
+    constructor(data?: IPatchOfString) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.value = _data["value"] !== undefined ? _data["value"] : null as any;
+        }
+    }
+
+    static fromJS(data: any): PatchOfString {
+        data = typeof data === 'object' ? data : {};
+        let result = new PatchOfString();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["value"] = this.value !== undefined ? this.value : null as any;
+        return data;
+    }
+}
+
+export interface IPatchOfString {
+    value?: string | null;
+}
+
+export class PatchOfBoolean implements IPatchOfBoolean {
+    value!: boolean;
+
+    constructor(data?: IPatchOfBoolean) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.value = _data["value"] !== undefined ? _data["value"] : null as any;
+        }
+    }
+
+    static fromJS(data: any): PatchOfBoolean {
+        data = typeof data === 'object' ? data : {};
+        let result = new PatchOfBoolean();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["value"] = this.value !== undefined ? this.value : null as any;
+        return data;
+    }
+}
+
+export interface IPatchOfBoolean {
+    value: boolean;
+}
+
+export class PatchOfStringOf implements IPatchOfStringOf {
+    value?: string[] | null;
+
+    constructor(data?: IPatchOfStringOf) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["value"])) {
+                this.value = [] as any;
+                for (let item of _data["value"])
+                    this.value!.push(item);
+            }
+            else {
+                this.value = null as any;
+            }
+        }
+    }
+
+    static fromJS(data: any): PatchOfStringOf {
+        data = typeof data === 'object' ? data : {};
+        let result = new PatchOfStringOf();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.value)) {
+            data["value"] = [];
+            for (let item of this.value)
+                data["value"].push(item);
+        }
+        return data;
+    }
+}
+
+export interface IPatchOfStringOf {
+    value?: string[] | null;
 }
 
 function throwException(message: string, status: number, response: string, headers: { [key: string]: any; }, result?: any): any {

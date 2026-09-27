@@ -1,5 +1,5 @@
 ﻿<script setup lang="ts">
-import { type ClientProfileInfo, ServerLocationItem } from '@/services/VpnHood.Client.Api';
+import { type VpnProfileInfo, ServerLocationItem } from '@/services/VpnHood.Client.Api';
 import { Util } from '@/helpers/Util';
 import { VpnHoodApp } from '@/services/VpnHoodApp';
 import { UiConstants } from '@/helpers/UiConstants';
@@ -7,7 +7,7 @@ import { UiConstants } from '@/helpers/UiConstants';
 const vhApp = VpnHoodApp.instance;
 
 const props = defineProps<{
-  clientProfileInfo: ClientProfileInfo,
+  vpnProfileInfo: VpnProfileInfo,
 }>()
 
 function isShowFlagOnCollapseState(serverLocationInfo: ServerLocationItem, index: number): boolean{
@@ -21,7 +21,7 @@ function isShowFlagOnCollapseState(serverLocationInfo: ServerLocationItem, index
   <div class="d-flex align-center bg-expansion-panels-collapsed py-3 px-2 mx-4 text-start rounded-lg">
 
     <!-- Countries flag -->
-    <template v-for="(serverLocationInfo, index) in props.clientProfileInfo.locationInfos">
+    <template v-for="(serverLocationInfo, index) in props.vpnProfileInfo.locationInfos">
       <span
         v-if="isShowFlagOnCollapseState(serverLocationInfo, index)"
         :key="index"
@@ -48,10 +48,10 @@ function isShowFlagOnCollapseState(serverLocationInfo: ServerLocationItem, index
 
     <!-- More countries number -->
     <span
-      v-if="Util.calcLocationCount(clientProfileInfo) > UiConstants.locationNumberOnCollapsedProfile"
+      v-if="Util.calcLocationCount(vpnProfileInfo) > UiConstants.locationNumberOnCollapsedProfile"
       class="text-body-small text-lowercase ps-3"
     >
-      +{{ Util.calcLocationCount(clientProfileInfo) - UiConstants.locationNumberOnCollapsedProfile }}
+      +{{ Util.calcLocationCount(vpnProfileInfo) - UiConstants.locationNumberOnCollapsedProfile }}
     </span>
   </div>
 </template>

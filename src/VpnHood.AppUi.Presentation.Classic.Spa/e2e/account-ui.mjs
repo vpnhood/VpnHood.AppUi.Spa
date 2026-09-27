@@ -70,17 +70,17 @@ const api = async (method, p, body) => {
 
 /**
  * The app's own view of this device — read from /api/app/state, which is exactly the object the SPA
- * renders from (ClientProfileBaseInfo: hasAccessCode, isPremium, accessCodeRefusal). The profile
+ * renders from (VpnProfileBaseInfo: hasAccessCode, isPremium, accessCodeRefusal). The profile
  * infos on /api/app/config are the RICHER shape and carry no hasAccessCode, so reading them here
  * would silently compare against undefined.
  */
 const appState = async () => {
   const state = (await api('GET', '/api/app/state')).json;
   const cfg = (await api('GET', '/api/app/config')).json;
-  const profileId = state.clientProfile?.clientProfileId
-    ?? cfg.userSettings.clientProfileId ?? cfg.clientProfileInfos[0].clientProfileId;
+  const profileId = state.vpnProfile?.vpnProfileId
+    ?? cfg.userSettings.vpnProfileId ?? cfg.vpnProfileInfos[0].vpnProfileId;
   const account = (await api('GET', '/api/account')).json;
-  return { cfg, profileId, profile: state.clientProfile, account };
+  return { cfg, profileId, profile: state.vpnProfile, account };
 };
 
 // A well-formed access code: version 1 + a checksum digit over 18 random digits (AccessCodeUtils).
@@ -233,7 +233,7 @@ try {
   // a clean slate: no account, no code, whatever the last run left behind
   await api('POST', '/api/account/sign-out').catch(() => {});
   const start = await appState();
-  await api('PATCH', `/api/client-profiles/${start.profileId}`, { accessCode: { value: null } });
+  await api('PATCH', `/api/vpn-profiles/${start.profileId}`, { accessCode: { value: null } });
 
   browser = await chromium.launch();
   const page = await browser.newPage({ viewport: { width: 430, height: 900 } });
@@ -363,7 +363,7 @@ finally {
   if (browser) await browser.close();
   if (restore) {
     const end = await appState().catch(() => null);
-    if (end) await api('PATCH', `/api/client-profiles/${end.profileId}`, { accessCode: { value: null } }).catch(() => {});
+    if (end) await api('PATCH', `/api/vpn-profiles/${end.profileId}`, { accessCode: { value: null } }).catch(() => {});
     await api('POST', '/api/account/sign-out').catch(() => {});
     console.log('\n   cleanup: code cleared, signed out');
     console.log('   note: the dev account\'s upload slot still holds the last code this run typed —');

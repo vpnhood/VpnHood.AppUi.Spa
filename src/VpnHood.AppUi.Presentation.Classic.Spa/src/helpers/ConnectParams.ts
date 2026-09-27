@@ -1,7 +1,7 @@
 import { ConnectPlanId } from '@/services/VpnHood.Client.Api';
 
 export interface ConnectParams {
-  clientProfileId: string;
+  vpnProfileId: string;
   serverLocation: string | null;
   isPremium: boolean;
   planId: ConnectPlanId;

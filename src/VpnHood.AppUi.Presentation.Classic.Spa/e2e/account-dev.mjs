@@ -58,7 +58,7 @@ const api = async (method, p, body) => {
 };
 
 const typeCode = (profileId, value) =>
-  api('PATCH', `/api/client-profiles/${profileId}`, { accessCode: { value } });
+  api('PATCH', `/api/vpn-profiles/${profileId}`, { accessCode: { value } });
 
 let browser = null;
 let restore = null; // what the run must undo, whatever happens
@@ -68,7 +68,7 @@ try {
   const cfg = (await api('GET', '/api/app/config')).json;
   if (!cfg?.features?.isAccountSupported) { bad(`app at ${APP} has no account support`); process.exit(1); }
   ok(`app is up with account support (${APP})`);
-  restore = { settings: cfg.userSettings, profileId: cfg.userSettings.clientProfileId ?? cfg.clientProfileInfos[0].clientProfileId };
+  restore = { settings: cfg.userSettings, profileId: cfg.userSettings.vpnProfileId ?? cfg.vpnProfileInfos[0].vpnProfileId };
 
   // the account API deliberately has NO set-access-code: a code is typed into a profile, and the
   // account hears about it afterwards (§7). A stale SPA calling the old route must get a 404.
@@ -109,7 +109,7 @@ try {
   await typeCode(restore.profileId, null);
   await api('POST', '/api/account/refresh');
   const back = (await api('GET', '/api/app/config')).json;
-  const backProfile = back?.clientProfileInfos?.find(p => p.clientProfileId === restore.profileId);
+  const backProfile = back?.vpnProfileInfos?.find(p => p.vpnProfileId === restore.profileId);
   check(backProfile?.accessCode != null,
     'clearing the profile while signed in never empties the slot — the code comes back',
     'the code did not return after a refresh: the app reached the account slot');
@@ -121,7 +121,7 @@ try {
     await typeCode(restore.profileId, realCode);
     ok(`typed the real code (${mask(last4(realCode))}) onto the profile, null-capture armed`);
 
-    await api('POST', `/api/app/connect?clientProfileId=${restore.profileId}`);
+    await api('POST', `/api/app/connect?vpnProfileId=${restore.profileId}`);
     let st = null;
     for (let i = 0; i < 40; i++) {
       await new Promise(r => setTimeout(r, 1500));
@@ -146,7 +146,7 @@ try {
     const res = await route.fetch();
     const state = await res.json();
     if (mockRefusal) {
-      state.clientProfile = { ...state.clientProfile, hasAccessCode: true };
+      state.vpnProfile = { ...state.vpnProfile, hasAccessCode: true };
       state.lastError = {
         typeName: 'SessionException',
         typeFullName: 'VpnHood.Core.Common.Exceptions.SessionException',
