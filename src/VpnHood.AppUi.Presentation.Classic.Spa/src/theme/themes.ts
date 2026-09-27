@@ -308,7 +308,7 @@ export const vhBlueThemeColors = defineTheme({
   warning: myColors.orange['100'],
   'on-warning': myColors.orange['300'],
 
-  'scroll-track': myColors.blue['20'],
-  'scroll-thumb': myColors.gray['500'],
-  'scroll-thumb-hover': myColors.green['300'],
+  'scroll-track': myColors.blue['330'],
+  'scroll-thumb': myColors.blue['200'],
+  'scroll-thumb-hover': myColors.blue['100'],
 } as const satisfies ThemeColorNames);
