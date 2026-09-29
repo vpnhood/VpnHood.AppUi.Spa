@@ -4,6 +4,7 @@ import { computed, ref } from 'vue';
 import i18n from '@/locales/i18n';
 import { VpnProfileUpdateParams, ConnectPlanId, PatchOfBoolean, PatchOfString } from '@/services/VpnHood.Client.Api';
 import { UiConstants } from '@/helpers/UiConstants';
+import { localApiTokenHeader } from '@/services/LocalApiToken';
 import LearningButton from '@/components/LearningButton.vue';
 import PremiumByCode from '@/components/PurchaseSubscription/PremiumByCode.vue';
 import router from '@/services/router';
@@ -54,9 +55,9 @@ async function sendReport(): Promise<void> {
   try {
     const clientId = vhApp.data.features.clientId.substring(0, 8);
 
-    // get the report file content.
+    // get the report file content, past the API client, so with its token
     const url: string = vhApp.data.serverUrl + UiConstants.logFileLocation;
-    const response: Response = await fetch(url);
+    const response: Response = await fetch(url, { headers: localApiTokenHeader() });
     const fileContent: string = await response.text();
 
     await vhApp.vhFirebase?.sendReport(fileContent, clientId, 'logs', vhApp.data.features.isTv);

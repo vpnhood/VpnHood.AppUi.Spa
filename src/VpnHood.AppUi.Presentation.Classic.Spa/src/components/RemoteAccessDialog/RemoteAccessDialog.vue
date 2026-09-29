@@ -4,6 +4,7 @@ import i18n from '@/locales/i18n';
 import { VpnHoodApp } from '@/services/VpnHoodApp';
 import vuetify from '@/theme/vuetify';
 import { RemoteAccessHint } from '@/helpers/UiConstants';
+import { localApiTokenHeader } from '@/services/LocalApiToken';
 import QrPlate from '@/components/OpenOnPhoneDialog/QrPlate.vue';
 import { useDialogFocus } from '@/helpers/InitialFocus';
 import type { RemoteAccessState } from '@/services/VpnHood.Client.Api';
@@ -81,15 +82,17 @@ async function refresh(): Promise<void> {
 const signedInEmail = computed(() =>
   dialogState.hint === RemoteAccessHint.SignIn ? vhApp.data.userState.userAccount?.email ?? null : null);
 
-// Unloaded, not hidden: a request started now would be cancelled with the page, and a beacon is
-// the one request the browser promises to deliver. A POST with no body, which is all the endpoint
-// takes. The base is the API's, which in the dev loop is not this page's origin.
+// Unloaded, not hidden: a request started now would be cancelled with the page, but one marked
+// keepalive is delivered all the same - and unlike a beacon it carries the token's header, without
+// which it would be refused and leave remote access open. A POST with no body, which is all the
+// endpoint takes. The base is the API's, which in the dev loop is not this page's origin.
 function onPageHide(): void {
   if (isAlwaysOn.value)
     return;
 
   const apiBase = (vhApp.data.serverUrl ?? window.location.origin).replace(/\/+$/, '');
-  navigator.sendBeacon(`${apiBase}/api/app/remote-access/stop`);
+  void fetch(`${apiBase}/api/app/remote-access/stop`,
+    { method: 'POST', keepalive: true, headers: localApiTokenHeader() });
 }
 
 let refreshTimer = 0;

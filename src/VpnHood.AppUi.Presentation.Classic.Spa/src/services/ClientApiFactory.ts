@@ -1,6 +1,7 @@
 import axios from "axios";
 import type {AxiosInstance} from 'axios';
 import { AppClient, AccountClient, BillingClient, VpnProfileClient, IntentsClient, ProxyEndPointClient } from './VpnHood.Client.Api';
+import { localApiTokenHeader } from './LocalApiToken';
 
 export class ClientApiFactory {
     private readonly axiosInstance: AxiosInstance;
@@ -14,6 +15,7 @@ export class ClientApiFactory {
             headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
+                ...localApiTokenHeader(),
             },
         };
         this.axiosInstance = axios.create(axiosConfig);
