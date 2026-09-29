@@ -21,6 +21,14 @@ namespace AppUiSample.Spa.Android;
 public class App(IntPtr javaReference, JniHandleOwnership transfer)
     : AndroidWebViewApplication(javaReference, transfer)
 {
+    // The build's, as in the main repo's heads: a debug app asks no token of its local API and keeps
+    // its LAN listener open without a pairing, which a release must not.
+#if DEBUG
+    private const bool IsDebugMode = true;
+#else
+    private const bool IsDebugMode = false;
+#endif
+
     // Called by the platform only in the app's own process: never in the VPN service's or the tile's.
     protected override AppInitParams CreateInitParams()
     {
@@ -38,7 +46,7 @@ public class App(IntPtr javaReference, JniHandleOwnership transfer)
         // once, for its web host, which serves the same entries at /assets/ to the page.
         var assets = context.PackagedAssetProvider;
 
-        return new AppOptions(context, isDebugMode: true) {
+        return new AppOptions(context, IsDebugMode) {
             AppName = "VpnHood! SPA Sample",
             PackageTitle = "VpnHoodSpaSample",
             CompanyName = "VpnHood",

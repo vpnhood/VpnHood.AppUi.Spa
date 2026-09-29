@@ -17,6 +17,14 @@ internal static class App
     // the one answer the host and the options must give alike (CliInitParams.IsAddAccessKeySupported)
     private const bool IsAddAccessKeySupported = true;
 
+    // The build's, as in the main repo's heads: a debug app asks no token of its local API and keeps
+    // its LAN listener open without a pairing, which a release must not.
+#if DEBUG
+    private const bool IsDebugMode = true;
+#else
+    private const bool IsDebugMode = false;
+#endif
+
     [STAThread]
     private static int Main(string[] args)
     {
@@ -35,7 +43,7 @@ internal static class App
         // once, for its web host, which serves the same entries at /assets/ to the page.
         var assets = context.PackagedAssetProvider;
 
-        return new AppOptions(context, isDebugMode: true) {
+        return new AppOptions(context, IsDebugMode) {
             AppName = "VpnHood! SPA Sample",
             PackageTitle = "VpnHoodSpaSample",
             CompanyName = "VpnHood",
