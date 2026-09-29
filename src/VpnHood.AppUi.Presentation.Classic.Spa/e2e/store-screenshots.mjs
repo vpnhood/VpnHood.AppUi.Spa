@@ -28,7 +28,7 @@
  *             headless by the VpnHoodStoreScreenshots harness (VpnHood/src/Apps/Tools/
  *             StoreScreenshots) — one process per shot, given the same merged fixture as a file.
  *             --harness names the built harness and --assets the UI's asset store (the folder
- *             _sync-assets.ps1 leaves beside ui.zip in src/AppUi/VpnHood.AppUi.Assets.Classic); both default to a
+ *             _sync-assets.ps1 leaves in src/AppUi/VpnHood.AppUi.Assets.Classic/assets); both default to a
  *             VpnHood checkout beside this repo. A shot's `hide` is a CSS selector list for the
  *             SPA; this renderer reads `hideAvalonia`, control-name paths from the page down, and
  *             refuses a shot that has the one without the other.

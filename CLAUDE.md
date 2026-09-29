@@ -1,7 +1,7 @@
 - This repo is a sample: the products moved to the Avalonia UI in the main repo; the SPA lives in
   `src/VpnHood.AppUi.Presentation.Classic.Spa/` and the paths below are relative to it. Nothing here
   may reference the main repo's source - only its published packages (`Directory.Build.props` pins
-  the version).
+  the version), or a local pack of them in `.packages` (README, "The one version pin").
 - Don't use inline styles.
 - Follow the existing code style.
 - Localize all user-facing strings in en.json (i18n).

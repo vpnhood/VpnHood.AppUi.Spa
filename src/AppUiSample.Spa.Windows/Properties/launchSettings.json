@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "AppUiSample.Spa.Windows": {
+      "commandName": "Project",
+      "commandLineArgs": "dev"
+    }
+  }
+}

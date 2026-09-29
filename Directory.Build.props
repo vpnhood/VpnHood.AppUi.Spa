@@ -8,6 +8,12 @@
 		<VhIpLocationsPackageVersion>8.2.854</VhIpLocationsPackageVersion>
 	</PropertyGroup>
 
+	<!-- Packages of a VpnHood not yet released, to build against before they are: a .packages folder
+	     beside this file, which git ignores, joins the package sources when it exists. -->
+	<PropertyGroup Condition="Exists('$(MSBuildThisFileDirectory).packages')">
+		<RestoreAdditionalProjectSources>$(MSBuildThisFileDirectory).packages</RestoreAdditionalProjectSources>
+	</PropertyGroup>
+
 	<PropertyGroup>
 		<LangVersion>latest</LangVersion>
 		<ImplicitUsings>enable</ImplicitUsings>

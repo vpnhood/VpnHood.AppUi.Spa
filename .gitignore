@@ -5,6 +5,8 @@ obj/
 *.user
 *.nupkg
 *.snupkg
+# VpnHood packages not yet released (Directory.Build.props)
+.packages/
 
 # OS and editor files
 .DS_Store

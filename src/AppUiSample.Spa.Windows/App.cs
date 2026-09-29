@@ -1,69 +1,56 @@
-using System.Windows;
-using Microsoft.Extensions.Logging;
 using VpnHood.AppLib.Api.WebHost;
 using VpnHood.AppLib.App;
-using VpnHood.AppLib.App.Windows;
+using VpnHood.AppUi.Hosting.Cli;
+using VpnHood.AppUi.Hosting.Cli.Windows;
 using VpnHood.AppUi.Hosting.WebView.Windows;
 using VpnHood.Core.Client.Abstractions;
 using VpnHood.Net.Toolkit.Assets;
-using VpnHood.Net.Toolkit.Logging;
 
 namespace AppUiSample.Spa.Windows;
 
 // A Windows head that shows the SPA: the app on the Windows device, and the web UI in a WebView2
 // window, from the published packages alone. What the main repo's heads do with the Avalonia UI
-// this does with a page - the same AppOptions, the same web host, another presentation.
-public class App : Application
+// this does with a page - the same host, the same AppOptions, the same web host, another
+// presentation. `dev` runs the app and the window in one process, with no service to install.
+internal static class App
 {
-    private static AppOptions CreateAppOptions()
-    {
-        // The files this build placed beside the app, read the way this platform reads them: the
-        // IP-location database from its package, the UI's store and the page from the SPA's build
-        // (SpaAssets.targets). The app extracts the store once, for its web host, which serves the
-        // same entries at /assets/ to the page.
-        var platformAssets = new FolderAssetProvider(AppContext.BaseDirectory);
+    // the one answer the host and the options must give alike (CliInitParams.IsAddAccessKeySupported)
+    private const bool IsAddAccessKeySupported = true;
 
-        return new AppOptions(appId: "com.vpnhood.sample.spa.windows", "VpnHoodSpaSample", isDebugMode: true) {
+    [STAThread]
+    private static int Main(string[] args)
+    {
+        return WindowsCliHost.Run(args, new CliInitParams {
+            AppId = "com.vpnhood.sample.spa.windows",
+            AppOptionsFactory = CreateAppOptions,
+            IsAddAccessKeySupported = IsAddAccessKeySupported,
+            Ui = new WpfWebViewUi()
+        });
+    }
+
+    private static AppOptions CreateAppOptions(AppOptionsContext context)
+    {
+        // The files this build placed beside the app: the IP-location database from its package, the
+        // UI's store and the page from the SPA's build (SpaAssets.targets). The app extracts the store
+        // once, for its web host, which serves the same entries at /assets/ to the page.
+        var assets = context.PackagedAssetProvider;
+
+        return new AppOptions(context, isDebugMode: true) {
             AppName = "VpnHood! SPA Sample",
+            PackageTitle = "VpnHoodSpaSample",
             CompanyName = "VpnHood",
             UiTheme = "blue",
             // the engine's own sample token, so the sample has a server profile and a location to show
             AccessKeys = [ClientOptions.SampleAccessKey],
-            IsAddAccessKeySupported = true,
+            IsAddAccessKeySupported = IsAddAccessKeySupported,
             PrivacyPolicyUrl = new Uri("https://www.vpnhood.com/vpnhood-client-privacy-policy"),
             TermsOfUseUrl = new Uri("https://www.vpnhood.com/legal/vpnhood-client-terms-of-use"),
-            LogoAssetPath = "images/VpnHoodClient-logo.png",
+            LogoAssetPath = "images/logo-client.png",
             PrivacyConsentAssetName = "privacy-consent-client",
-            IpLocationZipAsset = new Asset(platformAssets, "iplocations/IpLocations.zip"),
-            UiZipAssets = [new Asset(platformAssets, "assets/ui.zip")],
-            WebRootZipAsset = new Asset(platformAssets, "assets/web-root.zip"),
+            IpLocationZipAsset = new Asset(assets, "iplocations/IpLocations.zip"),
+            UiZipAssets = [new Asset(assets, "assets/ui.zip")],
+            WebRootZipAsset = new Asset(assets, "assets/web-root.zip"),
             WebHostFactory = new VpnHoodAppWebHostFactory()
         };
-    }
-
-    protected override void OnStartup(StartupEventArgs e)
-    {
-        base.OnStartup(e);
-
-        // the web UI, in this application's window
-        VpnHoodAppWpf.Init();
-    }
-
-    [STAThread]
-    public static void Main(string[] args)
-    {
-        // what goes wrong before the app has a log of its own, said on the console
-        VhLogger.Instance = VhLogger.CreateConsoleLogger();
-
-        // the app first, on its own; then WPF, which hosts the page
-        try {
-            VpnHoodAppWin.Init(CreateAppOptions, args);
-        }
-        catch (Exception ex) {
-            VhLogger.Instance.LogError(ex, "Could not run the app.");
-            return;
-        }
-
-        new App().Run();
     }
 }

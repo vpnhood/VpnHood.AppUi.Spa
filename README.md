@@ -52,3 +52,11 @@ every other locale at publish time.
 
 `Directory.Build.props` holds `VhPackageVersion`, the version of the VpnHood packages every project
 here consumes. Move it when the packages move; nothing else pins them.
+
+To build against a VpnHood not yet released, pack the main repo into a `.packages` folder beside
+`Directory.Build.props`: git ignores it, and the props add it as a package source when it exists.
+The pack is the `dotnet pack` step of the main repo's `pub/lib/Publish-NugetPackages.ps1`, run with
+a local version such as `8.2.854-local2` and `-o <this repo>/.packages` - never the script itself,
+which pushes. Pin that version. Packing again under a version already restored needs its folders
+removed from the NuGet cache (`~/.nuget/packages/vpnhood.*/<version>`), or restore keeps the old
+copy. While the pin names a local version, a checkout without that folder cannot restore.

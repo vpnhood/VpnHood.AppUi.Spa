@@ -10,6 +10,8 @@ extend-session.webp
 free-to-premium-account-icon.webp
 free-to-premium-servers.webp
 kill-switch.webp
+logo-client.png
+logo-connect.png
 more-location.webp
 no-ads.webp
 notifications.webp
@@ -24,6 +26,4 @@ rocket-smoke.webp
 rocket.webp
 split-ip.webp
 support.webp
-VpnHoodClient-logo.png
-VpnHoodConnect-logo.png
 you-are-premium.webp

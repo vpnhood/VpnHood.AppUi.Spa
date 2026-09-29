@@ -13,8 +13,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<!-- The web UI in WPF's window: the WebView2 adapter and the window, over the tray, the single
-		     instance and the Windows device the app runs on. -->
+		<!-- The Windows host (WindowsCliHost): the service the app runs in, the window's process with
+		     its tray, and the commands. -->
+		<PackageReference Include="VpnHood.AppUi.Hosting.Cli.Windows" Version="$(VhPackageVersion)" />
+		<!-- The web UI in WPF's window (WpfWebViewUi): the WebView2 adapter and the window. -->
 		<PackageReference Include="VpnHood.AppUi.Hosting.WebView.Windows" Version="$(VhPackageVersion)" />
 		<!-- The web host the page is served from, and that a paired browser reaches. -->
 		<PackageReference Include="VpnHood.AppLib.Api.WebHost" Version="$(VhPackageVersion)" />
