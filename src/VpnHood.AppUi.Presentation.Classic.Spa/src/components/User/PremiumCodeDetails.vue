@@ -31,7 +31,7 @@ async function loadPremiumCode(): Promise<string | null> {
 
   const vpnProfileId = vhApp.data.vpnProfileId;
   if (!vpnProfileId) {
-    premiumCode.value = locale('COULD_NOT_GET_CLIENT_PROFILE_ID');
+    premiumCode.value = locale('COULD_NOT_GET_VPN_PROFILE_ID');
     return null;
   }
 

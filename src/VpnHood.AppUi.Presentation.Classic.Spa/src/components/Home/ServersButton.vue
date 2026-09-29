@@ -31,7 +31,7 @@ function getActiveServerNameOrLocation(): string {
 function buttonClickHandler() {
     // This is a special case that should not happen
     if (!vhApp.data.features.isAddAccessKeySupported && vhApp.data.vpnProfileInfos.length== 0) {
-      vhApp.showErrorMessage(locale('NO_CLIENT_PROFILE_AVAILABLE'));
+      vhApp.showErrorMessage(locale('NO_VPN_PROFILE_AVAILABLE'));
       return;
     }
 
