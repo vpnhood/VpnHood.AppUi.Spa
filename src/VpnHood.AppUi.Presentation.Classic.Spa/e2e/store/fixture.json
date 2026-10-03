@@ -272,7 +272,7 @@
         "hasRegion": true
       },
       "customServerEndpoints": [
-        "15.204.89.227:443"
+        "203.0.113.10:443"
       ],
       "isCustomServerEndpointsEnabled": false
     },
