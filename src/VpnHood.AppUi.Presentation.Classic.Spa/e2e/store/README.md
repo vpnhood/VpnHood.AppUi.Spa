@@ -256,7 +256,7 @@ node e2e/store-publish-state.mjs --root ../Vpnhood.App.Client
 
 # is the LIVE App Store listing exactly the repo content? (counts, checksums, order)
 node e2e/store-asc-screenshots.mjs --bundle-id com.vpnhood.client.ios \
-  --root ../Vpnhood.App.Client --keys-dir ../.user --check
+  --root ../Vpnhood.App.Client --keys-dir ../.user/vendors/apple --check
 
 # full pipeline, CI: dispatch and watch (vh-ref = the VpnHood ref the shipped app was built from,
 # whose Avalonia UI draws the screens; webui-ref = the engine version)
@@ -282,7 +282,7 @@ the engine with `--harness`/`--assets` pointing into that checkout. A caller tha
 The Gemini key is the org secret `GOOGLE_GEMINI_TRNSLATE_APP_API_KEY` (one key for the SPA locales
 and both store listings). Workflows hand it to the tool as `GEMINI_API_KEY`, which is what
 vhtranslator reads — the two names differ on purpose. Locally it is
-`.user/google_gemini_translate_app_api_key.txt`.
+`.user/vendors/google/google_gemini_translate_app_api_key.txt`.
 
 An unchanged listing must yield: gate green, both store jobs **skipped**, no record commit. A
 forced run (`-f force=true`) must yield all jobs green with the App Store leg ~1 minute.

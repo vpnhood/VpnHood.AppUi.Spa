@@ -35,7 +35,7 @@
  * holding appstore_connect_api_key*.p8 + appstore_connect_api_key_id.txt + appstore_connect_issuer_id.txt.
  *
  * Usage:
- *   node e2e/store-subscriptions.mjs --bundle-id com.vpnhood.connect.ios --root ../Vpnhood.App.Connect --keys-dir ../.user
+ *   node e2e/store-subscriptions.mjs --bundle-id com.vpnhood.connect.ios --root ../Vpnhood.App.Connect --keys-dir ../.user/vendors/apple
  *   node e2e/store-subscriptions.mjs --bundle-id … --root … --keys-dir … --check   # report drift, write nothing
  */
 import fs from 'node:fs/promises';

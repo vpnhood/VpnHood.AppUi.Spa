@@ -26,7 +26,7 @@
  * Usage:
  *   node e2e/store-asc-screenshots.mjs --bundle-id com.vpnhood.client.ios [--root <store-repo>]
  *   node e2e/store-asc-screenshots.mjs --bundle-id … --check          report drift, write nothing
- *   node e2e/store-asc-screenshots.mjs --bundle-id … --keys-dir ../.user
+ *   node e2e/store-asc-screenshots.mjs --bundle-id … --keys-dir ../.user/vendors/apple
  */
 import { promises as fs } from 'fs';
 import { createSign, createHash } from 'crypto';
