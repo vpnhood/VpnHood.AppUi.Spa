@@ -646,6 +646,7 @@
   "SIGN_IN_TYPE_ON_YOUR_PHONE": "Type it on your phone instead",
   "REMOTE_ACCESS_HINT_SIGN_IN": "On your phone, open the menu and sign in.",
   "MANAGE_FROM_YOUR_PHONE": "On your phone",
+  "ADMINISTRATORS_ONLY": "Only administrators can use this app on this computer.",
   "ACCEPT_AND_CONTINUE": "Accept and continue",
   "ALLOW_ANONYMOUS_TRACKER": "Share anonymous usage data",
   "ALLOW_ANONYMOUS_TRACKER_DESC": "Help us improve the app by sending anonymous usage and diagnostic data.",
