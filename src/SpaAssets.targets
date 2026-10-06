@@ -27,12 +27,13 @@
 		<SpaIsAndroidApp>$(TargetFramework.Contains('-android'))</SpaIsAndroidApp>
 	</PropertyGroup>
 
-	<!-- Android: one entry in the package's assets, which is not split by CPU architecture. The
-	     folder's name twice on purpose: .NET for Android takes a leading assets\ in the link as the
-	     package's asset root and drops it, and the file must keep its folder under that root. -->
+	<!-- Android: one entry in the package's assets, which is not split by CPU architecture. The link
+	     starts with the project's own assets folder, which .NET for Android takes as the package's
+	     asset root and drops - Assets\ in an Android project, Platforms\Android\Assets\ in a MAUI
+	     one - and the file keeps its folder under that root. -->
 	<ItemGroup Condition="'$(SpaIsAndroidApp)' == 'true'">
-		<AndroidAsset Include="$(SpaUiZip)" Link="assets\assets\ui.zip" Visible="false" />
-		<AndroidAsset Include="$(SpaWebRootZip)" Link="assets\assets\web-root.zip" Visible="false" />
+		<AndroidAsset Include="$(SpaUiZip)" Link="$(MonoAndroidAssetsPrefix)\assets\ui.zip" Visible="false" />
+		<AndroidAsset Include="$(SpaWebRootZip)" Link="$(MonoAndroidAssetsPrefix)\assets\web-root.zip" Visible="false" />
 	</ItemGroup>
 
 	<!-- Windows: a file beside the executable, read in place. -->

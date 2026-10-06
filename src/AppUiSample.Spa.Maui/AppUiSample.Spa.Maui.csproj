@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<Description>A sample MAUI head: the VpnHood app with the SPA as its UI, in MAUI's own WebView, on Android and Windows, built from the published packages alone</Description>
+		<TargetFrameworks>net10.0-android36.1</TargetFrameworks>
+		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net10.0-windows10.0.26100.0</TargetFrameworks>
+		<OutputType>Exe</OutputType>
+		<UseMaui>true</UseMaui>
+		<SingleProject>true</SingleProject>
+		<ApplicationTitle>VpnHood! SPA Sample (MAUI)</ApplicationTitle>
+		<RootNamespace>AppUiSample.Spa.Maui</RootNamespace>
+		<ApplicationId>com.vpnhood.sample.spa.maui</ApplicationId>
+		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+		<ApplicationVersion>1</ApplicationVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">24.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
+		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
+		<MauiImage Include="Resources\Images\*" />
+		<MauiImage Update="Resources\Images\dotnet_bot.png" Resize="True" BaseSize="300,185" />
+		<MauiFont Include="Resources\Fonts\*" />
+		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.110" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.12" />
+		<!-- The app under a MAUI UI (VpnHoodAppMaui): its start on Android and Windows, in this process. -->
+		<PackageReference Include="VpnHood.AppUi.Hosting.Maui" Version="$(VhPackageVersion)" />
+		<!-- The web host the page is served from, and that a paired browser reaches. -->
+		<PackageReference Include="VpnHood.AppLib.Api.WebHost" Version="$(VhPackageVersion)" />
+		<!-- The IP-location database, placed beside the app by its own package's targets. -->
+		<PackageReference Include="VpnHood.Net.IpLocations.Assets.Ip2LocationLite" Version="$(VhIpLocationsPackageVersion)" />
+	</ItemGroup>
+
+	<!-- The store and the page, zipped from the SPA's build and placed beside the app. -->
+	<Import Project="..\SpaAssets.targets" />
+</Project>

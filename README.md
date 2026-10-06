@@ -21,7 +21,8 @@ references and which page it places beside itself.
 | `src/VpnHood.AppLib.Api.SwaggerHost/` | poses the app API (`VpnHood.AppLib.Api`, from NuGet) to NSwag; its `_recreate-api.ps1` regenerates the SPA's TypeScript client. Never run in an app: every action throws. |
 | `src/AppUiSample.Spa.Windows/` | a Windows head: the SPA in a WebView2 window, over `VpnHood.AppUi.Hosting.WebView.Windows`. |
 | `src/AppUiSample.Spa.Android/` | an Android head: the SPA in the system WebView, over `VpnHood.AppUi.Hosting.WebView.Android`. |
-| `src/SpaAssets.targets` | what both samples import: zips the SPA's `dist` into the two files a head places beside itself. |
+| `src/AppUiSample.Spa.Maui/` | a MAUI head on Android and Windows: the SPA in MAUI's own WebView, the app in its process through `VpnHood.AppUi.Hosting.Maui`. |
+| `src/SpaAssets.targets` | what the samples import: zips the SPA's `dist` into the two files a head places beside itself. |
 | `action.yml`, `…/e2e/store/` | the store screenshot and listing tooling that the store repos (`Vpnhood.App.Client`, `Vpnhood.App.Connect`) and the main repo's `publish_listing.yml` call by ref. Read `e2e/store/README.md` before touching any of it. |
 
 ## Running a sample

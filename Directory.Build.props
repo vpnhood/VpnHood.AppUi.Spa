@@ -4,7 +4,7 @@
 	     published packages, so what they get is exactly what a head outside that repo gets. The
 	     IP-location database follows its own repo's version line. -->
 	<PropertyGroup>
-		<VhPackageVersion>8.2.854-local4</VhPackageVersion>
+		<VhPackageVersion>8.2.854-local5</VhPackageVersion>
 		<VhIpLocationsPackageVersion>8.2.858</VhIpLocationsPackageVersion>
 	</PropertyGroup>
 

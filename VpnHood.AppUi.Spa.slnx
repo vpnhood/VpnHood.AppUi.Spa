@@ -17,4 +17,5 @@
   <Project Path="src/VpnHood.AppLib.Api.SwaggerHost/VpnHood.AppLib.Api.SwaggerHost.csproj" />
   <Project Path="src/AppUiSample.Spa.Windows/AppUiSample.Spa.Windows.csproj" />
   <Project Path="src/AppUiSample.Spa.Android/AppUiSample.Spa.Android.csproj" />
+  <Project Path="src/AppUiSample.Spa.Maui/AppUiSample.Spa.Maui.csproj" />
 </Solution>
