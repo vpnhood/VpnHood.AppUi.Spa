@@ -34,6 +34,7 @@ public class App(IntPtr javaReference, JniHandleOwnership transfer)
     {
         return new AppInitParams {
             AppId = PackageName ?? throw new InvalidOperationException("The application has no package name."),
+            AppName = "VpnHood! SPA Sample",
             StorageFolderName = "VpnHoodSpaSample",
             AppOptionsFactory = CreateAppOptions
         };
@@ -47,7 +48,6 @@ public class App(IntPtr javaReference, JniHandleOwnership transfer)
         var assets = context.PackagedAssetProvider;
 
         return new AppOptions(context, IsDebugMode) {
-            AppName = "VpnHood! SPA Sample",
             PackageTitle = "VpnHoodSpaSample",
             CompanyName = "VpnHood",
             UiTheme = "blue",

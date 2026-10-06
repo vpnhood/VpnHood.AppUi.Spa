@@ -1,7 +1,7 @@
 using VpnHood.AppLib.Api.WebHost;
 using VpnHood.AppLib.App;
-using VpnHood.AppUi.Hosting.Cli;
-using VpnHood.AppUi.Hosting.Cli.Windows;
+using VpnHood.AppUi.Hosting.Desktop;
+using VpnHood.AppUi.Hosting.Desktop.Windows;
 using VpnHood.AppUi.Hosting.WebView.Windows;
 using VpnHood.Core.Client.Abstractions;
 using VpnHood.Net.Toolkit.Assets;
@@ -14,7 +14,7 @@ namespace AppUiSample.Spa.Windows;
 // presentation. `dev` runs the app and the window in one process, with no service to install.
 internal static class App
 {
-    // the one answer the host and the options must give alike (CliInitParams.IsAddAccessKeySupported)
+    // the one answer the host and the options must give alike (DesktopInitParams.IsAddAccessKeySupported)
     private const bool IsAddAccessKeySupported = true;
 
     // The build's, as in the main repo's heads: a debug app asks no token of its local API and keeps
@@ -28,11 +28,12 @@ internal static class App
     [STAThread]
     private static int Main(string[] args)
     {
-        return WindowsCliHost.Run(args, new CliInitParams {
+        return WindowsDesktopHost.Run(args, new DesktopInitParams {
             AppId = "com.vpnhood.sample.spa.windows",
+            AppName = "VpnHood! SPA Sample",
             AppOptionsFactory = CreateAppOptions,
             IsAddAccessKeySupported = IsAddAccessKeySupported,
-            Ui = new WpfWebViewUi()
+            Ui = new WindowsWebViewUi()
         });
     }
 
@@ -44,7 +45,6 @@ internal static class App
         var assets = context.PackagedAssetProvider;
 
         return new AppOptions(context, IsDebugMode) {
-            AppName = "VpnHood! SPA Sample",
             PackageTitle = "VpnHoodSpaSample",
             CompanyName = "VpnHood",
             UiTheme = "blue",

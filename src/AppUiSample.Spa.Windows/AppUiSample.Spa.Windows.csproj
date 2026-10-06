@@ -3,7 +3,6 @@
 		<Description>A sample Windows head: the VpnHood app with the SPA as its UI, in a WebView2 window, built from the published packages alone</Description>
 		<OutputType>WinExe</OutputType>
 		<TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
-		<UseWPF>true</UseWPF>
 		<AssemblyName>VpnHoodSpaSample</AssemblyName>
 		<RootNamespace>AppUiSample.Spa.Windows</RootNamespace>
 		<SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
@@ -13,10 +12,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<!-- The Windows host (WindowsCliHost): the service the app runs in, the window's process with
+		<!-- The Windows host (WindowsDesktopHost): the service the app runs in, the window's process with
 		     its tray, and the commands. -->
-		<PackageReference Include="VpnHood.AppUi.Hosting.Cli.Windows" Version="$(VhPackageVersion)" />
-		<!-- The web UI in WPF's window (WpfWebViewUi): the WebView2 adapter and the window. -->
+		<PackageReference Include="VpnHood.AppUi.Hosting.Desktop.Windows" Version="$(VhPackageVersion)" />
+		<!-- The web UI in a Win32 window (WindowsWebViewUi): the WebView2 adapter and the window. -->
 		<PackageReference Include="VpnHood.AppUi.Hosting.WebView.Windows" Version="$(VhPackageVersion)" />
 		<!-- The web host the page is served from, and that a paired browser reaches. -->
 		<PackageReference Include="VpnHood.AppLib.Api.WebHost" Version="$(VhPackageVersion)" />
