@@ -291,13 +291,10 @@ export class VpnHoodAppData {
     return this.features.channelProtocols.includes(protocol);
   }
 
-  // Does this build collect anonymous data at all? features.isAnonymousTrackerSupported answers for the
-  // native side — it is false when the tracker collapsed to a NullTracker — but this WebView has analytics
-  // of its own, which a build enables by shipping firebaseOptions. Either engine makes the consent real;
-  // neither means there is nothing to consent to, and the privacy page must not claim otherwise.
+  // Does this build collect anonymous data at all? False when the app's tracker collapsed to a
+  // NullTracker: then there is nothing to consent to, and the privacy page must not claim otherwise.
   get isAnonymousTrackerSupported(): boolean {
-    return this.features.isAnonymousTrackerSupported ||
-      !!this.features.customData?.firebaseOptions;
+    return this.features.isAnonymousTrackerSupported;
   }
 
   //Add padding to the pages for handle edge-to-edge feature

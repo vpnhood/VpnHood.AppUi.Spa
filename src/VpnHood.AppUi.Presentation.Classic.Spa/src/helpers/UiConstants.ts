@@ -61,12 +61,6 @@ export enum LanguagesCode {
   English = 'en',
 }
 
-// Lives here rather than beside VhFirebaseApp so that naming an event does not statically pull the
-// Firebase SDK into the caller's chunk — the SDK is loaded on demand.
-export enum AnalyticsCustomEvent {
-  AlertDialogEventName = 'vh_alert_dialog_message',
-}
-
 export enum IPFilterType {
   FilterByDevice,
   FilterByApp

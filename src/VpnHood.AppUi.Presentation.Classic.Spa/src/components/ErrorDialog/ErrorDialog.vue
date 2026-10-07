@@ -4,7 +4,6 @@ import { computed, ref } from 'vue';
 import i18n from '@/locales/i18n';
 import { VpnProfileUpdateParams, ConnectPlanId, PatchOfBoolean, PatchOfString } from '@/services/VpnHood.Client.Api';
 import { UiConstants } from '@/helpers/UiConstants';
-import { localApiTokenHeader } from '@/services/LocalApiToken';
 import LearningButton from '@/components/LearningButton.vue';
 import PremiumByCode from '@/components/PurchaseSubscription/PremiumByCode.vue';
 import router from '@/services/router';
@@ -49,22 +48,6 @@ async function tryPremium(vpnProfileId: string): Promise<void> {
 async function diagnose(): Promise<void> {
   await closeDialog();
   await vhApp.diagnose();
-}
-
-async function sendReport(): Promise<void> {
-  try {
-    const clientId = vhApp.data.features.clientId.substring(0, 8);
-
-    // get the report file content, past the API client, so with its token
-    const url: string = vhApp.data.serverUrl + UiConstants.logFileLocation;
-    const response: Response = await fetch(url, { headers: localApiTokenHeader() });
-    const fileContent: string = await response.text();
-
-    await vhApp.vhFirebase?.sendReport(fileContent, clientId, 'logs', vhApp.data.features.isTv);
-  }
-  catch (ex) {
-    console.error('Oops! Could not even send the report details!', ex);
-  }
 }
 
 async function restorePremium(): Promise<void> {
@@ -169,17 +152,6 @@ async function closeDialog(): Promise<void> {
             :href="vhApp.data.serverUrl + UiConstants.logFileLocation"
             :text="locale('OPEN_REPORT')"
             target="_blank"
-          />
-
-          <!-- SendReport. The whole path runs through Firebase, which is absent when the user has
-               opted out of anonymous tracking (and in dev, and when no firebaseOptions are shipped),
-               so without this guard the button is present but does nothing. Open Report above still
-               works either way — it reads the log from the local server, no Firebase involved. -->
-          <v-btn v-if="dialogState.showLogButton && vhApp.data.uiState.isReportSendingAvailable"
-            prepend-icon="mdi-send-outline"
-            target="_blank"
-            :text="locale('SEND_REPORT')"
-            @click="sendReport()"
           />
 
         </v-defaults-provider>

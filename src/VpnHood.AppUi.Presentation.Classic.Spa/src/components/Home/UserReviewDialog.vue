@@ -67,10 +67,6 @@ async function submitRate() {
     // app is on; from a phone managing a TV, that is the TV.
     if (selectedRate.value == 3)
       await vhApp.withContinueOnTv(() => vhApp.intentsClient.requestUserReview());
-
-    // Production mode only
-    if (!import.meta.env.DEV)
-      await sendToFirebase();
   }
   catch (err) {
     console.error('Error submitting user review:', err);
@@ -80,11 +76,6 @@ async function submitRate() {
     userReviewText.value = null;
     showReviewThanks.value = false;
   }
-}
-
-async function sendToFirebase(): Promise<void> {
-  const clientId = vhApp.data.features.clientId.substring(0, 8);
-  await vhApp.vhFirebase?.sendRate(userReviewText.value, clientId, 'rates', selectedRate.value);
 }
 
 function isShowCloseBtn(): boolean{

@@ -1,7 +1,6 @@
 import { ApiException, AppFeature, ExceptionType, SessionErrorCode } from '@/services/VpnHood.Client.Api';
 import i18n from '@/locales/i18n';
 import { VpnHoodApp } from '@/services/VpnHoodApp';
-import { AnalyticsCustomEvent } from '@/helpers/UiConstants';
 import router from '@/services/router';
 import { Util } from './Util';
 
@@ -35,23 +34,10 @@ export class ErrorHandler {
 
     const text = errorOptions.text ?? '';
 
-    // English message for analytics
-    const englishErrorMessage = errorOptions.localeKey ?
-      (i18n.global.t(errorOptions.localeKey, 1, { locale: 'en' }) + text) :
-      text;
-
     // Translated message for show to user
     const userErrorMessage = errorOptions.localeKey ?
       (i18n.global.t(errorOptions.localeKey) + text) :
       text;
-
-    // Send the error message to analytics
-    VpnHoodApp.instance.vhFirebase?.analyticsLogEvent(AnalyticsCustomEvent.AlertDialogEventName, {
-      message: englishErrorMessage,
-      ui_language: i18n.global.locale.value,
-      org_message: err,
-      app_version: VpnHoodApp.instance.getAppVersion(true)
-    });
 
     // Private DNS error
     if (errorOptions.action?.isPrivateDnsError && VpnHoodApp.instance.data.isPremiumFeature(AppFeature.CustomDns)) {

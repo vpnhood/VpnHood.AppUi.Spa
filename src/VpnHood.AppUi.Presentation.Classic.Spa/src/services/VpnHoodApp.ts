@@ -1,7 +1,6 @@
 import {
   ApiException,
   AppClient,
-  AppFeatures,
   SignInOptions,
   SignInResult,
   SignInState,
@@ -23,7 +22,6 @@ import { ComponentRouteController } from '@/services/ComponentRouteController';
 import { reactive } from 'vue';
 import i18n, { availableLocales } from '@/locales/i18n';
 import router from '@/services/router';
-import type { VhFirebaseApp } from '@/services/Firebase';
 import { ErrorHandler } from '@/helpers/ErrorHandler';
 import { VpnHoodAppData } from '@/services/VpnHoodAppData';
 import { createDeferred, type Deferred } from '@/helpers/Deferred';
@@ -35,7 +33,6 @@ export class VpnHoodApp {
   public vpnProfileClient: VpnProfileClient;
   public intentsClient: IntentsClient;
   public proxyEndPointClient: ProxyEndPointClient;
-  public vhFirebase: VhFirebaseApp | null;
   public confirmDialogDeferred: Deferred<boolean> | null = null;
   public errorDialogModel: ComponentRouteController;
   public openOnPhoneDialogModel: ComponentRouteController;
@@ -52,7 +49,6 @@ export class VpnHoodApp {
     intentsClient: IntentsClient,
     proxyEndPointClient: ProxyEndPointClient,
     appData: VpnHoodAppData,
-    vhFirebase: VhFirebaseApp | null,
   ) {
     if (VpnHoodApp._instance) throw new Error('VpnHoodApp has been already initialized.');
 
@@ -61,13 +57,11 @@ export class VpnHoodApp {
     this.vpnProfileClient = vpnProfileClient;
     this.intentsClient = intentsClient;
     this.proxyEndPointClient = proxyEndPointClient;
-    this.vhFirebase = vhFirebase;
     this.errorDialogModel = new ComponentRouteController(ComponentName.ErrorDialog);
     this.openOnPhoneDialogModel = new ComponentRouteController(ComponentName.OpenOnPhoneDialog);
     this.remoteAccessDialogModel = new ComponentRouteController(ComponentName.RemoteAccessDialog);
     this.confirmDialogModel = new ComponentRouteController(ComponentName.ConfirmDialog);
     this.data.uiState.configTime = this.data.state.configTime;
-    this.data.uiState.isReportSendingAvailable = vhFirebase !== null;
     // appData arrives freshly fetched, so it is the persisted truth saveUserSetting diffs against.
     this.lastSavedUserSettingsJson = JSON.stringify(appData.userSettings);
     VpnHoodApp._instance = this;
@@ -98,66 +92,7 @@ export class VpnHoodApp {
       config.isRemote,
     );
 
-    const firebase = import.meta.env.DEV || !config.userSettings.allowAnonymousTracker
-      ? null
-      : await VpnHoodApp.createFirebase(config.features);
-
-    return new VpnHoodApp(apiClient, vpnProfileClient, intentsClient, proxyEndpointClient, appData, firebase);
-  }
-
-  // Firebase does analytics and report uploads. Loading it as its own chunk keeps the SDK out of
-  // the startup bundle, but it stays best-effort: tryCreate already degrades to null on a bad
-  // config, so a chunk that fails to load must degrade the same way rather than fail the launch.
-  //
-  // Only ever called once the user's allowAnonymousTracker consent is known to be granted. Merely
-  // constructing the SDK contacts Google (installations + remote config) and stamps a persistent
-  // per-install id via setUserId, so an opted-out user must not reach it at all — disabling
-  // collection after the fact would be too late.
-  private static async createFirebase(features: AppFeatures): Promise<VhFirebaseApp | null> {
-    try {
-      // A build without firebaseOptions can never create the SDK; decide that before the dynamic
-      // import so such builds never download and parse the Firebase chunk at all.
-      if (!features.customData?.firebaseOptions) {
-        console.log('the firebaseOptions is not set in the app features -> customData -> firebaseOptions.');
-        return null;
-      }
-
-      const { VhFirebaseApp } = await import('@/services/Firebase');
-
-      return VhFirebaseApp.tryCreate(features.customData?.firebaseOptions, features.clientId);
-    }
-    catch (err: unknown) {
-      console.error('Firebase: Failed to load the Firebase module.', err);
-      return null;
-    }
-  }
-
-  // The consent toggle can flip at any time from the settings page while the SDK was decided once at
-  // startup, so neither direction may be left stale: withdrawing consent must silence a live SDK, and
-  // granting it must not force a restart to take effect.
-  private async syncAnalyticsConsent(): Promise<void> {
-    if (import.meta.env.DEV) return;
-
-    // Already in sync — the common case, since this runs on every settings reload and consent
-    // rarely changes. Bail before touching the SDK: re-enabling an enabled SDK is a wasted call
-    // per save, and the no-SDK path below would re-attempt a Firebase init inside the awaited
-    // save chain. Consent-on with a null SDK still falls through, so a failed init keeps its
-    // retry on the next reload.
-    const isTrackerAllowed = this.data.userSettings.allowAnonymousTracker;
-    const isTrackerActive = this.vhFirebase !== null;
-    if (isTrackerAllowed === isTrackerActive)
-      return;
-
-    if (!isTrackerAllowed) {
-      this.vhFirebase?.setCollectionEnabled(false);
-      this.vhFirebase = null;
-    }
-    else if (this.vhFirebase) 
-      this.vhFirebase.setCollectionEnabled(true);
-    else 
-      this.vhFirebase = await VpnHoodApp.createFirebase(this.data.features);
-
-    this.data.uiState.isReportSendingAvailable = this.vhFirebase !== null;
+    return new VpnHoodApp(apiClient, vpnProfileClient, intentsClient, proxyEndpointClient, appData);
   }
 
   public async reloadState(): Promise<void> {
@@ -237,10 +172,6 @@ export class VpnHoodApp {
     // Remove the built-in VPN profile if the user is premium
     if (JSON.stringify(appInfo.vpnProfileInfos) !== JSON.stringify(this.data.vpnProfileInfos))
       this.data.vpnProfileInfos = appInfo.vpnProfileInfos;
-
-    // userSettings just came back from the backend, so this is the one place that sees every change
-    // to the analytics consent flag regardless of which page made it.
-    await this.syncAnalyticsConsent();
 
     if (appInfo.vpnProfileInfos.length === 0) this.data.userSettings.vpnProfileId = null;
 

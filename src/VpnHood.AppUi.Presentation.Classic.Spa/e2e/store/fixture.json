@@ -52,9 +52,7 @@
       "Udp",
       "Quic"
     ],
-    "customData": {
-      "firebaseOptions": null
-    },
+    "customData": null,
     "version": "8.1.835.0"
   },
   "intentFeatures": {

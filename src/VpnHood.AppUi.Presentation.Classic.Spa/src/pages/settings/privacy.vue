@@ -8,10 +8,8 @@ import SettingsToggleItem from '@/components/Settings/SettingsToggleItem.vue';
 const vhApp = VpnHoodApp.instance;
 const locale = i18n.global.t;
 
-// allowAnonymousTracker already gated the backend trackers (the GA4 tracker and the endpoint
-// tracker); it had simply never been surfaced, so it was stuck on its default of true and the
-// analytics running in this WebView ignored it entirely. Saving it re-reads the settings, which is
-// what re-syncs the analytics SDK — see VpnHoodApp.syncAnalyticsConsent.
+// The app's own switch: it gates every tracker the app and its VPN service make, and this page adds
+// no analytics of its own.
 const isAnonymousTrackerAllowed = computed<boolean>({
   get: () => vhApp.data.userSettings.allowAnonymousTracker,
   set: async (value: boolean) => {
