@@ -1,13 +1,11 @@
 ﻿<script setup lang="ts">
 import { VpnHoodApp } from '@/services/VpnHoodApp';
-import i18n from '@/locales/i18n';
 import { computed, ref } from 'vue';
 import { ComponentRouteController } from '@/services/ComponentRouteController';
 import { ComponentName } from '@/helpers/UiConstants';
 import { usePageHeaderAnchor } from '@/helpers/PageHeaderAnchor';
 
 const vhApp = VpnHoodApp.instance;
-const locale = i18n.global.t;
 const pageHeaderRef = usePageHeaderAnchor();
 
 const openDebugDialogCounter = ref<number>(0);

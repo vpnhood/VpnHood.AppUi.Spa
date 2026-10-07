@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { SplitAppMode } from '@/services/VpnHood.Client.Api';
-import {UiConstants} from "@/helpers/UiConstants";
 import { Util } from '@/helpers/Util';
 import { VpnHoodApp } from '@/services/VpnHoodApp';
 import i18n from '@/locales/i18n';

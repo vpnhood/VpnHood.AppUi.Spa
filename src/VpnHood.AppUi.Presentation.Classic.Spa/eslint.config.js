@@ -1,6 +1,6 @@
 import pluginVue from 'eslint-plugin-vue'
 import pluginVuetify from 'eslint-plugin-vuetify'
-import vueTsEslintConfig from '@vue/eslint-config-typescript'
+import tseslint from 'typescript-eslint'
 
 export default [
   {
@@ -13,8 +13,18 @@ export default [
     ignores: ['**/dist/**', '**/dist-ssr/**', '**/coverage/**'],
   },
 
+  // typescript-eslint directly, not @vue/eslint-config-typescript: that wrapper pulls in
+  // fast-glob -> braces, which has no patched release. The Vue configs come after it so the Vue
+  // parser takes the .vue files back, handing their <script lang="ts"> to the TypeScript parser.
+  ...tseslint.configs.recommended,
   ...pluginVue.configs['flat/essential'],
-  ...vueTsEslintConfig(),
+  {
+    name: 'app/vue-ts',
+    files: ['**/*.vue'],
+    languageOptions: {
+      parserOptions: { parser: tseslint.parser, extraFileExtensions: ['.vue'] },
+    },
+  },
 
   {
     name: 'app/overrides',
