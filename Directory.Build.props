@@ -5,7 +5,7 @@
 	     IP-location database follows its own repo's version line. -->
 	<PropertyGroup>
 		<VhPackageVersion>8.2.854-local5</VhPackageVersion>
-		<VhIpLocationsPackageVersion>8.2.858</VhIpLocationsPackageVersion>
+		<VhIpLocationsPackageVersion>8.2.859</VhIpLocationsPackageVersion>
 	</PropertyGroup>
 
 	<!-- Packages of a VpnHood not yet released, to build against before they are: a .packages folder
