@@ -2,6 +2,7 @@
   "features": {
     "appId": "com.vpnhood.client.windows",
     "appName": "VpnHood! CLIENT",
+    "packageTitle": "VpnHoodClient",
     "isExcludeAppsSupported": false,
     "isIncludeAppsSupported": false,
     "uiName": null,
@@ -58,7 +59,13 @@
       "Quic"
     ],
     "customData": null,
-    "version": "8.1.835.0"
+    "version": "8.1.835.0",
+    "premium": null,
+    "authProviderIds": [],
+    "accountWebsiteUrl": null,
+    "isLicenseAgreementRequired": false,
+    "isRemoteAccessSupported": false,
+    "isSplitCountrySupported": true
   },
   "intentFeatures": {
     "isUserReviewSupported": false,
@@ -70,7 +77,8 @@
     "isAlwaysOnSettingsSupported": false,
     "isSettingsSupported": false,
     "isAppSettingsSupported": false,
-    "isAppNotificationSettingsSupported": false
+    "isAppNotificationSettingsSupported": false,
+    "isWebBrowserSupported": true
   },
   "state": {
     "configTime": "2026-07-31T02:37:24.3124913-07:00",
@@ -277,7 +285,10 @@
       "customServerEndpoints": [
         "203.0.113.10:443"
       ],
-      "isCustomServerEndpointsEnabled": false
+      "isCustomServerEndpointsEnabled": false,
+      "accessCodeRefusal": null,
+      "canImportAccessCode": false,
+      "canViewAccessCode": false
     },
     "isIdle": false,
     "promptForLog": false,
@@ -487,7 +498,10 @@
         "pbc": true,
         "pur_url": null,
         "pur_url_f": 0
-      }
+      },
+      "accessCodeRefusal": null,
+      "canImportAccessCode": false,
+      "canViewAccessCode": false
     },
     {
       "vpnProfileId": "00000000-0000-4000-8000-000000000204",
@@ -585,7 +599,10 @@
         "pbc": true,
         "pur_url": null,
         "pur_url_f": 0
-      }
+      },
+      "accessCodeRefusal": null,
+      "canImportAccessCode": false,
+      "canViewAccessCode": false
     }
   ],
   "availableCultureInfos": [
