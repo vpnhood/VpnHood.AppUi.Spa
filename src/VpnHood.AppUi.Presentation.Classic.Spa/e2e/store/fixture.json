@@ -11,6 +11,11 @@
     "privacyConsentAssetName": "privacy-consent-client",
     "privacyPolicyUrl": "https://www.vpnhood.com/vpnhood-client-privacy-policy",
     "termsOfUseUrl": "https://www.vpnhood.com/legal/vpnhood-client-terms-of-use",
+    "links": {
+      "privacyPolicy": "https://www.vpnhood.com/vpnhood-client-privacy-policy",
+      "termsOfUse": "https://www.vpnhood.com/legal/vpnhood-client-terms-of-use"
+    },
+    "showPoweredBy": true,
     "isPremiumFlagSupported": false,
     "isAddAccessKeySupported": true,
     "isAccountSupported": false,

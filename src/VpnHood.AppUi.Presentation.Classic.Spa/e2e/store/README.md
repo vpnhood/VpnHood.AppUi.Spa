@@ -100,12 +100,14 @@ reported once per run (`fixture.json is behind the API contract`) — the fix is
 fixture from a current client, never editing the harness's defaults.
 
 **What the product IS, the harness refuses to invent**: `features.uiTheme`, `logoAssetPath`,
-`privacyConsentAssetName`, `privacyPolicyUrl` and `termsOfUseUrl` must be in the fixture, or the run
-fails naming them. They are what makes a screenshot CLIENT rather than CONNECT, and a fill would
+`privacyConsentAssetName`, `links.privacyPolicy` and `links.termsOfUse` must be in the fixture, or
+the run fails naming them. They are what makes a screenshot CLIENT rather than CONNECT, and a fill would
 produce a set that looks right wearing the other product's brand — Connect's fixture predated the
 Avalonia UI (it carried the SPA-era `uiName` alone) and would have rendered blue with the Client
-logo. Copy them from the product's own head (`src/Apps/<product>/<head>/AppConfigs.cs`, or
-`src/Apps/Tools/AvaloniaUI.Dev/Program.cs` for a whole product at once).
+logo. Copy them from the product's options builder (`src/Apps/<product>/<product>/<Product>AppOptions.cs`,
+the two documents from its appsettings' `Links`), or `src/Apps/Tools/AvaloniaUI.Dev/Program.cs` for a
+whole product at once. The SPA itself still reads the two as `privacyPolicyUrl` and `termsOfUseUrl`,
+which this fixture keeps beside them until the SPA reads `links`.
 
 Animations that never end (the `flasher` pulse on the Servers page's "(Recommended)", the
 `spinner`) would be caught mid-stroke, making the same shot differ every run and keeping the page
