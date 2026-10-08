@@ -108,7 +108,7 @@ function isShowCloseBtn(): boolean{
             }}</v-card-title>
         </v-card-item>
 
-        <v-card-text class="text-body-large">{{locale('FEEDBACK_DESC')}}</v-card-text>
+        <v-card-text class="text-body-large">{{locale('FEEDBACK_DESC',{appName: vhApp.data.features.appName})}}</v-card-text>
 
         <v-card-item>
 

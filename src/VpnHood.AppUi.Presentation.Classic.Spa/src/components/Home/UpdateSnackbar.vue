@@ -38,7 +38,7 @@ async function ignoreUpdate() {
   >
     <p class="text-body-large mb-3">
       {{vhApp.data.state.updaterStatus?.versionStatus === VersionStatus.Deprecated
-      ? locale("VERSION_IS_DEPRECATED") : locale("VERSION_IS_OLD") }}
+      ? locale("VERSION_IS_DEPRECATED",{appName: vhApp.data.features.appName}) : locale("VERSION_IS_OLD") }}
     </p>
 
     <!-- Direct link without google play -->

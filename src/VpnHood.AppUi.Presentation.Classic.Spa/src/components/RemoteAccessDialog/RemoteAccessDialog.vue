@@ -165,7 +165,7 @@ function onDone(): void {
         </div>
 
         <div class="remote-access-text">
-          <p class="text-body-medium">{{ locale('REMOTE_ACCESS_DESC') }}</p>
+          <p class="text-body-medium">{{ locale('REMOTE_ACCESS_DESC',{appName: vhApp.data.features.appName}) }}</p>
 
           <!-- Where on the phone to go next, and that the address dies with the dialog: boxed like
                the app's other notices, because on a panel read from the sofa a bare sentence under
