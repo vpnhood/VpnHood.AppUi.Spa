@@ -647,7 +647,7 @@
   "ACCEPT_AND_CONTINUE": "Accept and continue",
   "ALLOW_ANONYMOUS_TRACKER": "Share anonymous usage data",
   "ALLOW_ANONYMOUS_TRACKER_DESC": "Help us improve the app by sending pseudonymous usage and diagnostic data.",
-  "ANONYMOUS_TRACKER_NOTICE": "We never log your browsing activity, the sites you visit, or the content of your traffic. When this is on, the app sends pseudonymous usage and diagnostic data to Google Analytics, such as the app version, language, device model, the screens you use, connection results, how much VPN traffic you used and error messages. It is linked to a Client ID, never to your name or contact details. Turning it off stops it, along with the ratings you give in the app and any crash reports.",
+  "ANONYMOUS_TRACKER_NOTICE": "We never log your browsing activity, the sites you visit, or the content of your traffic. When this is on, the app sends pseudonymous usage and diagnostic data to Google Analytics, such as the app version, language, device model, the screens you use, connection results, how much VPN traffic you used and error messages. It is linked to a Client ID, never to your name or contact details. Turning it off stops it, along with the ratings you give in the app; any crash reports stop from the app's next start.",
   "ENFORCED_BY_SERVER": "Enforced by the server",
   "ENFORCED_BY_DOMAIN_FILTER": "Enforced by the Split Domain settings",
   "DOMAIN_FILTER_SERVER_NO_CLOAK": "Split Domain may not work properly because the server does not support Cloak Mode.",
