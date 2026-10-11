@@ -626,7 +626,7 @@
   "PRIVACY_DESC": "Control the usage data the app sends and read our privacy policy.",
   "PRIVACY_POLICY": "Privacy Policy",
   "TERMS_OF_USE": "Terms of Use",
-  "ACCEPT_LICENSE_NOTICE": "By tapping Accept and continue, you agree to:",
+  "ACCEPT_LICENSE_NOTICE": "By selecting Accept and continue, you agree to:",
   "SCAN_QR_TO_OPEN": "Scan this code with your phone's camera, or type the address below into a browser.",
   "REMOTE_ACCESS": "Remote Access",
   "REMOTE_ACCESS_DESC": "Manage {appName} from your phone or computer: scan this code, or type the address into a browser on the same network.",
