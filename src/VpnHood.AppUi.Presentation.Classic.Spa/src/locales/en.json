@@ -128,7 +128,7 @@
   "OOPS": "Oooops!",
   "LOAD_APP_ERROR_DESC": "Unable to connect to the engine",
   "RELOAD_APP": "Reload",
-  "NO_SERVER_AVAILABLE": "You haven’t added any servers yet. Please add a server by clicking on the \"Add Server\" button.",
+  "NO_SERVER_AVAILABLE": "You haven’t added any servers yet. Please add a server with the \"Add server\" button.",
   "GET_SERVER_KEY_METHODS_NO_CONNECT_DESC": "<h3 class=\"mb-3\">Don’t have a Server Key?</h3><p class=\"mb-2\">You can acquire a server key through the following methods:</p><ul class=\"ps-3\"><li class=\"mb-2\">Obtain server keys from friends, communities that distribute them, or third-party sellers.</li><li>Set up your own VpnHood server on a server hosting and create server keys yourself.</li></ul>",
   "GET_SERVER_KEY_METHODS_DESC": "<h3 class=\"mb-3\">Don’t have a Server Key?</h3><p class=\"mb-2\">If you need a free VPN for personal use, consider <a href=\"{connectAppUrl}\" target=\"_blank\" class=\"text-highlight\">installing the \"VpnHood! CONNECT\" app</a>. If that doesn't suit your needs, you can acquire a server key through the following methods:</p><ul class=\"ps-3\"><li class=\"mb-2\">Obtain server keys from friends, communities that distribute them, or third-party sellers.</li><li>Set up your own VpnHood server on a server hosting and create server keys yourself.</li></ul>",
   "CHECK_FOR_UPDATE": "Check for update",
