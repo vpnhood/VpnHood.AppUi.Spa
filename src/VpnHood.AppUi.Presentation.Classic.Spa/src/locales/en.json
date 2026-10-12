@@ -103,6 +103,8 @@
   "SESSION_SUPPRESSED_BY_OTHER": "You have been disconnected because another device connected with your server key!",
   "VERSION_IS_DEPRECATED": "Your {appName} app is deprecated and will stop working sooner or later! Consider upgrading as soon as possible.",
   "VERSION_IS_OLD": "There is a new version available to install.",
+  "VERSION_IS_LATEST": "You have the latest version.",
+  "VERSION_CHECK_FAILED": "Could not check for updates. Please try again later.",
   "install": "Install",
   "IGNORE": "Ignore",
   "LATER": "Later",
