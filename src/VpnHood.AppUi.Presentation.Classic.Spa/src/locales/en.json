@@ -505,6 +505,7 @@
   "MORE_THAN_X_DEVICES": "More than {x} devices",
   "DATE": "Date",
   "PREMIUM_INFO": "Premium info",
+  "SERVER_KEY_INFO": "Server key info",
   "PREMIUM_BY": "Premium by",
   "PREMIUM_CODE": "Premium code",
   "PREMIUM_CODE_SAVED_FOR_LATER_MSG": "Your code is saved. Your subscription is used first, and this code will be used when it ends.",
