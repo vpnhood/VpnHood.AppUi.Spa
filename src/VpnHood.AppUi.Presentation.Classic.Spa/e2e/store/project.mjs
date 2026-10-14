@@ -455,7 +455,7 @@ export const PLATFORMS = {
         label: 'Windows',
         prefix: '',
         frame: 'desktop',
-        // The real WPF window is a fixed 400x700 (AppResources.WindowSize, ResizeMode.CanMinimize),
+        // The real window is a fixed 400x700 that cannot be resized (ClassicAvaloniaApp.WindowFit),
         // far under the Store's 1366x768 floor — so the capture is composited into a desktop scene.
         cssWidth: 400, cssHeight: 700, scale: 3,
         safeTop: 0, safeBottom: 0,
