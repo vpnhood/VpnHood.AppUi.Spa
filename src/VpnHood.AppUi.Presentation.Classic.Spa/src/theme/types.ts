@@ -43,7 +43,7 @@ export type ThemeColorKey =
   | 'active' | 'on-active' | 'highlight' | 'enable-premium' | 'disable-premium'
   | 'disconnect-warning' | 'on-disconnect-warning'
   | 'version-on-home-debug' | 'on-version-on-home-debug'
-  | 'info' | 'on-info' | 'note' | 'on-note' | 'error' | 'warning' | 'on-warning'
+  | 'info' | 'on-info' | 'note' | 'on-note' | 'note-chip' | 'error' | 'warning' | 'on-warning'
   | 'good' | 'very-poor'
   | 'scroll-track' | 'scroll-thumb' | 'scroll-thumb-hover'
   | 'skeleton-loader' | 'learn-more';

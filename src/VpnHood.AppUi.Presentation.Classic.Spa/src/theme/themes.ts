@@ -5,6 +5,8 @@ import type { ThemeColorNames } from './types';
 const defineTheme = <T extends ThemeColorNames>(t: T) => t;
 
 // -- violet --
+// Text keeps 4.5:1 (WCAG AA): dark over purple 200, where white is 3.5:1; and purple 150 for a key
+// whose colour is also text over its own tint.
 export const vhVioletThemeColors = defineTheme({
   background: myColors.purple['500'],
   surface: myColors.purple['500'],
@@ -33,7 +35,7 @@ export const vhVioletThemeColors = defineTheme({
   'connect-btn-disconnected-grad-2': myColors.cream['100'],
   'connect-btn-connected': myColors.purple['200'],
   'on-connect-btn-disconnected': myColors.purple['300'],
-  'on-connect-btn-connected': '#ffffff',
+  'on-connect-btn-connected': myColors.purple['500'],
 
   'count-down-normal': myColors.green['200'],
   'count-down-alert': myColors.cream['100'],
@@ -46,13 +48,13 @@ export const vhVioletThemeColors = defineTheme({
   'promote-premium-color-premium': myColors.green['200'],
   'on-promote-premium-color-premium': myColors.purple['600'],
   'promote-premium-color-free': myColors.purple['200'],
-  'on-promote-premium-color-free': '#ffffff',
+  'on-promote-premium-color-free': myColors.purple['500'],
   'premium-features-icon': myColors.purple['200'],
   'premium-code-btn': myColors.purple['200'],
   'purchase-subscription-btn': myColors.green['200'],
   'on-purchase-subscription-btn': myColors.purple['600'],
   'activate-code-btn': myColors.purple['200'],
-  'on-activate-code-btn': '#ffffff',
+  'on-activate-code-btn': myColors.purple['500'],
 
   'suppress-snackbar': myColors.cream['100'],
   'on-suppress-snackbar': myColors.gray['800'],
@@ -111,13 +113,13 @@ export const vhVioletThemeColors = defineTheme({
   'btn-style-1': myColors.green['200'],
   'on-btn-style-1': myColors.purple['500'],
 
-  'btn-style-2': myColors.purple['200'],
-  'on-btn-style-2': '#ffffff',
+  'btn-style-2': myColors.purple['150'],
+  'on-btn-style-2': myColors.purple['500'],
 
   'btn-style-3': myColors.cream['100'],
   'on-btn-style-3': myColors.purple['500'],
 
-  'btn-style-4': myColors.purple['200'],
+  'btn-style-4': myColors.purple['150'],
 
   'btn-style-5': myColors.gray['300'],
   'on-btn-style-5': '#ffffff',
@@ -127,13 +129,13 @@ export const vhVioletThemeColors = defineTheme({
 
   'btn-style-7': '#ffffff',
 
-  'switch-btn': myColors.purple['200'],
+  'switch-btn': myColors.purple['150'],
   'connection-circle-border': myColors.cream['100'],
   'connection-circle-shine': myColors.green['200'],
 
   active: myColors.green['200'],
   'on-active': myColors.purple['500'],
-  highlight: myColors.purple['200'],
+  highlight: myColors.purple['150'],
   'enable-premium': myColors.green['200'],
   'disable-premium': myColors.cream['100'],
   'good': myColors.green['300'],
@@ -150,6 +152,7 @@ export const vhVioletThemeColors = defineTheme({
   'on-info': myColors.gray['400'],
   note: myColors.purple['400'],
   'on-note': myColors.purple['100'],
+  'note-chip': myColors.purple['100'],
   error: myColors.red['100'],
   warning: myColors.orange['100'],
   'on-warning': myColors.orange['300'],
@@ -160,6 +163,9 @@ export const vhVioletThemeColors = defineTheme({
 } as const satisfies ThemeColorNames);
 
 // -- blue, the default --
+// Text keeps 4.5:1 (WCAG AA): dark over blue 100, where white is 2.7:1; blue 50 for a key whose
+// colour is also text over its own tint or on the home's config buttons; and the note chip light,
+// where on-note is dark for the light note card.
 export const vhBlueThemeColors = defineTheme({
   background: myColors.blue['330'],
   surface: myColors.blue['330'],
@@ -187,7 +193,7 @@ export const vhBlueThemeColors = defineTheme({
   'connect-btn-disconnected-grad-2': myColors.green['100'],
   'connect-btn-connected': myColors.blue['100'],
   'on-connect-btn-disconnected': myColors.blue['400'],
-  'on-connect-btn-connected': '#ffffff',
+  'on-connect-btn-connected': myColors.blue['400'],
 
   'count-down-normal': myColors.green['200'],
   'count-down-alert': myColors.yellow['200'],
@@ -200,7 +206,7 @@ export const vhBlueThemeColors = defineTheme({
   'promote-premium-color-premium': myColors.green['200'],
   'on-promote-premium-color-premium': myColors.blue['500'],
   'promote-premium-color-free': myColors.blue['100'],
-  'on-promote-premium-color-free': '#ffffff',
+  'on-promote-premium-color-free': myColors.blue['400'],
   'premium-features-icon': myColors.blue['100'],
   'premium-code-btn': myColors.blue['100'],
   'purchase-subscription-btn': myColors.green['200'],
@@ -209,7 +215,7 @@ export const vhBlueThemeColors = defineTheme({
   'on-activate-code-btn': '#ffffff',
 
   'suppress-snackbar': myColors.purple['200'],
-  'on-suppress-snackbar': myColors.purple['20'],
+  'on-suppress-snackbar': myColors.purple['500'],
 
   'update-snackbar-alert': myColors.blue['20'],
   'update-snackbar-warning': myColors.green['200'],
@@ -222,7 +228,7 @@ export const vhBlueThemeColors = defineTheme({
   'expire-date-warning': myColors.red['100'],
 
   'config-btn-bg': myColors.blue['300'],
-  'on-config-btn-bg': myColors.blue['100'],
+  'on-config-btn-bg': myColors.blue['50'],
 
   'active-server': myColors.green['200'],
   'fastest-server': myColors.blue['100'],
@@ -265,13 +271,13 @@ export const vhBlueThemeColors = defineTheme({
   'btn-style-1': myColors.green['200'],
   'on-btn-style-1': myColors.blue['500'],
 
-  'btn-style-2': myColors.blue['100'],
-  'on-btn-style-2': '#ffffff',
+  'btn-style-2': myColors.blue['50'],
+  'on-btn-style-2': myColors.blue['400'],
 
   'btn-style-3': myColors.cream['100'],
   'on-btn-style-3': myColors.purple['500'],
 
-  'btn-style-4': myColors.blue['100'],
+  'btn-style-4': myColors.blue['50'],
 
   'btn-style-5': myColors.gray['300'],
   'on-btn-style-5': '#ffffff',
@@ -281,13 +287,13 @@ export const vhBlueThemeColors = defineTheme({
 
   'btn-style-7': '#000000',
 
-  'switch-btn': myColors.blue['100'],
+  'switch-btn': myColors.blue['50'],
   'connection-circle-border': myColors.blue['100'],
   'connection-circle-shine': myColors.green['50'],
 
   active: myColors.green['200'],
   'on-active': myColors.blue['400'],
-  highlight: myColors.blue['100'],
+  highlight: myColors.blue['50'],
   'enable-premium': myColors.green['200'],
   'disable-premium': myColors.yellow['200'],
   'good': myColors.green['300'],
@@ -301,10 +307,11 @@ export const vhBlueThemeColors = defineTheme({
   'on-version-on-home-debug': myColors.blue['400'],
 
   info: myColors.green['20'],
-  'on-info': myColors.green['400'],
+  'on-info': myColors.green['500'],
   note: myColors.purple['20'],
   'on-note': myColors.purple['300'],
-  error: myColors.red['100'],
+  'note-chip': myColors.purple['20'],
+  error: myColors.red['50'],
   warning: myColors.orange['100'],
   'on-warning': myColors.orange['300'],
 

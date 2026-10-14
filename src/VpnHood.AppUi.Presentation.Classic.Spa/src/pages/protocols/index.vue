@@ -155,7 +155,7 @@ const isCloakEnforecedByServer = computed<boolean>(() =>
                       variant="tonal" density="comfortable" tabindex="-1" class="me-1" />
 
                     <!-- Not supported by server badge -->
-                    <v-chip v-if="!vhApp.data.isProtocolEnabled(item.value)" color="on-note"
+                    <v-chip v-if="!vhApp.data.isProtocolEnabled(item.value)" color="note-chip"
                       :text="locale('NOT_SUPPORTED_BY_SERVER')" size="small" variant="tonal" density="comfortable"
                       tabindex="-1" />
                   </div>

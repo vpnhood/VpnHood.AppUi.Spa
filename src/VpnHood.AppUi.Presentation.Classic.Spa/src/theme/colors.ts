@@ -13,6 +13,8 @@ export const myColors = {
   },
   blue: {
     20:  "#eaeff6",
+    // 100's hue, light enough to stay 4.5:1 as text over its own tint on a 290 card
+    50: "#52bbfe",
     100: "#16a3fe",
     200: "#1940b0",
     280: "#1a2d8b",
@@ -27,6 +29,8 @@ export const myColors = {
   purple: {
     20:  "#e1e1ff",
     100: "#8d9fe4",
+    // 200's hue, light enough to stay 4.5:1 as text over its own tint on a 400 card
+    150: "#9796fe",
     200: "#7b7afe",
     300: "#2f296e",
     400: "#211951",
@@ -41,6 +45,8 @@ export const myColors = {
     200: "#15f5ba",
     300: "#23c99d",
     400: "#078362",
+    // 400 darkened to stay 4.5:1 as text on 20
+    500: "#067255",
   },
   yellow: {
     50:  "#fce68f",
@@ -56,6 +62,9 @@ export const myColors = {
     100: "#e7b481",
   },
   red: {
-    100: "#ff5252",
+    // light enough to stay 4.5:1 as text over its own tint on a blue 290 card
+    50: "#ff8b8b",
+    // light enough to stay 4.5:1 as text over its own tint on a purple 400 card (#ff5252: 4.1:1)
+    100: "#ff7070",
   },
 } satisfies Record<string, Record<string, string>>;
