@@ -1,7 +1,7 @@
 <Project>
 	<!-- What a head that shows the SPA needs placed beside it, built from the SPA's own dist:
 
-	       assets/ui.zip        the store - images, flags, fonts, content, locales, branding - in the
+	       assets/ui.zip        the store - images, flags, fonts, content, locales, themes - in the
 	                            layout VpnHood.AppUi.Assets.Classic ships. Built HERE, from the SPA's
 	                            own dist, and deliberately not taken from that package: the files are
 	                            authored next door, so a sample that consumed the published ones would
@@ -49,7 +49,7 @@
 		<ItemGroup>
 			<!-- not the film: an internal ad exactly one head plays, which carries it as its own asset -->
 			<_SpaStoreFile Include="$(SpaDistDir)assets\**" Exclude="$(SpaDistDir)assets\images\internal-ad.mp4" />
-			<_SpaBrandingFile Include="$(SpaDistDir)branding\**" />
+			<_SpaThemeFile Include="$(SpaDistDir)themes\**" />
 			<_SpaLocaleFile Include="$(SpaDistDir)assets\locales\*.json" />
 			<_SpaFontFile Include="$(SpaDistDir)assets\fonts\*.ttf" />
 			<_SpaWebRootFile Include="$(SpaDistDir)**" Exclude="$(SpaDistDir)assets\**" />
@@ -61,7 +61,7 @@
 
 		<RemoveDir Directories="$(SpaStoreDir);$(SpaWebRootDir)" />
 		<Copy SourceFiles="@(_SpaStoreFile)" DestinationFiles="@(_SpaStoreFile->'$(SpaStoreDir)%(RecursiveDir)%(Filename)%(Extension)')" />
-		<Copy SourceFiles="@(_SpaBrandingFile)" DestinationFiles="@(_SpaBrandingFile->'$(SpaStoreDir)branding\%(RecursiveDir)%(Filename)%(Extension)')" />
+		<Copy SourceFiles="@(_SpaThemeFile)" DestinationFiles="@(_SpaThemeFile->'$(SpaStoreDir)themes\%(RecursiveDir)%(Filename)%(Extension)')" />
 		<WriteLinesToFile File="$(SpaStoreDir)locales\index.json" Lines="[$(_SpaLocaleList)]" Overwrite="true" />
 		<WriteLinesToFile File="$(SpaStoreDir)fonts\index.json" Lines="[$(_SpaFontList)]" Overwrite="true" />
 		<Copy SourceFiles="@(_SpaWebRootFile)" DestinationFiles="@(_SpaWebRootFile->'$(SpaWebRootDir)%(RecursiveDir)%(Filename)%(Extension)')" />
