@@ -2,7 +2,7 @@
 import { VpnHoodApp } from '@/services/VpnHoodApp';
 import i18n from '@/locales/i18n';
 import FeaturePageLayout from '@/components/Settings/FeaturePageLayout.vue';
-import { AppFeature } from '@/services/VpnHood.Client.Api';
+import { AlwaysOnSupport, AppFeature } from '@/services/VpnHood.Client.Api';
 
 const vhApp = VpnHoodApp.instance;
 const locale = i18n.global.t;
@@ -21,6 +21,6 @@ const locale = i18n.global.t;
     button-text="OPEN_VPN_SETTINGS"
     :button-click="()=>vhApp.intentsClient.openAlwaysOnSettings()"
     :is-premium="vhApp.data.isPremiumFeature(AppFeature.AlwaysOn)"
-    :is-action-button-available="vhApp.data.intentFeatures.isAlwaysOnSettingsSupported"
+    :is-action-button-available="vhApp.data.features.alwaysOnSupport === AlwaysOnSupport.Device"
   />
 </template>

@@ -2,6 +2,7 @@
 import { Util } from '@/helpers/Util';
 import i18n from '@/locales/i18n';
 import { VpnHoodApp } from '@/services/VpnHoodApp';
+import { AlwaysOnSupport } from '@/services/VpnHood.Client.Api';
 import { computed, onBeforeMount } from 'vue';
 
 const vhApp = VpnHoodApp.instance;
@@ -64,7 +65,7 @@ const carouselItems: CarouselItem[] = [
     title: "ALWAYS_ON",
     description: "ALWAYS_ON_PREMIUM_DESC",
     height: "200px",
-    isSupported: intentFeatures.isAlwaysOnSettingsSupported,
+    isSupported: vhApp.data.features.alwaysOnSupport === AlwaysOnSupport.Device,
   },
   {
     image: "support.webp",

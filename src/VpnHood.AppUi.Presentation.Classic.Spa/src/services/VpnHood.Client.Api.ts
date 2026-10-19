@@ -254,6 +254,55 @@ export class AccountClient {
         }
         return Promise.resolve<void>(null as any);
     }
+
+    getPasswordResetUrl( cancelToken?: CancelToken): Promise<string> {
+        let url_ = this.baseUrl + "/api/account/password-reset-url";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "application/json"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processGetPasswordResetUrl(_response);
+        });
+    }
+
+    protected processGetPasswordResetUrl(response: AxiosResponse): Promise<string> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+                result200 = resultData200 !== undefined ? resultData200 : null as any;
+    
+            return Promise.resolve<string>(result200);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<string>(null as any);
+    }
 }
 
 export class AppClient {
@@ -1186,7 +1235,7 @@ export class AppClient {
         return Promise.resolve<DeviceAppInfo[]>(null as any);
     }
 
-    versionCheck( cancelToken?: CancelToken): Promise<void> {
+    versionCheck( cancelToken?: CancelToken): Promise<VersionCheckResult> {
         let url_ = this.baseUrl + "/api/app/version-check";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1194,6 +1243,7 @@ export class AppClient {
             method: "POST",
             url: url_,
             headers: {
+                "Accept": "application/json"
             },
             cancelToken
         };
@@ -1209,7 +1259,7 @@ export class AppClient {
         });
     }
 
-    protected processVersionCheck(response: AxiosResponse): Promise<void> {
+    protected processVersionCheck(response: AxiosResponse): Promise<VersionCheckResult> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1221,13 +1271,17 @@ export class AppClient {
         }
         if (status === 200) {
             const _responseText = response.data;
-            return Promise.resolve<void>(null as any);
+            let result200: any = null;
+            let resultData200  = _responseText;
+                result200 = resultData200 !== undefined ? resultData200 : null as any;
+    
+            return Promise.resolve<VersionCheckResult>(result200);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<void>(null as any);
+        return Promise.resolve<VersionCheckResult>(null as any);
     }
 
     versionCheckPostpone( cancelToken?: CancelToken): Promise<void> {
@@ -1254,6 +1308,138 @@ export class AppClient {
     }
 
     protected processVersionCheckPostpone(response: AxiosResponse): Promise<void> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            return Promise.resolve<void>(null as any);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<void>(null as any);
+    }
+
+    startUpdate( cancelToken?: CancelToken): Promise<void> {
+        let url_ = this.baseUrl + "/api/app/start-update";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "POST",
+            url: url_,
+            headers: {
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processStartUpdate(_response);
+        });
+    }
+
+    protected processStartUpdate(response: AxiosResponse): Promise<void> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            return Promise.resolve<void>(null as any);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<void>(null as any);
+    }
+
+    completeUpdate( cancelToken?: CancelToken): Promise<void> {
+        let url_ = this.baseUrl + "/api/app/complete-update";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "POST",
+            url: url_,
+            headers: {
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processCompleteUpdate(_response);
+        });
+    }
+
+    protected processCompleteUpdate(response: AxiosResponse): Promise<void> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            return Promise.resolve<void>(null as any);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<void>(null as any);
+    }
+
+    showAdPrivacyOptions( cancelToken?: CancelToken): Promise<void> {
+        let url_ = this.baseUrl + "/api/app/ad-privacy-options";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "POST",
+            url: url_,
+            headers: {
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processShowAdPrivacyOptions(_response);
+        });
+    }
+
+    protected processShowAdPrivacyOptions(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -3672,20 +3858,20 @@ export class AppFeatures implements IAppFeatures {
     isAccountSupported!: boolean;
     isBillingSupported!: boolean;
     authProviderIds!: string[];
-    accountWebsiteUrl!: string | null;
     isLicenseAgreementRequired!: boolean;
-    privacyPolicyUrl!: string | null;
-    termsOfUseUrl!: string | null;
+    links!: AppLinks;
+    showPoweredBy!: boolean;
     logoAssetPath!: string;
     privacyConsentAssetName!: string;
     isTcpProxySupported!: boolean;
     isQuicSupported!: boolean;
+    alwaysOnSupport!: AlwaysOnSupport;
     isSplitDomainSupported!: boolean;
+    isSplitCountrySupported!: boolean;
     isUserReviewSupported!: boolean;
     isAnonymousTrackerSupported!: boolean;
     isTv!: boolean;
     osType!: AppOsType;
-    gaMeasurementId!: string | null;
     clientId!: string;
     isDebugMode!: boolean;
     debugCommands!: string[];
@@ -3694,7 +3880,6 @@ export class AppFeatures implements IAppFeatures {
     allowEndPointStrategy!: boolean;
     isAdSupported!: boolean;
     isRewardedAdSupported!: boolean;
-    webUiPort!: number | null;
     channelProtocols!: ChannelProtocol[];
     customData!: any | null;
     version!: string;
@@ -3708,6 +3893,7 @@ export class AppFeatures implements IAppFeatures {
         }
         if (!data) {
             this.authProviderIds = [];
+            this.links = new AppLinks();
             this.debugCommands = [];
             this.channelProtocols = [];
         }
@@ -3734,20 +3920,20 @@ export class AppFeatures implements IAppFeatures {
             else {
                 this.authProviderIds = null as any;
             }
-            this.accountWebsiteUrl = _data["accountWebsiteUrl"] !== undefined ? _data["accountWebsiteUrl"] : null as any;
             this.isLicenseAgreementRequired = _data["isLicenseAgreementRequired"] !== undefined ? _data["isLicenseAgreementRequired"] : null as any;
-            this.privacyPolicyUrl = _data["privacyPolicyUrl"] !== undefined ? _data["privacyPolicyUrl"] : null as any;
-            this.termsOfUseUrl = _data["termsOfUseUrl"] !== undefined ? _data["termsOfUseUrl"] : null as any;
+            this.links = _data["links"] ? AppLinks.fromJS(_data["links"]) : new AppLinks();
+            this.showPoweredBy = _data["showPoweredBy"] !== undefined ? _data["showPoweredBy"] : null as any;
             this.logoAssetPath = _data["logoAssetPath"] !== undefined ? _data["logoAssetPath"] : null as any;
             this.privacyConsentAssetName = _data["privacyConsentAssetName"] !== undefined ? _data["privacyConsentAssetName"] : null as any;
             this.isTcpProxySupported = _data["isTcpProxySupported"] !== undefined ? _data["isTcpProxySupported"] : null as any;
             this.isQuicSupported = _data["isQuicSupported"] !== undefined ? _data["isQuicSupported"] : null as any;
+            this.alwaysOnSupport = _data["alwaysOnSupport"] !== undefined ? _data["alwaysOnSupport"] : null as any;
             this.isSplitDomainSupported = _data["isSplitDomainSupported"] !== undefined ? _data["isSplitDomainSupported"] : null as any;
+            this.isSplitCountrySupported = _data["isSplitCountrySupported"] !== undefined ? _data["isSplitCountrySupported"] : null as any;
             this.isUserReviewSupported = _data["isUserReviewSupported"] !== undefined ? _data["isUserReviewSupported"] : null as any;
             this.isAnonymousTrackerSupported = _data["isAnonymousTrackerSupported"] !== undefined ? _data["isAnonymousTrackerSupported"] : null as any;
             this.isTv = _data["isTv"] !== undefined ? _data["isTv"] : null as any;
             this.osType = _data["osType"] !== undefined ? _data["osType"] : null as any;
-            this.gaMeasurementId = _data["gaMeasurementId"] !== undefined ? _data["gaMeasurementId"] : null as any;
             this.clientId = _data["clientId"] !== undefined ? _data["clientId"] : null as any;
             this.isDebugMode = _data["isDebugMode"] !== undefined ? _data["isDebugMode"] : null as any;
             if (Array.isArray(_data["debugCommands"])) {
@@ -3763,7 +3949,6 @@ export class AppFeatures implements IAppFeatures {
             this.allowEndPointStrategy = _data["allowEndPointStrategy"] !== undefined ? _data["allowEndPointStrategy"] : null as any;
             this.isAdSupported = _data["isAdSupported"] !== undefined ? _data["isAdSupported"] : null as any;
             this.isRewardedAdSupported = _data["isRewardedAdSupported"] !== undefined ? _data["isRewardedAdSupported"] : null as any;
-            this.webUiPort = _data["webUiPort"] !== undefined ? _data["webUiPort"] : null as any;
             if (Array.isArray(_data["channelProtocols"])) {
                 this.channelProtocols = [] as any;
                 for (let item of _data["channelProtocols"])
@@ -3802,20 +3987,20 @@ export class AppFeatures implements IAppFeatures {
             for (let item of this.authProviderIds)
                 data["authProviderIds"].push(item);
         }
-        data["accountWebsiteUrl"] = this.accountWebsiteUrl !== undefined ? this.accountWebsiteUrl : null as any;
         data["isLicenseAgreementRequired"] = this.isLicenseAgreementRequired !== undefined ? this.isLicenseAgreementRequired : null as any;
-        data["privacyPolicyUrl"] = this.privacyPolicyUrl !== undefined ? this.privacyPolicyUrl : null as any;
-        data["termsOfUseUrl"] = this.termsOfUseUrl !== undefined ? this.termsOfUseUrl : null as any;
+        data["links"] = this.links ? this.links.toJSON() : null as any;
+        data["showPoweredBy"] = this.showPoweredBy !== undefined ? this.showPoweredBy : null as any;
         data["logoAssetPath"] = this.logoAssetPath !== undefined ? this.logoAssetPath : null as any;
         data["privacyConsentAssetName"] = this.privacyConsentAssetName !== undefined ? this.privacyConsentAssetName : null as any;
         data["isTcpProxySupported"] = this.isTcpProxySupported !== undefined ? this.isTcpProxySupported : null as any;
         data["isQuicSupported"] = this.isQuicSupported !== undefined ? this.isQuicSupported : null as any;
+        data["alwaysOnSupport"] = this.alwaysOnSupport !== undefined ? this.alwaysOnSupport : null as any;
         data["isSplitDomainSupported"] = this.isSplitDomainSupported !== undefined ? this.isSplitDomainSupported : null as any;
+        data["isSplitCountrySupported"] = this.isSplitCountrySupported !== undefined ? this.isSplitCountrySupported : null as any;
         data["isUserReviewSupported"] = this.isUserReviewSupported !== undefined ? this.isUserReviewSupported : null as any;
         data["isAnonymousTrackerSupported"] = this.isAnonymousTrackerSupported !== undefined ? this.isAnonymousTrackerSupported : null as any;
         data["isTv"] = this.isTv !== undefined ? this.isTv : null as any;
         data["osType"] = this.osType !== undefined ? this.osType : null as any;
-        data["gaMeasurementId"] = this.gaMeasurementId !== undefined ? this.gaMeasurementId : null as any;
         data["clientId"] = this.clientId !== undefined ? this.clientId : null as any;
         data["isDebugMode"] = this.isDebugMode !== undefined ? this.isDebugMode : null as any;
         if (Array.isArray(this.debugCommands)) {
@@ -3828,7 +4013,6 @@ export class AppFeatures implements IAppFeatures {
         data["allowEndPointStrategy"] = this.allowEndPointStrategy !== undefined ? this.allowEndPointStrategy : null as any;
         data["isAdSupported"] = this.isAdSupported !== undefined ? this.isAdSupported : null as any;
         data["isRewardedAdSupported"] = this.isRewardedAdSupported !== undefined ? this.isRewardedAdSupported : null as any;
-        data["webUiPort"] = this.webUiPort !== undefined ? this.webUiPort : null as any;
         if (Array.isArray(this.channelProtocols)) {
             data["channelProtocols"] = [];
             for (let item of this.channelProtocols)
@@ -3853,20 +4037,20 @@ export interface IAppFeatures {
     isAccountSupported: boolean;
     isBillingSupported: boolean;
     authProviderIds: string[];
-    accountWebsiteUrl: string | null;
     isLicenseAgreementRequired: boolean;
-    privacyPolicyUrl: string | null;
-    termsOfUseUrl: string | null;
+    links: AppLinks;
+    showPoweredBy: boolean;
     logoAssetPath: string;
     privacyConsentAssetName: string;
     isTcpProxySupported: boolean;
     isQuicSupported: boolean;
+    alwaysOnSupport: AlwaysOnSupport;
     isSplitDomainSupported: boolean;
+    isSplitCountrySupported: boolean;
     isUserReviewSupported: boolean;
     isAnonymousTrackerSupported: boolean;
     isTv: boolean;
     osType: AppOsType;
-    gaMeasurementId: string | null;
     clientId: string;
     isDebugMode: boolean;
     debugCommands: string[];
@@ -3875,7 +4059,6 @@ export interface IAppFeatures {
     allowEndPointStrategy: boolean;
     isAdSupported: boolean;
     isRewardedAdSupported: boolean;
-    webUiPort: number | null;
     channelProtocols: ChannelProtocol[];
     customData: any | null;
     version: string;
@@ -3949,6 +4132,80 @@ export enum AppFeature {
     SplitCountry = "SplitCountry",
 }
 
+export class AppLinks implements IAppLinks {
+    privacyPolicy?: string | null;
+    termsOfUse?: string | null;
+    website?: string | null;
+    whatsNew?: string | null;
+    feedback?: string | null;
+    personalServer?: string | null;
+    linkedIn?: string | null;
+    instagram?: string | null;
+    x?: string | null;
+
+    constructor(data?: IAppLinks) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.privacyPolicy = _data["privacyPolicy"] !== undefined ? _data["privacyPolicy"] : null as any;
+            this.termsOfUse = _data["termsOfUse"] !== undefined ? _data["termsOfUse"] : null as any;
+            this.website = _data["website"] !== undefined ? _data["website"] : null as any;
+            this.whatsNew = _data["whatsNew"] !== undefined ? _data["whatsNew"] : null as any;
+            this.feedback = _data["feedback"] !== undefined ? _data["feedback"] : null as any;
+            this.personalServer = _data["personalServer"] !== undefined ? _data["personalServer"] : null as any;
+            this.linkedIn = _data["linkedIn"] !== undefined ? _data["linkedIn"] : null as any;
+            this.instagram = _data["instagram"] !== undefined ? _data["instagram"] : null as any;
+            this.x = _data["x"] !== undefined ? _data["x"] : null as any;
+        }
+    }
+
+    static fromJS(data: any): AppLinks {
+        data = typeof data === 'object' ? data : {};
+        let result = new AppLinks();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["privacyPolicy"] = this.privacyPolicy !== undefined ? this.privacyPolicy : null as any;
+        data["termsOfUse"] = this.termsOfUse !== undefined ? this.termsOfUse : null as any;
+        data["website"] = this.website !== undefined ? this.website : null as any;
+        data["whatsNew"] = this.whatsNew !== undefined ? this.whatsNew : null as any;
+        data["feedback"] = this.feedback !== undefined ? this.feedback : null as any;
+        data["personalServer"] = this.personalServer !== undefined ? this.personalServer : null as any;
+        data["linkedIn"] = this.linkedIn !== undefined ? this.linkedIn : null as any;
+        data["instagram"] = this.instagram !== undefined ? this.instagram : null as any;
+        data["x"] = this.x !== undefined ? this.x : null as any;
+        return data;
+    }
+}
+
+export interface IAppLinks {
+    privacyPolicy?: string | null;
+    termsOfUse?: string | null;
+    website?: string | null;
+    whatsNew?: string | null;
+    feedback?: string | null;
+    personalServer?: string | null;
+    linkedIn?: string | null;
+    instagram?: string | null;
+    x?: string | null;
+}
+
+export enum AlwaysOnSupport {
+    None = "None",
+    Device = "Device",
+    App = "App",
+}
+
 export enum AppOsType {
     Unknown = "Unknown",
     Windows = "Windows",
@@ -3972,7 +4229,6 @@ export class DeviceIntentFeatures implements IDeviceIntentFeatures {
     isRequestNotificationSupported!: boolean;
     isPrivateDnsSettingsSupported!: boolean;
     isKillSwitchSettingsSupported!: boolean;
-    isAlwaysOnSettingsSupported!: boolean;
     isSettingsSupported!: boolean;
     isAppSettingsSupported!: boolean;
     isAppNotificationSettingsSupported!: boolean;
@@ -3995,7 +4251,6 @@ export class DeviceIntentFeatures implements IDeviceIntentFeatures {
             this.isRequestNotificationSupported = _data["isRequestNotificationSupported"] !== undefined ? _data["isRequestNotificationSupported"] : null as any;
             this.isPrivateDnsSettingsSupported = _data["isPrivateDnsSettingsSupported"] !== undefined ? _data["isPrivateDnsSettingsSupported"] : null as any;
             this.isKillSwitchSettingsSupported = _data["isKillSwitchSettingsSupported"] !== undefined ? _data["isKillSwitchSettingsSupported"] : null as any;
-            this.isAlwaysOnSettingsSupported = _data["isAlwaysOnSettingsSupported"] !== undefined ? _data["isAlwaysOnSettingsSupported"] : null as any;
             this.isSettingsSupported = _data["isSettingsSupported"] !== undefined ? _data["isSettingsSupported"] : null as any;
             this.isAppSettingsSupported = _data["isAppSettingsSupported"] !== undefined ? _data["isAppSettingsSupported"] : null as any;
             this.isAppNotificationSettingsSupported = _data["isAppNotificationSettingsSupported"] !== undefined ? _data["isAppNotificationSettingsSupported"] : null as any;
@@ -4018,7 +4273,6 @@ export class DeviceIntentFeatures implements IDeviceIntentFeatures {
         data["isRequestNotificationSupported"] = this.isRequestNotificationSupported !== undefined ? this.isRequestNotificationSupported : null as any;
         data["isPrivateDnsSettingsSupported"] = this.isPrivateDnsSettingsSupported !== undefined ? this.isPrivateDnsSettingsSupported : null as any;
         data["isKillSwitchSettingsSupported"] = this.isKillSwitchSettingsSupported !== undefined ? this.isKillSwitchSettingsSupported : null as any;
-        data["isAlwaysOnSettingsSupported"] = this.isAlwaysOnSettingsSupported !== undefined ? this.isAlwaysOnSettingsSupported : null as any;
         data["isSettingsSupported"] = this.isSettingsSupported !== undefined ? this.isSettingsSupported : null as any;
         data["isAppSettingsSupported"] = this.isAppSettingsSupported !== undefined ? this.isAppSettingsSupported : null as any;
         data["isAppNotificationSettingsSupported"] = this.isAppNotificationSettingsSupported !== undefined ? this.isAppNotificationSettingsSupported : null as any;
@@ -4034,7 +4288,6 @@ export interface IDeviceIntentFeatures {
     isRequestNotificationSupported: boolean;
     isPrivateDnsSettingsSupported: boolean;
     isKillSwitchSettingsSupported: boolean;
-    isAlwaysOnSettingsSupported: boolean;
     isSettingsSupported: boolean;
     isAppSettingsSupported: boolean;
     isAppNotificationSettingsSupported: boolean;
@@ -4061,6 +4314,7 @@ export class AppState implements IAppState {
     canDiagnose!: boolean;
     userReviewRecommended!: number;
     isQuickLaunchRecommended!: boolean;
+    isAnonymousTrackerPromptRequired!: boolean;
     clientCountryInfo!: CountryInfo | null;
     currentUiCultureInfo!: UiCultureInfo;
     systemUiCultureInfo!: UiCultureInfo;
@@ -4069,6 +4323,7 @@ export class AppState implements IAppState {
     isNotificationEnabled!: boolean | null;
     systemPrivateDns!: PrivateDns | null;
     isWaitingForInternalAd!: boolean | null;
+    isAdPrivacyOptionsRequired!: boolean;
     stateProgress!: number | null;
     isDiagnosing!: boolean;
     channelProtocol!: ChannelProtocol;
@@ -4076,6 +4331,7 @@ export class AppState implements IAppState {
     promotionExists!: boolean;
     tcpProxyUsageReason!: TcpProxyUsageReason;
     splitTunnelingState!: SplitTunnelingState;
+    alwaysOnState!: AlwaysOnState | null;
 
     constructor(data?: IAppState) {
         if (data) {
@@ -4114,6 +4370,7 @@ export class AppState implements IAppState {
             this.canDiagnose = _data["canDiagnose"] !== undefined ? _data["canDiagnose"] : null as any;
             this.userReviewRecommended = _data["userReviewRecommended"] !== undefined ? _data["userReviewRecommended"] : null as any;
             this.isQuickLaunchRecommended = _data["isQuickLaunchRecommended"] !== undefined ? _data["isQuickLaunchRecommended"] : null as any;
+            this.isAnonymousTrackerPromptRequired = _data["isAnonymousTrackerPromptRequired"] !== undefined ? _data["isAnonymousTrackerPromptRequired"] : null as any;
             this.clientCountryInfo = _data["clientCountryInfo"] ? CountryInfo.fromJS(_data["clientCountryInfo"]) : null as any;
             this.currentUiCultureInfo = _data["currentUiCultureInfo"] ? UiCultureInfo.fromJS(_data["currentUiCultureInfo"]) : new UiCultureInfo();
             this.systemUiCultureInfo = _data["systemUiCultureInfo"] ? UiCultureInfo.fromJS(_data["systemUiCultureInfo"]) : new UiCultureInfo();
@@ -4122,6 +4379,7 @@ export class AppState implements IAppState {
             this.isNotificationEnabled = _data["isNotificationEnabled"] !== undefined ? _data["isNotificationEnabled"] : null as any;
             this.systemPrivateDns = _data["systemPrivateDns"] ? PrivateDns.fromJS(_data["systemPrivateDns"]) : null as any;
             this.isWaitingForInternalAd = _data["isWaitingForInternalAd"] !== undefined ? _data["isWaitingForInternalAd"] : null as any;
+            this.isAdPrivacyOptionsRequired = _data["isAdPrivacyOptionsRequired"] !== undefined ? _data["isAdPrivacyOptionsRequired"] : null as any;
             this.stateProgress = _data["stateProgress"] !== undefined ? _data["stateProgress"] : null as any;
             this.isDiagnosing = _data["isDiagnosing"] !== undefined ? _data["isDiagnosing"] : null as any;
             this.channelProtocol = _data["channelProtocol"] !== undefined ? _data["channelProtocol"] : null as any;
@@ -4129,6 +4387,7 @@ export class AppState implements IAppState {
             this.promotionExists = _data["promotionExists"] !== undefined ? _data["promotionExists"] : null as any;
             this.tcpProxyUsageReason = _data["tcpProxyUsageReason"] !== undefined ? _data["tcpProxyUsageReason"] : null as any;
             this.splitTunnelingState = _data["splitTunnelingState"] ? SplitTunnelingState.fromJS(_data["splitTunnelingState"]) : new SplitTunnelingState();
+            this.alwaysOnState = _data["alwaysOnState"] ? AlwaysOnState.fromJS(_data["alwaysOnState"]) : null as any;
         }
     }
 
@@ -4161,6 +4420,7 @@ export class AppState implements IAppState {
         data["canDiagnose"] = this.canDiagnose !== undefined ? this.canDiagnose : null as any;
         data["userReviewRecommended"] = this.userReviewRecommended !== undefined ? this.userReviewRecommended : null as any;
         data["isQuickLaunchRecommended"] = this.isQuickLaunchRecommended !== undefined ? this.isQuickLaunchRecommended : null as any;
+        data["isAnonymousTrackerPromptRequired"] = this.isAnonymousTrackerPromptRequired !== undefined ? this.isAnonymousTrackerPromptRequired : null as any;
         data["clientCountryInfo"] = this.clientCountryInfo ? this.clientCountryInfo.toJSON() : null as any;
         data["currentUiCultureInfo"] = this.currentUiCultureInfo ? this.currentUiCultureInfo.toJSON() : null as any;
         data["systemUiCultureInfo"] = this.systemUiCultureInfo ? this.systemUiCultureInfo.toJSON() : null as any;
@@ -4169,6 +4429,7 @@ export class AppState implements IAppState {
         data["isNotificationEnabled"] = this.isNotificationEnabled !== undefined ? this.isNotificationEnabled : null as any;
         data["systemPrivateDns"] = this.systemPrivateDns ? this.systemPrivateDns.toJSON() : null as any;
         data["isWaitingForInternalAd"] = this.isWaitingForInternalAd !== undefined ? this.isWaitingForInternalAd : null as any;
+        data["isAdPrivacyOptionsRequired"] = this.isAdPrivacyOptionsRequired !== undefined ? this.isAdPrivacyOptionsRequired : null as any;
         data["stateProgress"] = this.stateProgress !== undefined ? this.stateProgress : null as any;
         data["isDiagnosing"] = this.isDiagnosing !== undefined ? this.isDiagnosing : null as any;
         data["channelProtocol"] = this.channelProtocol !== undefined ? this.channelProtocol : null as any;
@@ -4176,6 +4437,7 @@ export class AppState implements IAppState {
         data["promotionExists"] = this.promotionExists !== undefined ? this.promotionExists : null as any;
         data["tcpProxyUsageReason"] = this.tcpProxyUsageReason !== undefined ? this.tcpProxyUsageReason : null as any;
         data["splitTunnelingState"] = this.splitTunnelingState ? this.splitTunnelingState.toJSON() : null as any;
+        data["alwaysOnState"] = this.alwaysOnState ? this.alwaysOnState.toJSON() : null as any;
         return data;
     }
 }
@@ -4201,6 +4463,7 @@ export interface IAppState {
     canDiagnose: boolean;
     userReviewRecommended: number;
     isQuickLaunchRecommended: boolean;
+    isAnonymousTrackerPromptRequired: boolean;
     clientCountryInfo: CountryInfo | null;
     currentUiCultureInfo: UiCultureInfo;
     systemUiCultureInfo: UiCultureInfo;
@@ -4209,6 +4472,7 @@ export interface IAppState {
     isNotificationEnabled: boolean | null;
     systemPrivateDns: PrivateDns | null;
     isWaitingForInternalAd: boolean | null;
+    isAdPrivacyOptionsRequired: boolean;
     stateProgress: number | null;
     isDiagnosing: boolean;
     channelProtocol: ChannelProtocol;
@@ -4216,6 +4480,7 @@ export interface IAppState {
     promotionExists: boolean;
     tcpProxyUsageReason: TcpProxyUsageReason;
     splitTunnelingState: SplitTunnelingState;
+    alwaysOnState: AlwaysOnState | null;
 }
 
 export enum AppConnectionState {
@@ -5376,6 +5641,7 @@ export class AppUpdaterStatus implements IAppUpdaterStatus {
     versionStatus!: VersionStatus;
     publishInfo!: PublishInfo | null;
     prompt!: boolean;
+    updateState!: AppUpdateState | null;
 
     constructor(data?: IAppUpdaterStatus) {
         if (data) {
@@ -5392,6 +5658,7 @@ export class AppUpdaterStatus implements IAppUpdaterStatus {
             this.versionStatus = _data["versionStatus"] !== undefined ? _data["versionStatus"] : null as any;
             this.publishInfo = _data["publishInfo"] ? PublishInfo.fromJS(_data["publishInfo"]) : null as any;
             this.prompt = _data["prompt"] !== undefined ? _data["prompt"] : null as any;
+            this.updateState = _data["updateState"] ? AppUpdateState.fromJS(_data["updateState"]) : null as any;
         }
     }
 
@@ -5408,6 +5675,7 @@ export class AppUpdaterStatus implements IAppUpdaterStatus {
         data["versionStatus"] = this.versionStatus !== undefined ? this.versionStatus : null as any;
         data["publishInfo"] = this.publishInfo ? this.publishInfo.toJSON() : null as any;
         data["prompt"] = this.prompt !== undefined ? this.prompt : null as any;
+        data["updateState"] = this.updateState ? this.updateState.toJSON() : null as any;
         return data;
     }
 }
@@ -5417,6 +5685,7 @@ export interface IAppUpdaterStatus {
     versionStatus: VersionStatus;
     publishInfo: PublishInfo | null;
     prompt: boolean;
+    updateState: AppUpdateState | null;
 }
 
 export enum VersionStatus {
@@ -5488,6 +5757,67 @@ export interface IPublishInfo {
     releaseDate: Date;
     deprecatedVersion: string;
     notificationDelay: string;
+}
+
+export class AppUpdateState implements IAppUpdateState {
+    version!: string;
+    stage!: AppUpdateStage;
+    downloadedBytes!: number;
+    totalBytes!: number | null;
+    errorMessage!: string | null;
+
+    constructor(data?: IAppUpdateState) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.version = _data["version"] !== undefined ? _data["version"] : null as any;
+            this.stage = _data["stage"] !== undefined ? _data["stage"] : null as any;
+            this.downloadedBytes = _data["downloadedBytes"] !== undefined ? _data["downloadedBytes"] : null as any;
+            this.totalBytes = _data["totalBytes"] !== undefined ? _data["totalBytes"] : null as any;
+            this.errorMessage = _data["errorMessage"] !== undefined ? _data["errorMessage"] : null as any;
+        }
+    }
+
+    static fromJS(data: any): AppUpdateState {
+        data = typeof data === 'object' ? data : {};
+        let result = new AppUpdateState();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["version"] = this.version !== undefined ? this.version : null as any;
+        data["stage"] = this.stage !== undefined ? this.stage : null as any;
+        data["downloadedBytes"] = this.downloadedBytes !== undefined ? this.downloadedBytes : null as any;
+        data["totalBytes"] = this.totalBytes !== undefined ? this.totalBytes : null as any;
+        data["errorMessage"] = this.errorMessage !== undefined ? this.errorMessage : null as any;
+        return data;
+    }
+}
+
+export interface IAppUpdateState {
+    version: string;
+    stage: AppUpdateStage;
+    downloadedBytes: number;
+    totalBytes: number | null;
+    errorMessage: string | null;
+}
+
+export enum AppUpdateStage {
+    None = "None",
+    Available = "Available",
+    Downloading = "Downloading",
+    Downloaded = "Downloaded",
+    Installing = "Installing",
+    Failed = "Failed",
 }
 
 export class CountryInfo implements ICountryInfo {
@@ -5787,6 +6117,57 @@ export enum SplitUnsupportedIpMode {
     Block = "Block",
 }
 
+export class AlwaysOnState implements IAlwaysOnState {
+    status!: AlwaysOnStatus;
+    retryTime!: Date | null;
+    error!: ApiError | null;
+
+    constructor(data?: IAlwaysOnState) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.status = _data["status"] !== undefined ? _data["status"] : null as any;
+            this.retryTime = _data["retryTime"] ? new Date(_data["retryTime"].toString()) : null as any;
+            this.error = _data["error"] ? ApiError.fromJS(_data["error"]) : null as any;
+        }
+    }
+
+    static fromJS(data: any): AlwaysOnState {
+        data = typeof data === 'object' ? data : {};
+        let result = new AlwaysOnState();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["status"] = this.status !== undefined ? this.status : null as any;
+        data["retryTime"] = this.retryTime ? this.retryTime.toISOString() : null as any;
+        data["error"] = this.error ? this.error.toJSON() : null as any;
+        return data;
+    }
+}
+
+export interface IAlwaysOnState {
+    status: AlwaysOnStatus;
+    retryTime: Date | null;
+    error: ApiError | null;
+}
+
+export enum AlwaysOnStatus {
+    Off = "Off",
+    On = "On",
+    Waiting = "Waiting",
+    Stopped = "Stopped",
+}
+
 export class UserSettings implements IUserSettings {
     isLicenseAccepted!: boolean;
     isTcpProxyPrompted!: boolean;
@@ -5794,12 +6175,14 @@ export class UserSettings implements IUserSettings {
     cultureCode?: string | null;
     countryCode?: string | null;
     vpnProfileId?: string | null;
+    alwaysOn!: boolean;
     splitTunneling!: SplitTunnelingSettings;
     channelProtocol!: ChannelProtocol;
     dropUdp!: boolean;
     useTcpProxy!: boolean;
     dropQuic!: boolean;
     allowAnonymousTracker!: boolean;
+    isAnonymousTrackerPrompted!: boolean;
     debugData1?: string | null;
     debugData2?: string | null;
     logAnonymous!: boolean;
@@ -5831,12 +6214,14 @@ export class UserSettings implements IUserSettings {
             this.cultureCode = _data["cultureCode"] !== undefined ? _data["cultureCode"] : null as any;
             this.countryCode = _data["countryCode"] !== undefined ? _data["countryCode"] : null as any;
             this.vpnProfileId = _data["vpnProfileId"] !== undefined ? _data["vpnProfileId"] : null as any;
+            this.alwaysOn = _data["alwaysOn"] !== undefined ? _data["alwaysOn"] : null as any;
             this.splitTunneling = _data["splitTunneling"] ? SplitTunnelingSettings.fromJS(_data["splitTunneling"]) : new SplitTunnelingSettings();
             this.channelProtocol = _data["channelProtocol"] !== undefined ? _data["channelProtocol"] : null as any;
             this.dropUdp = _data["dropUdp"] !== undefined ? _data["dropUdp"] : null as any;
             this.useTcpProxy = _data["useTcpProxy"] !== undefined ? _data["useTcpProxy"] : null as any;
             this.dropQuic = _data["dropQuic"] !== undefined ? _data["dropQuic"] : null as any;
             this.allowAnonymousTracker = _data["allowAnonymousTracker"] !== undefined ? _data["allowAnonymousTracker"] : null as any;
+            this.isAnonymousTrackerPrompted = _data["isAnonymousTrackerPrompted"] !== undefined ? _data["isAnonymousTrackerPrompted"] : null as any;
             this.debugData1 = _data["debugData1"] !== undefined ? _data["debugData1"] : null as any;
             this.debugData2 = _data["debugData2"] !== undefined ? _data["debugData2"] : null as any;
             this.logAnonymous = _data["logAnonymous"] !== undefined ? _data["logAnonymous"] : null as any;
@@ -5870,12 +6255,14 @@ export class UserSettings implements IUserSettings {
         data["cultureCode"] = this.cultureCode !== undefined ? this.cultureCode : null as any;
         data["countryCode"] = this.countryCode !== undefined ? this.countryCode : null as any;
         data["vpnProfileId"] = this.vpnProfileId !== undefined ? this.vpnProfileId : null as any;
+        data["alwaysOn"] = this.alwaysOn !== undefined ? this.alwaysOn : null as any;
         data["splitTunneling"] = this.splitTunneling ? this.splitTunneling.toJSON() : null as any;
         data["channelProtocol"] = this.channelProtocol !== undefined ? this.channelProtocol : null as any;
         data["dropUdp"] = this.dropUdp !== undefined ? this.dropUdp : null as any;
         data["useTcpProxy"] = this.useTcpProxy !== undefined ? this.useTcpProxy : null as any;
         data["dropQuic"] = this.dropQuic !== undefined ? this.dropQuic : null as any;
         data["allowAnonymousTracker"] = this.allowAnonymousTracker !== undefined ? this.allowAnonymousTracker : null as any;
+        data["isAnonymousTrackerPrompted"] = this.isAnonymousTrackerPrompted !== undefined ? this.isAnonymousTrackerPrompted : null as any;
         data["debugData1"] = this.debugData1 !== undefined ? this.debugData1 : null as any;
         data["debugData2"] = this.debugData2 !== undefined ? this.debugData2 : null as any;
         data["logAnonymous"] = this.logAnonymous !== undefined ? this.logAnonymous : null as any;
@@ -5899,12 +6286,14 @@ export interface IUserSettings {
     cultureCode?: string | null;
     countryCode?: string | null;
     vpnProfileId?: string | null;
+    alwaysOn: boolean;
     splitTunneling: SplitTunnelingSettings;
     channelProtocol: ChannelProtocol;
     dropUdp: boolean;
     useTcpProxy: boolean;
     dropQuic: boolean;
     allowAnonymousTracker: boolean;
+    isAnonymousTrackerPrompted: boolean;
     debugData1?: string | null;
     debugData2?: string | null;
     logAnonymous: boolean;
@@ -6650,6 +7039,12 @@ export interface IDeviceAppInfo {
     appId: string;
     appName: string;
     iconPng: string;
+}
+
+export enum VersionCheckResult {
+    Failed = "Failed",
+    Latest = "Latest",
+    UpdateAvailable = "UpdateAvailable",
 }
 
 export enum ExceptionType {

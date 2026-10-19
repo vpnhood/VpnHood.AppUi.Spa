@@ -333,11 +333,11 @@ export class VpnHoodApp {
   // Decided entirely by the app (AppFeatures) - never by which product the SPA thinks it is.
   // Null means the build ships no such document: hide the link, never guess an address.
   public privacyPolicyUrl(): string | null {
-    return this.data.features.privacyPolicyUrl;
+    return this.data.features.links.privacyPolicy ?? null;
   }
 
   public termsOfUseUrl(): string | null {
-    return this.data.features.termsOfUseUrl;
+    return this.data.features.links.termsOfUse ?? null;
   }
 
   // A TV is not guaranteed to have a browser: target="_blank" fires an intent that nothing on the
@@ -549,6 +549,12 @@ export class VpnHoodApp {
     );
     if (result.state === SignInState.SignedIn) await this.afterSignedIn(false);
     return result;
+  }
+
+  /** The account website's page for setting or recovering a password; null where the app has none. */
+  public async passwordResetUrl(): Promise<string | null> {
+    const accountClient = ClientApiFactory.instance.createAccountClient();
+    return (await accountClient.getPasswordResetUrl()) || null;
   }
 
   private async afterSignedIn(onPurchase: boolean): Promise<void> {

@@ -3,6 +3,8 @@ using Android.Service.QuickSettings;
 using VpnHood.AppLib.App.Android.Activities;
 using VpnHood.AppLib.App.Android.Constants;
 using VpnHood.AppUi.Hosting.Maui;
+using VpnHood.AppUi.Hosting.WebView;
+using VpnHood.Net.Toolkit.Graphics;
 
 // ReSharper disable once CheckNamespace
 namespace AppUiSample.Spa.Maui;
@@ -21,6 +23,12 @@ public class MainActivity : VpnHoodMauiMainActivity
 {
     protected override AndroidAppMainActivityHandler CreateMainActivityHandler()
     {
-        return new AndroidAppMainActivityHandler(this, new AndroidMainActivityOptions());
+        return new AndroidAppMainActivityHandler(this, new AndroidMainActivityOptions(), WindowBackgroundColor());
+    }
+
+    // the web UI's theme's window background, for the system bars and the ground behind them
+    private static async Task<VhColor?> WindowBackgroundColor()
+    {
+        return (await WebViewTheme.Colors).WindowBackgroundColor;
     }
 }

@@ -2,7 +2,7 @@
 import i18n from '@/locales/i18n';
 import router from '@/services/router';
 import AppBar from '@/components/AppBar.vue';
-import { AppFeature, AppProxyMode } from '@/services/VpnHood.Client.Api';
+import { AlwaysOnSupport, AppFeature, AppProxyMode } from '@/services/VpnHood.Client.Api';
 import { LanguagesCode } from '@/helpers/UiConstants';
 import SettingsItem from '@/components/Settings/SettingsItem.vue';
 import { VpnHoodApp } from '@/services/VpnHoodApp';
@@ -26,7 +26,9 @@ const isShowSplitTunneling: boolean = true;
 const isShowDns: boolean = true;
 const isShowPrivacy: boolean = true;
 const isShowKillSwitch = computed(() => vhApp.data.intentFeatures.isKillSwitchSettingsSupported);
-const isShowAlwaysOn = computed(() => vhApp.data.intentFeatures.isAlwaysOnSettingsSupported);
+// the device's own always-on setting, which this UI opens; where the app keeps it itself (a
+// desktop's service) only the Avalonia UI has the switch
+const isShowAlwaysOn = computed(() => vhApp.data.features.alwaysOnSupport === AlwaysOnSupport.Device);
 
 const isShowAppSettingsSection = computed(() =>
   isShowLanguage || isShowNotifications.value || isShowQuickLaunch.value);

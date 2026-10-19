@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Logging;
+using VpnHood.AppLib.Api.App;
 using VpnHood.AppLib.Api.WebHost;
 using VpnHood.AppLib.App;
 using VpnHood.AppUi.Hosting.Maui;
@@ -26,6 +27,8 @@ public static class MauiProgram
         {
             AppId = "com.vpnhood.sample.spa.maui",
             AppName = "VpnHood! SPA Sample",
+            AppVersion = typeof(MauiProgram).Assembly.GetName().Version
+                         ?? throw new InvalidOperationException("The sample's assembly has no version."),
             StorageFolderName = "VpnHoodSpaMauiSample",
             AppOptionsFactory = CreateAppOptions
         };
@@ -46,8 +49,11 @@ public static class MauiProgram
             // the engine's own sample token, so the sample has a server profile and a location to show
             AccessKeys = [ClientOptions.SampleAccessKey],
             IsAddAccessKeySupported = true,
-            PrivacyPolicyUrl = new Uri("https://www.vpnhood.com/vpnhood-client-privacy-policy"),
-            TermsOfUseUrl = new Uri("https://www.vpnhood.com/legal/vpnhood-client-terms-of-use"),
+            Links = new AppLinks
+            {
+                PrivacyPolicy = new Uri("https://www.vpnhood.com/vpnhood-client-privacy-policy"),
+                TermsOfUse = new Uri("https://www.vpnhood.com/legal/vpnhood-client-terms-of-use")
+            },
             LogoAssetPath = "images/logo-client.png",
             PrivacyConsentAssetName = "privacy-consent-client",
             IpLocationZipAsset = new Asset(assets, "iplocations/IpLocations.zip"),

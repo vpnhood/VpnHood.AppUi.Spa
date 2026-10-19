@@ -19,7 +19,8 @@
 	<PropertyGroup>
 		<SpaDir>$(MSBuildThisFileDirectory)VpnHood.AppUi.Presentation.Classic.Spa\</SpaDir>
 		<SpaDistDir>$(SpaDir)dist\</SpaDistDir>
-		<SpaZipDir>$(MSBuildProjectDirectory)\obj\spa\</SpaZipDir>
+		<!-- one folder per target framework: a head of two (the MAUI sample) builds both at once -->
+		<SpaZipDir>$(MSBuildProjectDirectory)\obj\spa\$(TargetFramework)\</SpaZipDir>
 		<SpaStoreDir>$(SpaZipDir)store\</SpaStoreDir>
 		<SpaWebRootDir>$(SpaZipDir)web-root\</SpaWebRootDir>
 		<SpaUiZip>$(SpaZipDir)ui.zip</SpaUiZip>

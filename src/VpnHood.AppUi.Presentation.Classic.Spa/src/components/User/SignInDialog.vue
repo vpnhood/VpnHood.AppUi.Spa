@@ -84,11 +84,24 @@ const hasPasswordMethod = computed(() => vhApp.data.features.authProviderIds.inc
 // On the TV UI the email form is not offered - there is nothing to type on - and the phone stands
 // in for it: the pairing dialog, whose paired browser has the same form and the same app behind it.
 const isPhoneForEmail = computed(() => vhApp.data.isTvUi && hasPasswordMethod.value);
-// The account website is a WEB page, so it needs a browser to LEAVE the app with. Withheld where
-// there is none — the link would open nothing — which is asked of the device rather than guessed
-// from "is this a TV": a television with a browser installed opens it fine.
-const accountWebsiteUrl = computed(() =>
-  vhApp.isExternalLinkUsable() ? vhApp.data.features.accountWebsiteUrl : null);
+// The account website's password-reset page, asked once, when the password form first shows, and
+// offered only when the app names one, as the Avalonia SignInDialog does. It is a WEB page, so it
+// needs a browser to LEAVE the app with: withheld where there is none - the link would open
+// nothing - which is asked of the device rather than guessed from "is this a TV".
+const passwordResetUrl = ref<string | null>(null);
+let isPasswordResetAsked = false;
+watch(step, async (value) => {
+  if (value !== 'password' || isPasswordResetAsked || !vhApp.isExternalLinkUsable())
+    return;
+
+  isPasswordResetAsked = true;
+  try {
+    passwordResetUrl.value = await vhApp.passwordResetUrl();
+  } catch (err) {
+    // the form works without it: the link stays hidden
+    console.warn('Could not get the password-reset page.', err);
+  }
+});
 
 function close(): void {
   emit('update:modelValue', false);
@@ -307,8 +320,8 @@ async function submitChallenge(): Promise<void> {
           <!-- the one place the account website appears: setting/recovering the password happens
                there — store-created accounts have never set one, and the error message says so -->
           <a
-            v-if="accountWebsiteUrl"
-            :href="accountWebsiteUrl"
+            v-if="passwordResetUrl"
+            :href="passwordResetUrl"
             target="_blank"
             class="d-block mt-4 text-body-small"
           >{{ locale('FORGOT_PASSWORD') }}</a>

@@ -10,6 +10,7 @@ using VpnHood.AppLib.Api.Sessions;
 using VpnHood.AppLib.Api.Settings;
 using VpnHood.AppLib.Api.SplitTunneling;
 using VpnHood.AppLib.Api.Device;
+using VpnHood.AppLib.Api.Updaters;
 
 namespace VpnHood.AppLib.Api.SwaggerHost.Controllers;
 
@@ -136,13 +137,31 @@ public class AppController : ControllerBase, IAppApi
     }
 
     [HttpPost("version-check")]
-    public Task VersionCheck(CancellationToken cancellationToken)
+    public Task<VersionCheckResult> VersionCheck(CancellationToken cancellationToken)
     {
         throw new SwaggerOnlyException();
     }
 
     [HttpPost("version-check-postpone")]
     public Task VersionCheckPostpone(CancellationToken cancellationToken)
+    {
+        throw new SwaggerOnlyException();
+    }
+
+    [HttpPost("start-update")]
+    public Task StartUpdate(CancellationToken cancellationToken)
+    {
+        throw new SwaggerOnlyException();
+    }
+
+    [HttpPost("complete-update")]
+    public Task CompleteUpdate(CancellationToken cancellationToken)
+    {
+        throw new SwaggerOnlyException();
+    }
+
+    [HttpPost("ad-privacy-options")]
+    public Task ShowAdPrivacyOptions(CancellationToken cancellationToken)
     {
         throw new SwaggerOnlyException();
     }

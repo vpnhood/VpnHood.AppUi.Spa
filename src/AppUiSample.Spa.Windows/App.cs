@@ -1,10 +1,13 @@
+using VpnHood.AppLib.Api.App;
 using VpnHood.AppLib.Api.WebHost;
 using VpnHood.AppLib.App;
 using VpnHood.AppUi.Hosting.Desktop;
+using VpnHood.AppUi.Hosting.Desktop.Abstractions;
 using VpnHood.AppUi.Hosting.Desktop.Windows;
 using VpnHood.AppUi.Hosting.WebView.Windows;
 using VpnHood.Core.Client.Abstractions;
 using VpnHood.Net.Toolkit.Assets;
+using VpnHood.Net.Toolkit.Graphics;
 
 namespace AppUiSample.Spa.Windows;
 
@@ -25,15 +28,25 @@ internal static class App
     private const bool IsDebugMode = false;
 #endif
 
+    // The shape the web UI's layout needs of the window, which a page cannot state: the classic
+    // UI's, a phone's 400 by 700, and 800 wide in landscape where the screen is too short for that.
+    private static readonly DesktopWindowFitOptions WindowFit = new() {
+        PhoneSize = new VhSize(400, 700),
+        LandscapeWidth = 800,
+        MinLandscapeHeight = 400
+    };
+
     [STAThread]
     private static int Main(string[] args)
     {
         return WindowsDesktopHost.Run(args, new DesktopInitParams {
             AppId = "com.vpnhood.sample.spa.windows",
             AppName = "VpnHood! SPA Sample",
+            AppVersion = typeof(App).Assembly.GetName().Version
+                         ?? throw new InvalidOperationException("The sample's assembly has no version."),
             AppOptionsFactory = CreateAppOptions,
             IsAddAccessKeySupported = IsAddAccessKeySupported,
-            Ui = new WindowsWebViewUi()
+            Ui = new WindowsWebViewUi(WindowFit)
         });
     }
 
@@ -51,8 +64,10 @@ internal static class App
             // the engine's own sample token, so the sample has a server profile and a location to show
             AccessKeys = [ClientOptions.SampleAccessKey],
             IsAddAccessKeySupported = IsAddAccessKeySupported,
-            PrivacyPolicyUrl = new Uri("https://www.vpnhood.com/vpnhood-client-privacy-policy"),
-            TermsOfUseUrl = new Uri("https://www.vpnhood.com/legal/vpnhood-client-terms-of-use"),
+            Links = new AppLinks {
+                PrivacyPolicy = new Uri("https://www.vpnhood.com/vpnhood-client-privacy-policy"),
+                TermsOfUse = new Uri("https://www.vpnhood.com/legal/vpnhood-client-terms-of-use")
+            },
             LogoAssetPath = "images/logo-client.png",
             PrivacyConsentAssetName = "privacy-consent-client",
             IpLocationZipAsset = new Asset(assets, "iplocations/IpLocations.zip"),

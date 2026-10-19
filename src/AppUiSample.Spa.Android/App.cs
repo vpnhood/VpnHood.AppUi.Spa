@@ -1,4 +1,5 @@
 using Android.Runtime;
+using VpnHood.AppLib.Api.App;
 using VpnHood.AppLib.Api.WebHost;
 using VpnHood.AppLib.App;
 using VpnHood.AppLib.App.Android.Constants;
@@ -35,6 +36,8 @@ public class App(IntPtr javaReference, JniHandleOwnership transfer)
         return new AppInitParams {
             AppId = PackageName ?? throw new InvalidOperationException("The application has no package name."),
             AppName = "VpnHood! SPA Sample",
+            AppVersion = typeof(App).Assembly.GetName().Version
+                         ?? throw new InvalidOperationException("The sample's assembly has no version."),
             StorageFolderName = "VpnHoodSpaSample",
             AppOptionsFactory = CreateAppOptions
         };
@@ -54,8 +57,10 @@ public class App(IntPtr javaReference, JniHandleOwnership transfer)
             // the engine's own sample token, so the sample has a server profile and a location to show
             AccessKeys = [ClientOptions.SampleAccessKey],
             IsAddAccessKeySupported = true,
-            PrivacyPolicyUrl = new Uri("https://www.vpnhood.com/vpnhood-client-privacy-policy"),
-            TermsOfUseUrl = new Uri("https://www.vpnhood.com/legal/vpnhood-client-terms-of-use"),
+            Links = new AppLinks {
+                PrivacyPolicy = new Uri("https://www.vpnhood.com/vpnhood-client-privacy-policy"),
+                TermsOfUse = new Uri("https://www.vpnhood.com/legal/vpnhood-client-terms-of-use")
+            },
             LogoAssetPath = "images/logo-client.png",
             PrivacyConsentAssetName = "privacy-consent-client",
             IpLocationZipAsset = new Asset(assets, "iplocations/IpLocations.zip"),

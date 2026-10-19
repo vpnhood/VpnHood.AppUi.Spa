@@ -41,8 +41,8 @@ the UI itself does not.
 ## Developing the SPA
 
 `npm run dev` serves it at `http://localhost:8080`, with the assets from `src/`. Point
-`VITE_API_BASE_URL` in `.env.development` at a running app's API: a sample here serves its at
-`http://127.0.0.1:9090` (IPv4 - `localhost` resolves to `::1` first, where nothing listens), and
+`VITE_API_BASE_URL` in `.env.development` at a running app's API: a Debug sample here serves its at
+`http://127.0.0.1:9091` (IPv4 - `localhost` resolves to `::1` first, where nothing listens), and
 every debug head of the main repo serves one too.
 
 After a change to the C# API, run `src/VpnHood.AppLib.Api.SwaggerHost/_recreate-api.ps1`; never edit

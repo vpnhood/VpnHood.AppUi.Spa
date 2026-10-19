@@ -106,8 +106,7 @@ produce a set that looks right wearing the other product's brand — Connect's f
 Avalonia UI (it carried the SPA-era `uiName` alone) and would have rendered blue with the Client
 logo. Copy them from the product's options builder (`src/Apps/<product>/<product>/<Product>AppOptions.cs`,
 the two documents from its appsettings' `Links`), or `src/Apps/Tools/AvaloniaUI.Dev/Program.cs` for a
-whole product at once. The SPA itself still reads the two as `privacyPolicyUrl` and `termsOfUseUrl`,
-which this fixture keeps beside them until the SPA reads `links`.
+whole product at once.
 
 Animations that never end (the `flasher` pulse on the Servers page's "(Recommended)", the
 `spinner`) would be caught mid-stroke, making the same shot differ every run and keeping the page

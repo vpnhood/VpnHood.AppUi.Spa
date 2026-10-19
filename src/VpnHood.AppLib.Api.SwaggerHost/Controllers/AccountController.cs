@@ -41,4 +41,10 @@ public class AccountController : ControllerBase, IAccountApi
         throw new SwaggerOnlyException();
     }
 
+    [HttpGet("password-reset-url")]
+    public Task<Uri?> GetPasswordResetUrl(CancellationToken cancellationToken)
+    {
+        throw new SwaggerOnlyException();
+    }
+
 }
