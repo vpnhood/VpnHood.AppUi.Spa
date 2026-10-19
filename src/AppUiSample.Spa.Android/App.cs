@@ -58,8 +58,8 @@ public class App(IntPtr javaReference, JniHandleOwnership transfer)
             AccessKeys = [ClientOptions.SampleAccessKey],
             IsAddAccessKeySupported = true,
             Links = new AppLinks {
-                PrivacyPolicy = new Uri("https://www.vpnhood.com/vpnhood-client-privacy-policy"),
-                TermsOfUse = new Uri("https://www.vpnhood.com/legal/vpnhood-client-terms-of-use")
+                PrivacyPolicy = new Uri("https://www.vpnhood.com/legal/vpnhood-client/privacy-policy/"),
+                TermsOfUse = new Uri("https://www.vpnhood.com/legal/vpnhood-client/terms-of-use/")
             },
             LogoAssetPath = "images/logo-client.png",
             PrivacyConsentAssetName = "privacy-consent-client",

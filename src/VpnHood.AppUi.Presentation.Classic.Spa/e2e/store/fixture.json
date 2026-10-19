@@ -11,8 +11,8 @@
     "logoAssetPath": "images/logo-client.png",
     "privacyConsentAssetName": "privacy-consent-client",
     "links": {
-      "privacyPolicy": "https://www.vpnhood.com/vpnhood-client-privacy-policy",
-      "termsOfUse": "https://www.vpnhood.com/legal/vpnhood-client-terms-of-use"
+      "privacyPolicy": "https://www.vpnhood.com/legal/vpnhood-client/privacy-policy/",
+      "termsOfUse": "https://www.vpnhood.com/legal/vpnhood-client/terms-of-use/"
     },
     "showPoweredBy": true,
     "isPremiumFlagSupported": false,
