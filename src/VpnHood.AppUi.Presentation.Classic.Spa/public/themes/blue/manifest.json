@@ -4,10 +4,5 @@
     "windowBackground": "#1940b0",
     "navigationBar": "#122272",
     "progressBar": "#23c99d"
-  },
-  "icons": {
-    "systemTrayConnected": "tray-connected.ico",
-    "systemTrayConnecting": "tray-connecting.ico",
-    "systemTrayDisconnected": "tray-disconnected.ico"
   }
 }
