@@ -690,7 +690,7 @@
   "RESTORE_PREMIUM": "Restaurar premium",
   "CODE_REFUSED_EXPIRED_NOTICE": "Este código caducó el {date}. Se ha guardado; si se amplía, volverá a funcionar automáticamente.",
   "CODE_REFUSED_REJECTED_NOTICE": "El servidor rechazó este código el {date}. Se ha guardado y funcionará de nuevo si el emisor lo reactiva.",
-  "EXIT": "Salir",
+  "EXIT_AND_DISCONNECT": "Salir",
   "MANAGE": "Administrar",
   "OPEN": "Abrir",
   "MSG_ACCESS_KEY_ADDED": "Clave de acceso {0} añadida.",

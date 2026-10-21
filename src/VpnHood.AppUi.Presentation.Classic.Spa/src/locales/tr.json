@@ -690,7 +690,7 @@
   "RESTORE_PREMIUM": "Aboneliği Geri Yükle",
   "CODE_REFUSED_EXPIRED_NOTICE": "Bu kodun süresi {date} tarihinde doldu. Saklanıyor; süresi uzatılırsa otomatik olarak tekrar çalışacaktır.",
   "CODE_REFUSED_REJECTED_NOTICE": "Sunucu bu kodu {date} tarihinde reddetti. Saklanıyor, kodu veren taraf etkinleştirirse tekrar çalışacaktır.",
-  "EXIT": "Çıkış",
+  "EXIT_AND_DISCONNECT": "Çıkış",
   "MANAGE": "Yönet",
   "OPEN": "Aç",
   "MSG_ACCESS_KEY_ADDED": "{0} erişim anahtarı eklendi.",

@@ -690,7 +690,7 @@
   "RESTORE_PREMIUM": "Restaurer Premium",
   "CODE_REFUSED_EXPIRED_NOTICE": "Ce code a expiré le {date}. Il est conservé : s'il est prolongé, il fonctionnera à nouveau automatiquement.",
   "CODE_REFUSED_REJECTED_NOTICE": "Le serveur a rejeté ce code le {date}. Il est conservé et fonctionnera à nouveau si son émetteur le réactive.",
-  "EXIT": "Quitter",
+  "EXIT_AND_DISCONNECT": "Quitter",
   "MANAGE": "Gérer",
   "OPEN": "Ouvrir",
   "MSG_ACCESS_KEY_ADDED": "Clé d'accès {0} ajoutée.",

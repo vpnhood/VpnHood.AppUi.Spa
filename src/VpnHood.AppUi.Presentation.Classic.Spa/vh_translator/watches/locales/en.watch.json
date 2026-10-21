@@ -692,7 +692,7 @@
     "RESTORE_PREMIUM": "Restore premium",
     "CODE_REFUSED_EXPIRED_NOTICE": "This code expired on {date}. It is kept — if it is extended, it will work again by itself.",
     "CODE_REFUSED_REJECTED_NOTICE": "The server rejected this code on {date}. It is kept and will work again if its issuer restores it.",
-    "EXIT": "Exit",
+    "EXIT_AND_DISCONNECT": "Exit",
     "MANAGE": "Manage",
     "OPEN": "Open",
     "MSG_ACCESS_KEY_ADDED": "{0} Access key has been added.",

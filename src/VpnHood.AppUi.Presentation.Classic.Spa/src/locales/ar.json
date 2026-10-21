@@ -690,7 +690,7 @@
   "RESTORE_PREMIUM": "استعادة النسخة المدفوعة",
   "CODE_REFUSED_EXPIRED_NOTICE": "انتهت صلاحية هذا الرمز في {date}. تم الاحتفاظ به — إذا تم تمديده، فسيعمل تلقائياً مرة أخرى.",
   "CODE_REFUSED_REJECTED_NOTICE": "رفض الخادم هذا الرمز في {date}. تم الاحتفاظ به وسيعمل مرة أخرى إذا قام مانحه بتفعيله.",
-  "EXIT": "خروج",
+  "EXIT_AND_DISCONNECT": "خروج",
   "MANAGE": "إدارة",
   "OPEN": "فتح",
   "MSG_ACCESS_KEY_ADDED": "تمت إضافة مفتاح الوصول {0}.",
