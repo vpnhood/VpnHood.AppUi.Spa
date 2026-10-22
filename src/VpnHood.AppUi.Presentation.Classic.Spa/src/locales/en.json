@@ -78,7 +78,7 @@
   "PROTOCOL_UDP": "UDP",
   "PROTOCOL_UDP_DESC": "Lightweight protocol for faster connections, but access may be limited.",
   "PROTOCOL_TCP": "TCP",
-  "PROTOCOL_TCP_DESC": " Reliable protocol for better compatibility and stable connections.",
+  "PROTOCOL_TCP_DESC": "Reliable protocol for better compatibility and stable connections.",
   "PROTOCOL_QUIC": "QUIC",
   "PROTOCOL_QUIC_DESC": "Modern protocol over UDP for faster, more reliable connections, but access may be restricted.",
   "PROTOCOL_BLOCK_QUIC": "Block QUIC",
