@@ -77,7 +77,7 @@ jobs:
       - name: Build the Windows, Android and MAUI samples
         shell: pwsh
         run: |
-          $version = if ($env:VH_VERSION) { @("-p:VhPackageVersion=$env:VH_VERSION") } else { @() }
+          $version = @(if ($env:VH_VERSION) { "-p:VhPackageVersion=$env:VH_VERSION" })
           foreach ($sample in "AppUiSample.Spa.Windows", "AppUiSample.Spa.Android", "AppUiSample.Spa.Maui") {
             dotnet build "src/$sample/$sample.csproj" @version
             if ($LASTEXITCODE -ne 0) { throw "$sample did not build." }
