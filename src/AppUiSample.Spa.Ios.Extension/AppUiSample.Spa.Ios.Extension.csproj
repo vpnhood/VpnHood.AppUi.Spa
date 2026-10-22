@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<Description>The iOS sample's network extension: the tunnel, in a process of its own, built from the published packages alone</Description>
+		<TargetFramework>net11.0-ios</TargetFramework>
+		<RuntimeIdentifier>ios-arm64</RuntimeIdentifier>
+		<SupportedOSPlatformVersion>18.0</SupportedOSPlatformVersion>
+		<AssemblyName>VpnHoodSpaSampleExtension</AssemblyName>
+		<!-- Packaged as an .appex (a PlugIn) inside the app. -->
+		<IsAppExtension>true</IsAppExtension>
+		<!-- iOS accepts an extension only under an id that starts with its app's; the versions are the
+		     app's. -->
+		<ApplicationId>com.vpnhood.sample.spa.ios.networkextension</ApplicationId>
+		<ApplicationTitle>VpnHood! SPA Sample Extension</ApplicationTitle>
+		<ApplicationVersion>1</ApplicationVersion>
+		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+		<CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+		<!-- Automatic signing: Xcode picks the team's certificate and profiles. -->
+		<AutomaticProvisioning>true</AutomaticProvisioning>
+		<CodesignKey>Apple Development</CodesignKey>
+		<!-- Trim the system assemblies only. -->
+		<MtouchLink>SdkOnly</MtouchLink>
+		<!-- iOS ends a network extension that passes about 50 MB: the managed heap is held small, so a
+		     burst of connections is collected long before that. -->
+		<MtouchExtraArgs>$(MtouchExtraArgs) --setenv=MONO_GC_PARAMS=soft-heap-limit=8m,nursery-size=2m</MtouchExtraArgs>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<RuntimeHostConfigurationOption Include="System.GC.ConserveMemory" Value="9" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<!-- The tunnel itself; this project adds only the class iOS starts. -->
+		<PackageReference Include="VpnHood.Core.Client.Devices.Ios" Version="$(VhPackageVersion)" />
+	</ItemGroup>
+</Project>

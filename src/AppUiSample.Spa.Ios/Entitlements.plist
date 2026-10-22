@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- The VPN: the extension's packet tunnel, which the app configures and starts. -->
+    <key>com.apple.developer.networking.networkextension</key>
+    <array>
+        <string>packet-tunnel-provider</string>
+    </array>
+    <!-- The folder the app and its extension share (AppDelegate: AppGroupId). The App IDs in Apple's
+         portal need both capabilities and this group. -->
+    <key>com.apple.security.application-groups</key>
+    <array>
+        <string>group.com.vpnhood.sample.spa.ios</string>
+    </array>
+</dict>
+</plist>

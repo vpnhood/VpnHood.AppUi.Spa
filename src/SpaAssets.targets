@@ -26,6 +26,7 @@
 		<SpaUiZip>$(SpaZipDir)ui.zip</SpaUiZip>
 		<SpaWebRootZip>$(SpaZipDir)web-root.zip</SpaWebRootZip>
 		<SpaIsAndroidApp>$(TargetFramework.Contains('-android'))</SpaIsAndroidApp>
+		<SpaIsIosApp>$(TargetFramework.Contains('-ios'))</SpaIsIosApp>
 	</PropertyGroup>
 
 	<!-- Android: one entry in the package's assets, which is not split by CPU architecture. The link
@@ -37,8 +38,18 @@
 		<AndroidAsset Include="$(SpaWebRootZip)" Link="$(MonoAndroidAssetsPrefix)\assets\web-root.zip" Visible="false" />
 	</ItemGroup>
 
+	<!-- iOS: a file of the app bundle, read in place. The SDK gathers the bundle's files before
+	     BeforeBuild, so the zips are made from its own hook for that. -->
+	<PropertyGroup Condition="'$(SpaIsIosApp)' == 'true'">
+		<CollectBundleResourcesDependsOn>$(CollectBundleResourcesDependsOn);VhBuildSpaZips</CollectBundleResourcesDependsOn>
+	</PropertyGroup>
+	<ItemGroup Condition="'$(SpaIsIosApp)' == 'true'">
+		<BundleResource Include="$(SpaUiZip)" Link="assets\ui.zip" Visible="false" />
+		<BundleResource Include="$(SpaWebRootZip)" Link="assets\web-root.zip" Visible="false" />
+	</ItemGroup>
+
 	<!-- Windows: a file beside the executable, read in place. -->
-	<ItemGroup Condition="'$(SpaIsAndroidApp)' != 'true'">
+	<ItemGroup Condition="'$(SpaIsAndroidApp)' != 'true' And '$(SpaIsIosApp)' != 'true'">
 		<None Include="$(SpaUiZip)" Link="assets\ui.zip" CopyToOutputDirectory="PreserveNewest" Visible="false" />
 		<None Include="$(SpaWebRootZip)" Link="assets\web-root.zip" CopyToOutputDirectory="PreserveNewest" Visible="false" />
 	</ItemGroup>

@@ -22,6 +22,7 @@ references and which page it places beside itself.
 | `src/AppUiSample.Spa.Windows/` | a Windows head: the SPA in a WebView2 window, over `VpnHood.AppUi.Hosting.WebView.Windows`. |
 | `src/AppUiSample.Spa.Android/` | an Android head: the SPA in the system WebView, over `VpnHood.AppUi.Hosting.WebView.Android`. |
 | `src/AppUiSample.Spa.Maui/` | a MAUI head on Android and Windows: the SPA in MAUI's own WebView, the app in its process through `VpnHood.AppUi.Hosting.Maui`. |
+| `src/AppUiSample.Spa.Ios/`, `…Ios.Extension/` | an iOS head: the SPA in a WKWebView, over `VpnHood.AppUi.Hosting.WebView.Ios`, and the network extension every iOS VPN app bundles, where the tunnel runs. |
 | `src/SpaAssets.targets` | what the samples import: zips the SPA's `dist` into the two files a head places beside itself. |
 | `action.yml`, `…/e2e/store/` | the store screenshot and listing tooling that the store repos (`Vpnhood.App.Client`, `Vpnhood.App.Connect`) and the main repo's `publish_listing.yml` call by ref. Read `e2e/store/README.md` before touching any of it. |
 
@@ -38,6 +39,12 @@ copied by hand, and the samples never read the SPA's source.
 The Windows sample needs the Edge WebView2 runtime, which Windows 11 has. Connecting needs elevation;
 the UI itself does not.
 
+The iOS sample builds on a Mac with Xcode. The simulator shows the UI but cannot connect: iOS runs a
+network extension only on a device. There the app is signed with its own ids - the app's, the
+extension's (`….networkextension`) and the App Group both share - registered to the signing team
+with the Network Extensions and App Groups capabilities. A fork states its own in the two csproj
+files, the two `Entitlements.plist` files and `AppDelegate`.
+
 ## Developing the SPA
 
 `npm run dev` serves it at `http://localhost:8080`, with the assets from `src/`. Point
@@ -53,6 +60,10 @@ every other locale at publish time.
 
 `Directory.Build.props` holds `VhPackageVersion`, the version of the VpnHood packages every project
 here consumes. Move it when the packages move; nothing else pins them.
+
+The workflow (`.github/workflows/build_samples.yml`) builds every sample on a push, at the pin, and
+weekly at the newest VpnHood on nuget.org, so a release that breaks a sample shows before the pin
+moves to it.
 
 To build against a VpnHood not yet released, pack the main repo into a `.packages` folder beside
 `Directory.Build.props`: git ignores it, and the props add it as a package source when it exists.

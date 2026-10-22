@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<Description>A sample iOS head: the VpnHood app with the SPA as its UI, in a WKWebView, built from the published packages alone</Description>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net11.0-ios</TargetFramework>
+		<RuntimeIdentifier>ios-arm64</RuntimeIdentifier>
+		<SupportedOSPlatformVersion>18.0</SupportedOSPlatformVersion>
+		<AssemblyName>VpnHoodSpaSample</AssemblyName>
+		<!-- Its extension's id starts with this one, as iOS requires, and both name the App Group in
+		     their Entitlements.plist. -->
+		<ApplicationId>com.vpnhood.sample.spa.ios</ApplicationId>
+		<ApplicationTitle>VpnHood! SPA Sample</ApplicationTitle>
+		<ApplicationVersion>1</ApplicationVersion>
+		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+		<CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+		<!-- Automatic signing: Xcode picks the team's certificate and profiles. -->
+		<AutomaticProvisioning>true</AutomaticProvisioning>
+		<CodesignKey>Apple Development</CodesignKey>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<!-- The web UI in a WKWebView: the application delegate and the page's controller, over the
+		     app's iOS start and the iOS device the app runs on. -->
+		<PackageReference Include="VpnHood.AppUi.Hosting.WebView.Ios" Version="$(VhPackageVersion)" />
+		<!-- The web host the page is served from, and that a paired browser reaches. -->
+		<PackageReference Include="VpnHood.AppLib.Api.WebHost" Version="$(VhPackageVersion)" />
+		<!-- The IP-location database, placed in the app bundle by its own package's targets. -->
+		<PackageReference Include="VpnHood.Net.IpLocations.Assets.Ip2LocationLite" Version="$(VhIpLocationsPackageVersion)" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<!-- The network extension, bundled as a PlugIn (.appex) inside the app: the tunnel runs there. -->
+		<ProjectReference Include="..\AppUiSample.Spa.Ios.Extension\AppUiSample.Spa.Ios.Extension.csproj">
+			<IsAppExtension>true</IsAppExtension>
+		</ProjectReference>
+	</ItemGroup>
+
+	<!-- The store and the page, zipped from the SPA's build and placed in the app bundle. -->
+	<Import Project="..\SpaAssets.targets" />
+</Project>

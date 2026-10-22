@@ -18,4 +18,6 @@
   <Project Path="src/AppUiSample.Spa.Windows/AppUiSample.Spa.Windows.csproj" />
   <Project Path="src/AppUiSample.Spa.Android/AppUiSample.Spa.Android.csproj" />
   <Project Path="src/AppUiSample.Spa.Maui/AppUiSample.Spa.Maui.csproj" />
+  <Project Path="src/AppUiSample.Spa.Ios/AppUiSample.Spa.Ios.csproj" />
+  <Project Path="src/AppUiSample.Spa.Ios.Extension/AppUiSample.Spa.Ios.Extension.csproj" />
 </Solution>

@@ -1,0 +1,110 @@
+name: Build samples
+
+# Builds the SPA once, then every sample head from the published VpnHood packages: Windows, Android
+# and MAUI on a Windows runner, iOS for the simulator on a macOS one. A push builds them at the
+# version Directory.Build.props pins; the weekly run at the newest VpnHood on nuget.org, so a release
+# that breaks an adapter fails here before a pin moves to it. Nothing is signed or published.
+
+on:
+  push:
+  schedule:
+    - cron: "0 5 * * 1" # Mondays, 05:00 UTC
+  workflow_dispatch:
+    inputs:
+      newest:
+        description: "Build against the newest VpnHood on nuget.org, not the pinned one"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+env:
+  DOTNET_NOLOGO: "1"
+  DOTNET_CLI_TELEMETRY_OPTOUT: "1"
+
+jobs:
+  spa:
+    runs-on: ubuntu-latest
+    outputs:
+      vh-version: ${{ steps.version.outputs.vh-version }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+      - name: Build the SPA
+        working-directory: src/VpnHood.AppUi.Presentation.Classic.Spa
+        run: |
+          npm ci
+          npm run build
+      - uses: actions/upload-artifact@v7
+        with:
+          name: spa-dist
+          path: src/VpnHood.AppUi.Presentation.Classic.Spa/dist
+          retention-days: 1
+          if-no-files-found: error
+      # None chosen: the samples build at the pin. The newest stable release, since a smoke publish
+      # leaves throwaway prereleases on nuget.org.
+      - name: Choose the VpnHood version
+        id: version
+        if: github.event_name == 'schedule' || inputs.newest
+        run: |
+          v=$(curl -fsSL https://api.nuget.org/v3-flatcontainer/vpnhood.applib.app/index.json \
+            | jq -r '.versions[] | select(contains("-") | not)' | sort -V | tail -n 1)
+          if [ -z "$v" ]; then echo "::error::nuget.org lists no stable VpnHood version."; exit 1; fi
+          echo "Building against VpnHood $v."
+          echo "vh-version=$v" >> "$GITHUB_OUTPUT"
+
+  windows:
+    needs: spa
+    runs-on: windows-latest
+    env:
+      VH_VERSION: ${{ needs.spa.outputs.vh-version }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v8
+        with:
+          name: spa-dist
+          path: src/VpnHood.AppUi.Presentation.Classic.Spa/dist
+      # global.json rolls forward to the newest SDK installed: this one, which the iOS sample needs.
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: "11.0"
+          dotnet-quality: preview
+      - name: Install the workloads
+        run: dotnet workload install android maui-android maui-windows
+      - name: Build the Windows, Android and MAUI samples
+        shell: pwsh
+        run: |
+          $version = if ($env:VH_VERSION) { @("-p:VhPackageVersion=$env:VH_VERSION") } else { @() }
+          foreach ($sample in "AppUiSample.Spa.Windows", "AppUiSample.Spa.Android", "AppUiSample.Spa.Maui") {
+            dotnet build "src/$sample/$sample.csproj" @version
+            if ($LASTEXITCODE -ne 0) { throw "$sample did not build." }
+          }
+
+  ios:
+    needs: spa
+    # One Xcode major per image; the iOS SDK of .NET 11 needs Xcode 27.
+    runs-on: xcode-27
+    env:
+      VH_VERSION: ${{ needs.spa.outputs.vh-version }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v8
+        with:
+          name: spa-dist
+          path: src/VpnHood.AppUi.Presentation.Classic.Spa/dist
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: "11.0"
+          dotnet-quality: preview
+      - name: Install the workload
+        run: dotnet workload install ios
+      # For the simulator and unsigned: no certificate or profile, and building is the whole check.
+      # The SDK asks for the exact Xcode it was made with; the image's own 27.x builds it as well.
+      - name: Build the iOS sample
+        run: >
+          dotnet build src/AppUiSample.Spa.Ios/AppUiSample.Spa.Ios.csproj
+          -r iossimulator-arm64 -p:EnableCodeSigning=false -p:ValidateXcodeVersion=false
+          ${VH_VERSION:+-p:VhPackageVersion=$VH_VERSION}
