@@ -107,7 +107,7 @@ if (RENDERER !== 'spa' && RENDERER !== 'avalonia')
   throw new Error(`Unknown --renderer "${RENDERER}". Known: spa, avalonia.`);
 const mainRepo = path.resolve(projectRoot, '..', '..', '..', 'VpnHood');
 const HARNESS = path.resolve(argValue('--harness', null) ?? path.join(mainRepo, 'src', 'Apps', 'Tools', 'StoreScreenshots',
-  'bin', 'Release', 'net10.0', process.platform === 'win32' ? 'VpnHoodStoreScreenshots.exe' : 'VpnHoodStoreScreenshots'));
+  'bin', 'Release', 'net11.0', process.platform === 'win32' ? 'VpnHoodStoreScreenshots.exe' : 'VpnHoodStoreScreenshots'));
 const ASSETS = path.resolve(argValue('--assets', null) ?? path.join(mainRepo, 'src', 'AppUi', 'Assets', 'Classic', 'assets'));
 // What the harness reports about the fixture, once per run rather than once per shot.
 const fixtureDrift = { filled: new Set(), notes: new Set() };
