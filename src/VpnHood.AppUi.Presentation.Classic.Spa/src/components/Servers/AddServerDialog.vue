@@ -75,7 +75,7 @@ async function connect(vpnProfileId:string): Promise<void>{
         <v-text-field
           v-model="accessKey"
           :error-messages="accessKeyErrorMessage"
-          placeholder="vh://"
+          placeholder="vh:"
           @input="addAccessKey()"
           append-inner-icon="mdi-key"
           spellcheck="false"

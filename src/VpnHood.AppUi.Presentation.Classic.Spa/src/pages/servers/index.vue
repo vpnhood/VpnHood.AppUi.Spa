@@ -31,7 +31,7 @@ function getServerKeyMethodsHtml(): string {
     : locale('GET_SERVER_KEY_METHODS_DESC', { connectAppUrl: UiConstants.connectAppUrl });
 }
 
-// A vh:// key is a long base64 blob that no remote can type - the blocker a TV reviewer hits first.
+// A vh: key is a long base64 blob that no remote can type - the blocker a TV reviewer hits first.
 // So on the TV UI this button never opens the key field: it opens the pairing dialog, told to say
 // that servers are added and removed from the phone (the per-server menu, with Remove in it, is
 // hidden there too). The full UI a phone gets over the LAN has the field and the menu as always.
