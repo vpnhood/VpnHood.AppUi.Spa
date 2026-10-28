@@ -17,7 +17,7 @@ references and which page it places beside itself.
 
 | Folder | What it is |
 | --- | --- |
-| `src/VpnHood.AppUi.Presentation.Classic.Spa/` | the UI: Vue 3, Vite, Vuetify. The files both UIs load by name at run time - images, flags, fonts, the words of every language, the content documents - are authored in its `src/assets`, `src/locales` and `src/content`; the main repo's `_sync-assets.ps1` takes them from this build. |
+| `src/VpnHood.AppUi.Presentation.Classic.Spa/` | the UI: Vue 3, Vite, Vuetify. Of the files both UIs load by name at run time, the images, flags and fonts are authored in its `src/assets`, and the main repo's `_sync-assets.ps1` takes them from this build; the words of every language and the content documents are written and translated in the asset store (vpnhood/VpnHood.AppUi.Assets.Classic), and its `src/locales` and `src/content` are that store's copy. |
 | `src/VpnHood.AppLib.Api.SwaggerHost/` | poses the app API (`VpnHood.AppLib.Api`, from NuGet) to NSwag; its `_recreate-api.ps1` regenerates the SPA's TypeScript client. Never run in an app: every action throws. |
 | `src/AppUiSample.Spa.Windows/` | a Windows head: the SPA in a WebView2 window, over `VpnHood.AppUi.Hosting.WebView.Windows`. |
 | `src/AppUiSample.Spa.Android/` | an Android head: the SPA in the system WebView, over `VpnHood.AppUi.Hosting.WebView.Android`. |

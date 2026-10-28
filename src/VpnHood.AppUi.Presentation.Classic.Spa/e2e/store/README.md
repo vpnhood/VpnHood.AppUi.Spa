@@ -276,11 +276,12 @@ gh workflow run update-screenshots.yml -R vpnhood/Vpnhood.App.Connect -f vh-ref=
 In CI (`update-screenshots.yml` in each store repo) the `generate` job checks out `vpnhood/VpnHood`
 at `vh-ref` beside the engine and calls the composite action with `renderer: avalonia` and
 `vh-root: .vh`; the action (`action.yml` at this repo's root) builds the harness there, syncs the
-UI's asset store out of its own SPA build (`_sync-assets.ps1 -WebUiDir …`, under pwsh), and runs
+UI's asset store's images and fonts out of its own SPA build (`_sync-assets.ps1 -WebUiDir …`, under
+pwsh; the words are the checkout's own), and runs
 the engine with `--harness`/`--assets` pointing into that checkout. A caller that leaves
 `renderer` at its default still gets the SPA.
 
-The Gemini key is the org secret `GOOGLE_GEMINI_TRNSLATE_APP_API_KEY` (one key for the SPA locales
+The Gemini key is the org secret `GOOGLE_GEMINI_TRNSLATE_APP_API_KEY` (one key for the app's words
 and both store listings). Workflows hand it to the tool as `GEMINI_API_KEY`, which is what
 vhtranslator reads — the two names differ on purpose. Locally it is
 `.user/vendors/google/google_gemini_translate_app_api_key.txt`.

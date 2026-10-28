@@ -1,2 +1,0 @@
-Chinese (zh):
-- Address the user as 您 everywhere, never 你.

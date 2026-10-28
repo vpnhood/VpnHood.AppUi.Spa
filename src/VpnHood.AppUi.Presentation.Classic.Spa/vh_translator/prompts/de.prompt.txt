@@ -1,5 +1,0 @@
-German (de):
-- Address the user as Sie (Sie, Ihr, Ihnen) everywhere; never du, dich, dir, dein. Buttons and menu items use the
-  infinitive: "Premium werden", "Premium testen".
-- Quote Android's settings as German Android names them: "Privates DNS", "Hostname des Anbieters von privatem DNS",
-  "Durchgehend aktives VPN", "Verbindungen ohne VPN blockieren". Server key = Server-Schlüssel.

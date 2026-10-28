@@ -114,8 +114,9 @@ runs:
       working-directory: ${{ env.VH_ROOT }}
       run: dotnet build -c Release src/Apps/Tools/StoreScreenshots/VpnHood.App.StoreScreenshots.csproj
 
-    # The UI reads its images, fonts and words from the store _sync-assets.ps1 mirrors out of this
-    # SPA's build — the same store the shipped app carries as ui.zip.
+    # The UI reads its images and fonts from the store _sync-assets.ps1 mirrors out of this SPA's
+    # build, and its words from that store as the checkout has them — the same store the shipped app
+    # carries as ui.zip.
     - name: Sync the UI's asset store from the SPA build
       if: inputs.renderer == 'avalonia'
       shell: pwsh
