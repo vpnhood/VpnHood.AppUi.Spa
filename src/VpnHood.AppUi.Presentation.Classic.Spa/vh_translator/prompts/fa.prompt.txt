@@ -1,3 +1,5 @@
 Persian (fa):
 - "tap"/"press" a button or icon → «فشار دهید»; noun forms likewise from «فشار دادن».
   Never «ضربه بزنید», «ضربه زدن», or «لمس کنید».
+- Split tunneling → «تونل‌زنی تفکیکی» (never «تونل‌زنی هوشمند» or «تونل تقسیم‌شده»); Split DNS → «DNS تفکیکی».
+- DNS stays Latin, never «دی‌ان‌اس».

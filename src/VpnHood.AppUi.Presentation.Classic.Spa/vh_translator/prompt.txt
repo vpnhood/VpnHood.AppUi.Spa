@@ -2,6 +2,8 @@ This translation is used for a VPN app UI (mobile/desktop): keep strings short; 
 
 - The brand name "VpnHood" — alone, as "VpnHood!", or in product names like "VpnHood! CLIENT", "VpnHood! CONNECT" — never changes: never translate or transliterate it; always keep it in Latin script.
 - Company and platform names (GitHub, Google Play, App Store, Windows, Android, iOS) never change.
+- Cloak Mode is named: ar وضع التخفي · de Tarnmodus · es Modo Camuflaje · fa حالت مخفی · fr Mode furtif · hi क्लोक मोड · it Modalità camuffamento · pt Modo invisível · pt-BR Modo invisível · ru Режим маскировки · tr Kamufle Modu · zh 伪装模式. "Cloak" alone is the distinctive word of that name. Never mix it with the English name.
+- Split DNS is named: ar تقسيم DNS · de Split-DNS · es DNS dividido · fa DNS تفکیکی · fr Split DNS · hi स्प्लिट DNS · it Split DNS · pt DNS Dividido · pt-BR DNS Dividido · ru Раздельный DNS · tr Bölünmüş DNS · zh DNS 分流. Split tunneling is named: fa تونل‌زنی تفکیکی · fr Split tunneling · zh 分流 (应用分流 is split by app only).
 - Preserve placeholders like {serverName} or %s exactly as written.
 
 Return the resource value if the key exactly matches any of the following:
