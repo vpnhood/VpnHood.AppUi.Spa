@@ -53,17 +53,16 @@ files, the two `Entitlements.plist` files and `AppDelegate`.
 every debug head of the main repo serves one too.
 
 After a change to the C# API, run `src/VpnHood.AppLib.Api.SwaggerHost/_recreate-api.ps1`; never edit
-`src/services/VpnHood.Client.Api.ts` by hand. Edit only `src/locales/en.json`; the translator writes
-every other locale at publish time.
+`src/services/VpnHood.Client.Api.ts` by hand. Never edit `src/locales` or `src/content` either: they
+are the asset store's copy of the words, and a new string goes in VpnHood.AppUi.Assets.Classic (its
+README, "The words").
 
 ## The one version pin
 
 `Directory.Build.props` holds `VhPackageVersion`, the version of the VpnHood packages every project
 here consumes. Move it when the packages move; nothing else pins them.
 
-The workflow (`.github/workflows/build_samples.yml`) builds every sample on a push, at the pin, and
-weekly at the newest VpnHood on nuget.org, so a release that breaks a sample shows before the pin
-moves to it.
+No workflow builds the samples: build them here (Running a sample) after moving the pin.
 
 To build against a VpnHood not yet released, pack the main repo into a `.packages` folder beside
 `Directory.Build.props`: git ignores it, and the props add it as a package source when it exists.
