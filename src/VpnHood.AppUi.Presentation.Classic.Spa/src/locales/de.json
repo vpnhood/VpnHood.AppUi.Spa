@@ -651,6 +651,8 @@
   "MANAGING_TV_BANNER": "Sie verwalten Ihren Fernseher. Lassen Sie seinen Bildschirm für den Fernzugriff geöffnet, während Sie Änderungen vornehmen.",
   "CONTINUE_ON_TV_TITLE": "Auf dem Fernseher fortfahren",
   "CONTINUE_ON_TV_DESC": "Schließen Sie diesen Schritt auf dem Fernseher ab. Diese Seite fährt danach automatisch fort.",
+  "TV_UNREACHABLE_TITLE": "Fernseher nicht erreichbar",
+  "TV_UNREACHABLE_DESC": "Öffnen Sie auf dem Fernseher die Einstellungen, um den Fernzugriff wieder anzuzeigen, und lassen Sie dieses Gerät im selben Netzwerk wie der Fernseher. Diese Seite fährt automatisch fort, sobald sie den Fernseher erreicht; falls nicht, scannen Sie den Code auf dem Fernseher erneut.",
   "SIGN_IN_ON_YOUR_PHONE": "Auf dem Smartphone anmelden",
   "SIGN_IN_TYPE_ON_YOUR_PHONE": "Stattdessen auf dem Handy eingeben",
   "REMOTE_ACCESS_HINT_SIGN_IN": "Öffnen Sie auf Ihrem Handy das Menü und melden Sie sich an.",

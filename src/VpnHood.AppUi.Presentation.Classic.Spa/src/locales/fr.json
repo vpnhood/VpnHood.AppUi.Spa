@@ -651,6 +651,8 @@
   "MANAGING_TV_BANNER": "Gestion de votre TV en cours. Laissez l'écran d'accès distant ouvert.",
   "CONTINUE_ON_TV_TITLE": "Continuer sur votre TV",
   "CONTINUE_ON_TV_DESC": "Terminez cette étape sur l'écran de votre TV. Cette page se mettra à jour automatiquement.",
+  "TV_UNREACHABLE_TITLE": "Impossible de joindre votre TV",
+  "TV_UNREACHABLE_DESC": "Sur votre TV, ouvrez Paramètres pour afficher à nouveau l'accès distant, et gardez cet appareil sur le même réseau que la TV. Cette page reprendra automatiquement dès qu'elle pourra joindre la TV ; sinon, scannez à nouveau le code affiché sur la TV.",
   "SIGN_IN_ON_YOUR_PHONE": "Connectez-vous sur votre téléphone",
   "SIGN_IN_TYPE_ON_YOUR_PHONE": "Saisir plutôt sur votre téléphone",
   "REMOTE_ACCESS_HINT_SIGN_IN": "Sur votre téléphone, ouvrez le menu et connectez-vous.",

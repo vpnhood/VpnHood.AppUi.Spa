@@ -651,6 +651,8 @@
   "MANAGING_TV_BANNER": "TV'nizi yönetiyorsunuz. Değişiklik yaparken TV'deki Uzaktan Erişim ekranını açık tutun.",
   "CONTINUE_ON_TV_TITLE": "TV'nizde devam edin",
   "CONTINUE_ON_TV_DESC": "Bu adımı TV ekranında tamamlayın. İşlem bittiğinde bu sayfa otomatik olarak devam eder.",
+  "TV_UNREACHABLE_TITLE": "TV'nize ulaşılamıyor",
+  "TV_UNREACHABLE_DESC": "TV'de Ayarlar'ı açarak Uzaktan Erişim'i yeniden gösterin ve bu cihazı TV ile aynı ağda tutun. Bu sayfa TV'ye ulaştığında otomatik olarak devam eder; etmezse TV'deki kodu yeniden tarayın.",
   "SIGN_IN_ON_YOUR_PHONE": "Telefonunuzdan giriş yapın",
   "SIGN_IN_TYPE_ON_YOUR_PHONE": "Bunun yerine telefonunuzda yazın",
   "REMOTE_ACCESS_HINT_SIGN_IN": "Telefonunuzda menüyü açın ve oturum açın.",

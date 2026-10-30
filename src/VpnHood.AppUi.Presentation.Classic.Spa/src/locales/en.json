@@ -651,6 +651,8 @@
   "MANAGING_TV_BANNER": "You are managing your TV. Keep its Remote Access screen open while you make changes.",
   "CONTINUE_ON_TV_TITLE": "Continue on your TV",
   "CONTINUE_ON_TV_DESC": "Finish this step on the TV screen. This page carries on by itself when it is done.",
+  "TV_UNREACHABLE_TITLE": "Can't reach your TV",
+  "TV_UNREACHABLE_DESC": "On the TV, open Settings to show Remote Access again, and keep this device on the TV's network. This page carries on by itself once it reaches the TV; if not, scan the code on the TV again.",
   "SIGN_IN_ON_YOUR_PHONE": "Sign in on your phone",
   "SIGN_IN_TYPE_ON_YOUR_PHONE": "Type it on your phone instead",
   "REMOTE_ACCESS_HINT_SIGN_IN": "On your phone, open the menu and sign in.",

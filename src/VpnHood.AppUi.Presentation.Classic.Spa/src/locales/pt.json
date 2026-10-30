@@ -651,6 +651,8 @@
   "MANAGING_TV_BANNER": "Você está gerenciando sua TV. Mantenha a tela de Acesso Remoto aberta enquanto faz alterações.",
   "CONTINUE_ON_TV_TITLE": "Continuar na TV",
   "CONTINUE_ON_TV_DESC": "Conclua esta etapa na tela da TV. Esta página continuará automaticamente ao terminar.",
+  "TV_UNREACHABLE_TITLE": "Não foi possível conectar à TV",
+  "TV_UNREACHABLE_DESC": "Na TV, abra Configurações para mostrar o Acesso Remoto novamente e mantenha este dispositivo na mesma rede da TV. Esta página continuará automaticamente assim que conseguir conectar-se à TV; caso contrário, escaneie novamente o código na TV.",
   "SIGN_IN_ON_YOUR_PHONE": "Entrar no seu celular",
   "SIGN_IN_TYPE_ON_YOUR_PHONE": "Digitar no celular",
   "REMOTE_ACCESS_HINT_SIGN_IN": "No seu telefone, abra o menu e faça login.",

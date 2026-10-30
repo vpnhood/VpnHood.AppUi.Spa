@@ -651,6 +651,8 @@
   "MANAGING_TV_BANNER": "正在管理您的电视。请保持电视上的“远程访问”屏幕打开以应用更改。",
   "CONTINUE_ON_TV_TITLE": "在电视上继续",
   "CONTINUE_ON_TV_DESC": "请在电视屏幕上完成此步骤。完成后此页面将自动继续。",
+  "TV_UNREACHABLE_TITLE": "无法连接到您的电视",
+  "TV_UNREACHABLE_DESC": "请在电视上打开“设置”，重新显示“远程访问”，并让此设备与电视保持在同一网络。此页面连接到电视后将自动继续；如果没有继续，请重新扫描电视上的二维码。",
   "SIGN_IN_ON_YOUR_PHONE": "在手机上登录",
   "SIGN_IN_TYPE_ON_YOUR_PHONE": "改用手机输入",
   "REMOTE_ACCESS_HINT_SIGN_IN": "请在手机上打开菜单并登录。",

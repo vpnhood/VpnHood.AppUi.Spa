@@ -651,6 +651,8 @@
   "MANAGING_TV_BANNER": "Stai gestendo la tua TV. Tieni aperta la schermata di Accesso remoto durante le modifiche.",
   "CONTINUE_ON_TV_TITLE": "Continua sulla TV",
   "CONTINUE_ON_TV_DESC": "Completa questo passaggio sullo schermo della TV. Questa pagina si aggiornerà automaticamente.",
+  "TV_UNREACHABLE_TITLE": "Impossibile raggiungere la TV",
+  "TV_UNREACHABLE_DESC": "Sulla TV, apri Impostazioni per mostrare di nuovo Accesso remoto e mantieni questo dispositivo sulla stessa rete della TV. Questa pagina riprenderà automaticamente non appena raggiunge la TV; altrimenti, scansiona di nuovo il codice sulla TV.",
   "SIGN_IN_ON_YOUR_PHONE": "Accedi dal telefono",
   "SIGN_IN_TYPE_ON_YOUR_PHONE": "Inseriscili invece dal telefono",
   "REMOTE_ACCESS_HINT_SIGN_IN": "Apri il menu sul telefono e accedi.",
