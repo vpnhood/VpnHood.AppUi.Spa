@@ -118,6 +118,7 @@
   "UPDATE_DOWNLOADING": "अपडेट डाउनलोड हो रहा है: {percent}%",
   "UPDATE_INSTALLING": "अपडेट इंस्टॉल हो रहा है...",
   "UPDATE_VPN_DISCONNECTS": "अपडेट इंस्टॉल होते समय VPN डिस्कनेक्ट हो जाता है।",
+  "UPDATE_ALLOW_INSTALLS": "Android पहले आपसे {appName} को ऐप्स इंस्टॉल करने की अनुमति देने के लिए कहेगा: इसे चालू करें, फिर इंस्टॉल करें बटन दोबारा दबाएँ।",
   "UPDATE_FAILED": "अपडेट नहीं हो सका। {error}",
   "UPDATE_READY_TO_INSTALL": "अपडेट इंस्टॉल करने के लिए तैयार है।",
   "CURRENT_VERSION": "आपका संस्करण:",

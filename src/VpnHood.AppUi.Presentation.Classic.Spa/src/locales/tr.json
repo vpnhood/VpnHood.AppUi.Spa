@@ -118,6 +118,7 @@
   "UPDATE_DOWNLOADING": "Güncelleme indiriliyor: %{percent}",
   "UPDATE_INSTALLING": "Güncelleme yükleniyor...",
   "UPDATE_VPN_DISCONNECTS": "Güncelleme yüklenirken VPN bağlantısı kesilir.",
+  "UPDATE_ALLOW_INSTALLS": "Android önce {appName} uygulamasının uygulama yüklemesine izin vermenizi isteyecek: bunu açın, ardından tekrar Yükle’ye basın.",
   "UPDATE_FAILED": "Güncellenemedi. {error}",
   "UPDATE_READY_TO_INSTALL": "Güncelleme yüklenmeye hazır.",
   "CURRENT_VERSION": "Sizin Sürümünüz:",

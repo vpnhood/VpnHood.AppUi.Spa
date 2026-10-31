@@ -118,6 +118,7 @@
   "UPDATE_DOWNLOADING": "Загрузка обновления: {percent}%",
   "UPDATE_INSTALLING": "Установка обновления...",
   "UPDATE_VPN_DISCONNECTS": "На время установки обновления VPN отключится.",
+  "UPDATE_ALLOW_INSTALLS": "Сначала Android попросит разрешить {appName} устанавливать приложения: включите разрешение, затем снова нажмите «Установить».",
   "UPDATE_FAILED": "Не удалось выполнить обновление. {error}",
   "UPDATE_READY_TO_INSTALL": "Обновление готово к установке.",
   "CURRENT_VERSION": "Ваша версия:",

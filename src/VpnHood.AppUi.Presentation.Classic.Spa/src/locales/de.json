@@ -118,6 +118,7 @@
   "UPDATE_DOWNLOADING": "Update wird heruntergeladen: {percent}%",
   "UPDATE_INSTALLING": "Update wird installiert...",
   "UPDATE_VPN_DISCONNECTS": "Während das Update installiert wird, ist das VPN getrennt.",
+  "UPDATE_ALLOW_INSTALLS": "Android fragt Sie zuerst, ob {appName} Apps installieren darf: Aktivieren Sie dies und wählen Sie dann erneut „Installieren“.",
   "UPDATE_FAILED": "Aktualisierung fehlgeschlagen. {error}",
   "UPDATE_READY_TO_INSTALL": "Das Update ist bereit zur Installation.",
   "CURRENT_VERSION": "Ihre Version:",

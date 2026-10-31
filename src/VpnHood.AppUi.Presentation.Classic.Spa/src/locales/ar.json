@@ -118,6 +118,7 @@
   "UPDATE_DOWNLOADING": "جارٍ تحميل التحديث: {percent}%",
   "UPDATE_INSTALLING": "جارٍ تثبيت التحديث...",
   "UPDATE_VPN_DISCONNECTS": "ينقطع اتصال الـ VPN أثناء تثبيت التحديث.",
+  "UPDATE_ALLOW_INSTALLS": "سيطلب منك Android أولًا السماح لـ {appName} بتثبيت التطبيقات: فعّل ذلك، ثم اضغط على تثبيت مرة أخرى.",
   "UPDATE_FAILED": "تعذّر التحديث. {error}",
   "UPDATE_READY_TO_INSTALL": "التحديث جاهز للتثبيت.",
   "CURRENT_VERSION": "الإصدار الحالي:",

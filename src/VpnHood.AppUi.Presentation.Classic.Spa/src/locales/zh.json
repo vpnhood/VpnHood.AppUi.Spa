@@ -118,6 +118,7 @@
   "UPDATE_DOWNLOADING": "正在下载更新：{percent}%",
   "UPDATE_INSTALLING": "正在安装更新……",
   "UPDATE_VPN_DISCONNECTS": "安装更新期间，VPN 将断开连接。",
+  "UPDATE_ALLOW_INSTALLS": "Android 会先请您允许 {appName} 安装应用：请开启此权限，然后再次按“安装”。",
   "UPDATE_FAILED": "更新失败。{error}",
   "UPDATE_READY_TO_INSTALL": "更新已准备就绪，可以安装。",
   "CURRENT_VERSION": "您的版本：",

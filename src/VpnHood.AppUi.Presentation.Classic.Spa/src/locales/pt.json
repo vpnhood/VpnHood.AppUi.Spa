@@ -118,6 +118,7 @@
   "UPDATE_DOWNLOADING": "Baixando a atualização: {percent}%",
   "UPDATE_INSTALLING": "Instalando a atualização...",
   "UPDATE_VPN_DISCONNECTS": "A VPN se desconecta durante a instalação da atualização.",
+  "UPDATE_ALLOW_INSTALLS": "O Android vai pedir primeiro que você permita que o {appName} instale aplicativos: ative a opção e pressione Instalar novamente.",
   "UPDATE_FAILED": "Não foi possível atualizar. {error}",
   "UPDATE_READY_TO_INSTALL": "A atualização está pronta para ser instalada.",
   "CURRENT_VERSION": "Sua versão:",

@@ -118,6 +118,7 @@
   "UPDATE_DOWNLOADING": "در حال دانلود به‌روزرسانی: {percent}٪",
   "UPDATE_INSTALLING": "در حال نصب به‌روزرسانی...",
   "UPDATE_VPN_DISCONNECTS": "هنگام نصب به‌روزرسانی، اتصال VPN قطع می‌شود.",
+  "UPDATE_ALLOW_INSTALLS": "Android ابتدا از شما می‌خواهد به {appName} اجازهٔ نصب برنامه بدهید: آن را روشن کنید، سپس دوباره «نصب» را فشار دهید.",
   "UPDATE_FAILED": "به‌روزرسانی ناموفق بود. {error}",
   "UPDATE_READY_TO_INSTALL": "به‌روزرسانی آماده نصب است.",
   "CURRENT_VERSION": "نسخه شما:",
