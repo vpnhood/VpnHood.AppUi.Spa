@@ -16,7 +16,17 @@
 		<!-- Automatic signing: Xcode picks the team's certificate and profiles. -->
 		<AutomaticProvisioning>true</AutomaticProvisioning>
 		<CodesignKey>Apple Development</CodesignKey>
+		<!-- The icon set the MauiIcon below draws, by its Link's name. -->
+		<AppIcon>ic_launcher</AppIcon>
 	</PropertyGroup>
+
+	<ItemGroup>
+		<!-- The app's icon: VpnHood's logo without a product's label, so it is not taken for CLIENT
+		     beside it. Drawn at every size iOS asks for at build time (Microsoft.Maui.Resizetizer,
+		     which the hosting package brings), the logo whole, since iOS shows the whole square.
+		     Without it the app has a blank icon. -->
+		<MauiIcon Include="icons\icon_background.svg" Link="ic_launcher.svg" ForegroundFile="icons\icon_foreground.svg" ForegroundScale="1" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<!-- The web UI in a WKWebView: the application delegate and the page's controller, over the
