@@ -320,6 +320,14 @@ export class VpnHoodApp {
     return `/assets/flags/${code ? code : 'no-flag'}.png`;
   }
 
+  // The name of a country in the language the words are in, as the app's API carries only its code:
+  // the browser's, in English if it lacks that language, else the caller's name (a location's own, from
+  // the server), else the code. of() throws on what is no region code, such as a location's '*'.
+  public getCountryName(countryCode: string, fallback?: string): string {
+    const names = new Intl.DisplayNames([i18n.global.locale.value, 'en'], { type: 'region', fallback: 'none' });
+    return (/^[a-z]{2}$/i.test(countryCode) ? names.of(countryCode) : undefined) ?? fallback ?? countryCode;
+  }
+
   public isActiveVpnProfile(vpnProfileId: string): boolean {
     return vpnProfileId === this.data.userSettings.vpnProfileId;
   }

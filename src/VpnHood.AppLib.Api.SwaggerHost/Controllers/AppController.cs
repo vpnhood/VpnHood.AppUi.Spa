@@ -5,7 +5,6 @@ using VpnHood.AppLib.Api.Exceptions;
 using VpnHood.AppLib.Api.SwaggerHost.Exceptions;
 using VpnHood.AppLib.Api;
 using VpnHood.AppLib.Api.Ads;
-using VpnHood.AppLib.Api.Countries;
 using VpnHood.AppLib.Api.Sessions;
 using VpnHood.AppLib.Api.Settings;
 using VpnHood.AppLib.Api.SplitTunneling;
@@ -160,6 +159,18 @@ public class AppController : ControllerBase, IAppApi
         throw new SwaggerOnlyException();
     }
 
+    [HttpGet("automatic-update")]
+    public Task<bool> GetAutomaticUpdate(CancellationToken cancellationToken)
+    {
+        throw new SwaggerOnlyException();
+    }
+
+    [HttpPut("automatic-update")]
+    public Task SetAutomaticUpdate([FromBody] bool value, CancellationToken cancellationToken)
+    {
+        throw new SwaggerOnlyException();
+    }
+
     [HttpPost("ad-privacy-options")]
     public Task ShowAdPrivacyOptions(CancellationToken cancellationToken)
     {
@@ -181,14 +192,8 @@ public class AppController : ControllerBase, IAppApi
         throw new SwaggerOnlyException();
     }
 
-    [HttpGet("countries")]
-    public Task<IReadOnlyList<CountryInfo>> GetCountries(CancellationToken cancellationToken)
-    {
-        throw new SwaggerOnlyException();
-    }
-
     [HttpGet("supported-split-by-countries")]
-    public Task<IReadOnlyList<CountryInfo>> GetSupportedSplitCountries(CancellationToken cancellationToken)
+    public Task<IReadOnlyList<string>> GetSupportedSplitCountries(CancellationToken cancellationToken)
     {
         throw new SwaggerOnlyException();
     }

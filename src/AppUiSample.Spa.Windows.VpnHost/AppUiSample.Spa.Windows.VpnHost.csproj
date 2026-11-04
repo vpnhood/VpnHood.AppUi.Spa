@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<Description>The Windows sample's VPN host: the VPN service in a process of its own, which the app's service starts at each connect</Description>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net11.0</TargetFramework>
+		<!-- The service starts it by this name, which the head records in its own assembly (VhAppVpnHostName). -->
+		<AssemblyName>VpnHoodSpaSampleVpnHost</AssemblyName>
+		<RootNamespace>AppUiSample.Spa.Windows.VpnHost</RootNamespace>
+		<ApplicationIcon>..\AppUiSample.Spa.Windows\Resources\VpnHood.ico</ApplicationIcon>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="VpnHood.Core.Client.Devices.WindowsTun" Version="$(VhPackageVersion)" />
+	</ItemGroup>
+</Project>

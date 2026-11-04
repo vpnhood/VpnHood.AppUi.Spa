@@ -42,12 +42,12 @@ async function fetchCountries() {
   const rawCountries = await vhApp.appClient.getSupportedSplitCountries();
 
   // 1. Create the base list
-  const mapped = rawCountries.map(x => ({
-    id: x.countryCode,
-    name: x.translatedName,
-    icon: vhApp.getCountryFlag(x.countryCode),
+  const mapped = rawCountries.map(countryCode => ({
+    id: countryCode,
+    name: vhApp.getCountryName(countryCode),
+    icon: vhApp.getCountryFlag(countryCode),
     // Logic: If it's NOT in the exclusion list, it is "Selected" (ON)
-    isSelected: !selectedCountries.value.includes(x.countryCode)
+    isSelected: !selectedCountries.value.includes(countryCode)
   }));
 
   // 2. Calculate group sizes

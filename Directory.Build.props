@@ -4,8 +4,8 @@
 	     published packages, so what they get is exactly what a head outside that repo gets. The
 	     IP-location database follows its own repo's version line. -->
 	<PropertyGroup>
-		<VhPackageVersion>9.0.856</VhPackageVersion>
-		<VhIpLocationsPackageVersion>9.0.863</VhIpLocationsPackageVersion>
+		<VhPackageVersion>9.1.864</VhPackageVersion>
+		<VhIpLocationsPackageVersion>9.0.866</VhIpLocationsPackageVersion>
 	</PropertyGroup>
 
 	<!-- Packages of a VpnHood not yet released, to build against before they are: a .packages folder

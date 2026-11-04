@@ -91,6 +91,7 @@ function connectButtonText(): string {
   else
     switch (vhApp.data.connectionState) {
       case AppConnectionState.Initializing:
+      case AppConnectionState.WaitingForVpnPermission:
         return locale('CANCEL');
       case AppConnectionState.Disconnecting:
         return locale('DISCONNECTING');
@@ -98,6 +99,8 @@ function connectButtonText(): string {
         return locale('STOP_DIAGNOSING');
       case AppConnectionState.None:
         return locale('CONNECT');
+      case AppConnectionState.Updating:
+        return locale('UPDATING');
       default:
         return locale('DISCONNECT');
     }

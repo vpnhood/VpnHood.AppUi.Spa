@@ -19,9 +19,7 @@
     "isAddAccessKeySupported": true,
     "isAccountSupported": false,
     "isBillingSupported": false,
-    "isTcpProxySupported": true,
     "isQuicSupported": true,
-    "isSplitDomainSupported": true,
     "isUserReviewSupported": false,
     "isAnonymousTrackerSupported": true,
     "isTv": false,
@@ -164,7 +162,6 @@
       "isIpV6SupportedByServer": true,
       "serverLocationInfo": {
         "hasMultipleRegions": false,
-        "translatedCountryName": "United States",
         "countryCode": "US",
         "regionName": "Oregon",
         "tags": [],
@@ -231,7 +228,6 @@
     "proxyConnectorStatus": null,
     "serverLocationInfo": {
       "hasMultipleRegions": false,
-      "translatedCountryName": "United States",
       "countryCode": "US",
       "regionName": "Oregon",
       "tags": [],
@@ -256,7 +252,6 @@
       "selectedLocationInfo": {
         "isNestedCountry": false,
         "isDefault": true,
-        "translatedCountryName": "United States",
         "options": {
           "normal": 0,
           "normalByRewardedAd": null,
@@ -311,11 +306,7 @@
     "canDiagnose": true,
     "userReviewRecommended": 0,
     "isQuickLaunchRecommended": false,
-    "clientCountryInfo": {
-      "englishName": "United States",
-      "translatedName": "United States",
-      "countryCode": "US"
-    },
+    "clientCountryCode": "US",
     "currentUiCultureInfo": {
       "code": "en",
       "nativeName": "English"
@@ -421,7 +412,6 @@
         {
           "isNestedCountry": false,
           "isDefault": true,
-          "translatedCountryName": "United States",
           "options": {
             "normal": null,
             "normalByRewardedAd": null,
@@ -453,7 +443,6 @@
       "selectedLocationInfo": {
         "isNestedCountry": false,
         "isDefault": true,
-        "translatedCountryName": "United States",
         "options": {
           "normal": null,
           "normalByRewardedAd": null,
@@ -520,7 +509,6 @@
         {
           "isNestedCountry": false,
           "isDefault": true,
-          "translatedCountryName": "United States",
           "options": {
             "normal": null,
             "normalByRewardedAd": null,
@@ -553,7 +541,6 @@
       "selectedLocationInfo": {
         "isNestedCountry": false,
         "isDefault": true,
-        "translatedCountryName": "United States",
         "options": {
           "normal": null,
           "normalByRewardedAd": null,

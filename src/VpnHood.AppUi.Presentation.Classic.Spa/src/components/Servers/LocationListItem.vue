@@ -99,7 +99,7 @@ function listItemClass(index: number): string{
 
           <!---- Country name ---->
           <span v-else >
-            {{ location.isNestedCountry ? location.regionName : location.translatedCountryName }}
+            {{ location.isNestedCountry ? location.regionName : vhApp.getCountryName(location.countryCode, location.countryName) }}
           </span>
 
         </div>

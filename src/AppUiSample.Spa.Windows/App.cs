@@ -3,7 +3,7 @@ using VpnHood.AppLib.Api.WebHost;
 using VpnHood.AppLib.App;
 using VpnHood.AppUi.Hosting.Desktop;
 using VpnHood.AppUi.Hosting.Desktop.Abstractions;
-using VpnHood.AppUi.Hosting.Desktop.Windows;
+using VpnHood.AppUi.Hosting.Desktop.WindowsTun;
 using VpnHood.AppUi.Hosting.WebView.Windows;
 using VpnHood.Core.Client.Abstractions;
 using VpnHood.Net.Toolkit.Assets;

@@ -93,6 +93,7 @@ export class VpnHoodAppData {
       case AppConnectionState.None:
         return this.locale('DISCONNECTED');
       case AppConnectionState.Initializing:
+      case AppConnectionState.WaitingForVpnPermission: // the OS's own prompt covers the app
         return this.locale('INITIALIZING');
       case AppConnectionState.Waiting:
         return this.locale('WAITING');
@@ -114,6 +115,8 @@ export class VpnHoodAppData {
         return this.locale('FINDING_BEST_SERVER');
       case AppConnectionState.Unstable:
         return this.locale('UNSTABLE');
+      case AppConnectionState.Updating:
+        return this.locale('UPDATING');
     }
   }
 

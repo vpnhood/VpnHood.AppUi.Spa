@@ -21,9 +21,10 @@ function getActiveServerNameOrLocation(): string {
   if (serverLocationInfo.isAuto)
     return i18n.global.t('AUTO_SELECT');
 
+  const countryName = vhApp.getCountryName(serverLocationInfo.countryCode, serverLocationInfo.countryName);
   const text = serverLocationInfo.hasRegion && serverLocationInfo.hasMultipleRegions
-    ? serverLocationInfo.translatedCountryName + ' (' + serverLocationInfo.regionName + ')'
-    : serverLocationInfo.translatedCountryName;
+    ? countryName + ' (' + serverLocationInfo.regionName + ')'
+    : countryName;
 
   return text.replace('United States (', 'USA (');
 }

@@ -9,7 +9,7 @@ import { computed, ref } from 'vue';
 const vhApp = VpnHoodApp.instance;
 const locale = i18n.global.t;
 
-const isChinaCountry = ref(vhApp.data.state.clientCountryInfo?.countryCode?.toUpperCase() === 'CN');
+const isChinaCountry = ref(vhApp.data.state.clientCountryCode?.toUpperCase() === 'CN');
 const isUdpSupported = computed(() => {
   return vhApp.data.isProtocolEnabled(ChannelProtocol.Udp);
 })

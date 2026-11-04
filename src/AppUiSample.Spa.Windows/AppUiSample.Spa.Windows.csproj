@@ -14,13 +14,20 @@
 	<ItemGroup>
 		<!-- The Windows host (WindowsDesktopHost): the service the app runs in, the window's process with
 		     its tray, and the commands. -->
-		<PackageReference Include="VpnHood.AppUi.Hosting.Desktop.Windows" Version="$(VhPackageVersion)" />
+		<PackageReference Include="VpnHood.AppUi.Hosting.Desktop.WindowsTun" Version="$(VhPackageVersion)" />
 		<!-- The web UI in a Win32 window (WindowsWebViewUi): the WebView2 adapter and the window. -->
 		<PackageReference Include="VpnHood.AppUi.Hosting.WebView.Windows" Version="$(VhPackageVersion)" />
 		<!-- The web host the page is served from, and that a paired browser reaches. -->
 		<PackageReference Include="VpnHood.AppLib.Api.WebHost" Version="$(VhPackageVersion)" />
 		<!-- The IP-location database, placed beside the app by its own package's targets. -->
 		<PackageReference Include="VpnHood.Net.IpLocations.Assets.Ip2LocationLite" Version="$(VhIpLocationsPackageVersion)" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<!-- The VPN host, the VPN service's own process, which the service starts beside this executable
+		     at each connect, by the name this assembly records. -->
+		<ProjectReference Include="..\AppUiSample.Spa.Windows.VpnHost\AppUiSample.Spa.Windows.VpnHost.csproj" />
+		<AssemblyMetadata Include="VhAppVpnHostName" Value="VpnHoodSpaSampleVpnHost" />
 	</ItemGroup>
 
 	<!-- The store and the page, zipped from the SPA's build and placed beside the app. -->

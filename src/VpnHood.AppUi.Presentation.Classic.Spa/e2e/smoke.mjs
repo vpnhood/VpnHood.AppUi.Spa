@@ -84,7 +84,7 @@ async function assertUp(name, urlToCheck, hint) {
 
 const apiBase = await readApiBase();
 await assertUp('Dev server', spaBase, "Start it with 'npm run dev'.");
-await assertUp('Client API', `${apiBase}/api/app/config`, 'Start the VpnHood client app this env file points to.');
+await assertUp('Client API', `${apiBase}/api/app/info`, 'Start the VpnHood client app this env file points to.');
 await fs.mkdir(shotsDir, { recursive: true });
 
 const routes = await readRoutes();
@@ -127,7 +127,7 @@ for (const route of routes) await visit(route);
 
 // Language round-trip: the one mutation this test performs, always undone in finally.
 if (!skipLang) {
-  const config = JSON.parse((await request('GET', `${apiBase}/api/app/config`)).body);
+  const config = JSON.parse((await request('GET', `${apiBase}/api/app/info`)).body);
   const originalCulture = config.userSettings.cultureCode ?? null;
   try {
     currentRoute = 'lang-switch-fa';

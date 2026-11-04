@@ -64,7 +64,7 @@ const isShowSplitCountryText = computed(() => !allowMultipleFlags.value || exclu
       </template>
 
       <!-- Client country flag -->
-      <country-flag-wrapper v-else :country-code="vhApp.data.state.clientCountryInfo?.countryCode" />
+      <country-flag-wrapper v-else :country-code="vhApp.data.state.clientCountryCode" />
     </template>
 
   </home-config-btn>

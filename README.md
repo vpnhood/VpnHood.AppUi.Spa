@@ -19,7 +19,7 @@ references and which page it places beside itself.
 | --- | --- |
 | `src/VpnHood.AppUi.Presentation.Classic.Spa/` | the UI: Vue 3, Vite, Vuetify. Of the files both UIs load by name at run time, the images, flags and fonts are authored in its `src/assets`, and the main repo's `_sync-assets.ps1` takes them from this build; the words of every language and the content documents are written and translated in the asset store (vpnhood/VpnHood.AppUi.Assets.Classic), and its `src/locales` and `src/content` are that store's copy. |
 | `src/VpnHood.AppLib.Api.SwaggerHost/` | poses the app API (`VpnHood.AppLib.Api`, from NuGet) to NSwag; its `_recreate-api.ps1` regenerates the SPA's TypeScript client. Never run in an app: every action throws. |
-| `src/AppUiSample.Spa.Windows/` | a Windows head: the SPA in a WebView2 window, over `VpnHood.AppUi.Hosting.WebView.Windows`. |
+| `src/AppUiSample.Spa.Windows/`, `…Windows.VpnHost/` | a Windows head: the SPA in a WebView2 window, over `VpnHood.AppUi.Hosting.WebView.Windows`, and its VPN host, the VPN service's own process, which the app's service starts at each connect. |
 | `src/AppUiSample.Spa.Android/` | an Android head: the SPA in the system WebView, over `VpnHood.AppUi.Hosting.WebView.Android`. |
 | `src/AppUiSample.Spa.Maui/` | a MAUI head on Android and Windows: the SPA in MAUI's own WebView, the app in its process through `VpnHood.AppUi.Hosting.Maui`. |
 | `src/AppUiSample.Spa.Ios/`, `…Ios.Extension/` | an iOS head: the SPA in a WKWebView, over `VpnHood.AppUi.Hosting.WebView.Ios`, and the network extension every iOS VPN app bundles, where the tunnel runs. |

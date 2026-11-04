@@ -94,7 +94,7 @@ const isCloakEnforecedByServer = computed<boolean>(() =>
     <p class="text-disabled text-body-small mb-4">{{ locale("PROTOCOL_DESC") }}</p>
 
     <!-- Cloak Mode -->
-    <config-card v-if="vhApp.data.features.isTcpProxySupported" class="pb-3">
+    <config-card class="pb-3">
 
       <!-- Switch button. data-tv-row: on the TV the whole title row is the step and wears the ring,
            not the switch at its edge (helpers/SpatialNavigation.ts, general.css). -->

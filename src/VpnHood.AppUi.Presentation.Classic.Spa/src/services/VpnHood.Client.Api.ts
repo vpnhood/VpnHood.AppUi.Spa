@@ -1416,6 +1416,103 @@ export class AppClient {
         return Promise.resolve<void>(null as any);
     }
 
+    getAutomaticUpdate( cancelToken?: CancelToken): Promise<boolean> {
+        let url_ = this.baseUrl + "/api/app/automatic-update";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "application/json"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processGetAutomaticUpdate(_response);
+        });
+    }
+
+    protected processGetAutomaticUpdate(response: AxiosResponse): Promise<boolean> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+                result200 = resultData200 !== undefined ? resultData200 : null as any;
+    
+            return Promise.resolve<boolean>(result200);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<boolean>(null as any);
+    }
+
+    setAutomaticUpdate(value: boolean, cancelToken?: CancelToken): Promise<void> {
+        let url_ = this.baseUrl + "/api/app/automatic-update";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(value);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "PUT",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processSetAutomaticUpdate(_response);
+        });
+    }
+
+    protected processSetAutomaticUpdate(response: AxiosResponse): Promise<void> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            return Promise.resolve<void>(null as any);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<void>(null as any);
+    }
+
     showAdPrivacyOptions( cancelToken?: CancelToken): Promise<void> {
         let url_ = this.baseUrl + "/api/app/ad-privacy-options";
         url_ = url_.replace(/[?&]$/, "");
@@ -1560,62 +1657,7 @@ export class AppClient {
         return Promise.resolve<void>(null as any);
     }
 
-    getCountries( cancelToken?: CancelToken): Promise<CountryInfo[]> {
-        let url_ = this.baseUrl + "/api/app/countries";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: AxiosRequestConfig = {
-            method: "GET",
-            url: url_,
-            headers: {
-                "Accept": "application/json"
-            },
-            cancelToken
-        };
-
-        return this.instance.request(options_).catch((_error: any) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            } else {
-                throw _error;
-            }
-        }).then((_response: AxiosResponse) => {
-            return this.processGetCountries(_response);
-        });
-    }
-
-    protected processGetCountries(response: AxiosResponse): Promise<CountryInfo[]> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (const k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200  = _responseText;
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(CountryInfo.fromJS(item));
-            }
-            else {
-                result200 = null as any;
-            }
-            return Promise.resolve<CountryInfo[]>(result200);
-
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve<CountryInfo[]>(null as any);
-    }
-
-    getSupportedSplitCountries( cancelToken?: CancelToken): Promise<CountryInfo[]> {
+    getSupportedSplitCountries( cancelToken?: CancelToken): Promise<string[]> {
         let url_ = this.baseUrl + "/api/app/supported-split-by-countries";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1639,7 +1681,7 @@ export class AppClient {
         });
     }
 
-    protected processGetSupportedSplitCountries(response: AxiosResponse): Promise<CountryInfo[]> {
+    protected processGetSupportedSplitCountries(response: AxiosResponse): Promise<string[]> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1656,18 +1698,18 @@ export class AppClient {
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
-                    result200!.push(CountryInfo.fromJS(item));
+                    result200!.push(item);
             }
             else {
                 result200 = null as any;
             }
-            return Promise.resolve<CountryInfo[]>(result200);
+            return Promise.resolve<string[]>(result200);
 
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<CountryInfo[]>(null as any);
+        return Promise.resolve<string[]>(null as any);
     }
 
     internalAdDismiss(result: ShowAdResult, cancelToken?: CancelToken): Promise<void> {
@@ -3863,10 +3905,11 @@ export class AppFeatures implements IAppFeatures {
     showPoweredBy!: boolean;
     logoAssetPath!: string;
     privacyConsentAssetName!: string;
-    isTcpProxySupported!: boolean;
     isQuicSupported!: boolean;
     alwaysOnSupport!: AlwaysOnSupport;
-    isSplitDomainSupported!: boolean;
+    isKillSwitchSupported!: boolean;
+    killSwitchOffScriptPath!: string | null;
+    isAutomaticUpdateSupported!: boolean;
     isSplitCountrySupported!: boolean;
     isUserReviewSupported!: boolean;
     isAnonymousTrackerSupported!: boolean;
@@ -3925,10 +3968,11 @@ export class AppFeatures implements IAppFeatures {
             this.showPoweredBy = _data["showPoweredBy"] !== undefined ? _data["showPoweredBy"] : null as any;
             this.logoAssetPath = _data["logoAssetPath"] !== undefined ? _data["logoAssetPath"] : null as any;
             this.privacyConsentAssetName = _data["privacyConsentAssetName"] !== undefined ? _data["privacyConsentAssetName"] : null as any;
-            this.isTcpProxySupported = _data["isTcpProxySupported"] !== undefined ? _data["isTcpProxySupported"] : null as any;
             this.isQuicSupported = _data["isQuicSupported"] !== undefined ? _data["isQuicSupported"] : null as any;
             this.alwaysOnSupport = _data["alwaysOnSupport"] !== undefined ? _data["alwaysOnSupport"] : null as any;
-            this.isSplitDomainSupported = _data["isSplitDomainSupported"] !== undefined ? _data["isSplitDomainSupported"] : null as any;
+            this.isKillSwitchSupported = _data["isKillSwitchSupported"] !== undefined ? _data["isKillSwitchSupported"] : null as any;
+            this.killSwitchOffScriptPath = _data["killSwitchOffScriptPath"] !== undefined ? _data["killSwitchOffScriptPath"] : null as any;
+            this.isAutomaticUpdateSupported = _data["isAutomaticUpdateSupported"] !== undefined ? _data["isAutomaticUpdateSupported"] : null as any;
             this.isSplitCountrySupported = _data["isSplitCountrySupported"] !== undefined ? _data["isSplitCountrySupported"] : null as any;
             this.isUserReviewSupported = _data["isUserReviewSupported"] !== undefined ? _data["isUserReviewSupported"] : null as any;
             this.isAnonymousTrackerSupported = _data["isAnonymousTrackerSupported"] !== undefined ? _data["isAnonymousTrackerSupported"] : null as any;
@@ -3992,10 +4036,11 @@ export class AppFeatures implements IAppFeatures {
         data["showPoweredBy"] = this.showPoweredBy !== undefined ? this.showPoweredBy : null as any;
         data["logoAssetPath"] = this.logoAssetPath !== undefined ? this.logoAssetPath : null as any;
         data["privacyConsentAssetName"] = this.privacyConsentAssetName !== undefined ? this.privacyConsentAssetName : null as any;
-        data["isTcpProxySupported"] = this.isTcpProxySupported !== undefined ? this.isTcpProxySupported : null as any;
         data["isQuicSupported"] = this.isQuicSupported !== undefined ? this.isQuicSupported : null as any;
         data["alwaysOnSupport"] = this.alwaysOnSupport !== undefined ? this.alwaysOnSupport : null as any;
-        data["isSplitDomainSupported"] = this.isSplitDomainSupported !== undefined ? this.isSplitDomainSupported : null as any;
+        data["isKillSwitchSupported"] = this.isKillSwitchSupported !== undefined ? this.isKillSwitchSupported : null as any;
+        data["killSwitchOffScriptPath"] = this.killSwitchOffScriptPath !== undefined ? this.killSwitchOffScriptPath : null as any;
+        data["isAutomaticUpdateSupported"] = this.isAutomaticUpdateSupported !== undefined ? this.isAutomaticUpdateSupported : null as any;
         data["isSplitCountrySupported"] = this.isSplitCountrySupported !== undefined ? this.isSplitCountrySupported : null as any;
         data["isUserReviewSupported"] = this.isUserReviewSupported !== undefined ? this.isUserReviewSupported : null as any;
         data["isAnonymousTrackerSupported"] = this.isAnonymousTrackerSupported !== undefined ? this.isAnonymousTrackerSupported : null as any;
@@ -4042,10 +4087,11 @@ export interface IAppFeatures {
     showPoweredBy: boolean;
     logoAssetPath: string;
     privacyConsentAssetName: string;
-    isTcpProxySupported: boolean;
     isQuicSupported: boolean;
     alwaysOnSupport: AlwaysOnSupport;
-    isSplitDomainSupported: boolean;
+    isKillSwitchSupported: boolean;
+    killSwitchOffScriptPath: string | null;
+    isAutomaticUpdateSupported: boolean;
     isSplitCountrySupported: boolean;
     isUserReviewSupported: boolean;
     isAnonymousTrackerSupported: boolean;
@@ -4125,6 +4171,7 @@ export interface IAppPremiumOptions {
 export enum AppFeature {
     QuickLaunch = "QuickLaunch",
     AlwaysOn = "AlwaysOn",
+    KillSwitch = "KillSwitch",
     CustomDns = "CustomDns",
     SplitIpViaApp = "SplitIpViaApp",
     SplitIpViaDevice = "SplitIpViaDevice",
@@ -4315,7 +4362,7 @@ export class AppState implements IAppState {
     userReviewRecommended!: number;
     isQuickLaunchRecommended!: boolean;
     isAnonymousTrackerPromptRequired!: boolean;
-    clientCountryInfo!: CountryInfo | null;
+    clientCountryCode!: string | null;
     currentUiCultureInfo!: UiCultureInfo;
     systemUiCultureInfo!: UiCultureInfo;
     purchaseState!: PurchaseState | null;
@@ -4332,6 +4379,7 @@ export class AppState implements IAppState {
     tcpProxyUsageReason!: TcpProxyUsageReason;
     splitTunnelingState!: SplitTunnelingState;
     alwaysOnState!: AlwaysOnState | null;
+    isKillSwitchBlocking!: boolean;
 
     constructor(data?: IAppState) {
         if (data) {
@@ -4371,7 +4419,7 @@ export class AppState implements IAppState {
             this.userReviewRecommended = _data["userReviewRecommended"] !== undefined ? _data["userReviewRecommended"] : null as any;
             this.isQuickLaunchRecommended = _data["isQuickLaunchRecommended"] !== undefined ? _data["isQuickLaunchRecommended"] : null as any;
             this.isAnonymousTrackerPromptRequired = _data["isAnonymousTrackerPromptRequired"] !== undefined ? _data["isAnonymousTrackerPromptRequired"] : null as any;
-            this.clientCountryInfo = _data["clientCountryInfo"] ? CountryInfo.fromJS(_data["clientCountryInfo"]) : null as any;
+            this.clientCountryCode = _data["clientCountryCode"] !== undefined ? _data["clientCountryCode"] : null as any;
             this.currentUiCultureInfo = _data["currentUiCultureInfo"] ? UiCultureInfo.fromJS(_data["currentUiCultureInfo"]) : new UiCultureInfo();
             this.systemUiCultureInfo = _data["systemUiCultureInfo"] ? UiCultureInfo.fromJS(_data["systemUiCultureInfo"]) : new UiCultureInfo();
             this.purchaseState = _data["purchaseState"] !== undefined ? _data["purchaseState"] : null as any;
@@ -4388,6 +4436,7 @@ export class AppState implements IAppState {
             this.tcpProxyUsageReason = _data["tcpProxyUsageReason"] !== undefined ? _data["tcpProxyUsageReason"] : null as any;
             this.splitTunnelingState = _data["splitTunnelingState"] ? SplitTunnelingState.fromJS(_data["splitTunnelingState"]) : new SplitTunnelingState();
             this.alwaysOnState = _data["alwaysOnState"] ? AlwaysOnState.fromJS(_data["alwaysOnState"]) : null as any;
+            this.isKillSwitchBlocking = _data["isKillSwitchBlocking"] !== undefined ? _data["isKillSwitchBlocking"] : null as any;
         }
     }
 
@@ -4421,7 +4470,7 @@ export class AppState implements IAppState {
         data["userReviewRecommended"] = this.userReviewRecommended !== undefined ? this.userReviewRecommended : null as any;
         data["isQuickLaunchRecommended"] = this.isQuickLaunchRecommended !== undefined ? this.isQuickLaunchRecommended : null as any;
         data["isAnonymousTrackerPromptRequired"] = this.isAnonymousTrackerPromptRequired !== undefined ? this.isAnonymousTrackerPromptRequired : null as any;
-        data["clientCountryInfo"] = this.clientCountryInfo ? this.clientCountryInfo.toJSON() : null as any;
+        data["clientCountryCode"] = this.clientCountryCode !== undefined ? this.clientCountryCode : null as any;
         data["currentUiCultureInfo"] = this.currentUiCultureInfo ? this.currentUiCultureInfo.toJSON() : null as any;
         data["systemUiCultureInfo"] = this.systemUiCultureInfo ? this.systemUiCultureInfo.toJSON() : null as any;
         data["purchaseState"] = this.purchaseState !== undefined ? this.purchaseState : null as any;
@@ -4438,6 +4487,7 @@ export class AppState implements IAppState {
         data["tcpProxyUsageReason"] = this.tcpProxyUsageReason !== undefined ? this.tcpProxyUsageReason : null as any;
         data["splitTunnelingState"] = this.splitTunnelingState ? this.splitTunnelingState.toJSON() : null as any;
         data["alwaysOnState"] = this.alwaysOnState ? this.alwaysOnState.toJSON() : null as any;
+        data["isKillSwitchBlocking"] = this.isKillSwitchBlocking !== undefined ? this.isKillSwitchBlocking : null as any;
         return data;
     }
 }
@@ -4464,7 +4514,7 @@ export interface IAppState {
     userReviewRecommended: number;
     isQuickLaunchRecommended: boolean;
     isAnonymousTrackerPromptRequired: boolean;
-    clientCountryInfo: CountryInfo | null;
+    clientCountryCode: string | null;
     currentUiCultureInfo: UiCultureInfo;
     systemUiCultureInfo: UiCultureInfo;
     purchaseState: PurchaseState | null;
@@ -4481,11 +4531,13 @@ export interface IAppState {
     tcpProxyUsageReason: TcpProxyUsageReason;
     splitTunnelingState: SplitTunnelingState;
     alwaysOnState: AlwaysOnState | null;
+    isKillSwitchBlocking: boolean;
 }
 
 export enum AppConnectionState {
     None = "None",
     Initializing = "Initializing",
+    WaitingForVpnPermission = "WaitingForVpnPermission",
     Waiting = "Waiting",
     WaitingForAd = "WaitingForAd",
     Diagnosing = "Diagnosing",
@@ -4496,6 +4548,7 @@ export enum AppConnectionState {
     Connected = "Connected",
     Unstable = "Unstable",
     Disconnecting = "Disconnecting",
+    Updating = "Updating",
 }
 
 export class AppSessionInfo implements IAppSessionInfo {
@@ -4513,6 +4566,8 @@ export class AppSessionInfo implements IAppSessionInfo {
     channelProtocols!: ChannelProtocol[];
     isTcpProxySupported!: boolean;
     isTcpPacketSupported!: boolean;
+    isQuicPacketSupported!: boolean;
+    isUdpPacketSupported!: boolean;
 
     constructor(data?: IAppSessionInfo) {
         if (data) {
@@ -4550,6 +4605,8 @@ export class AppSessionInfo implements IAppSessionInfo {
             }
             this.isTcpProxySupported = _data["isTcpProxySupported"] !== undefined ? _data["isTcpProxySupported"] : null as any;
             this.isTcpPacketSupported = _data["isTcpPacketSupported"] !== undefined ? _data["isTcpPacketSupported"] : null as any;
+            this.isQuicPacketSupported = _data["isQuicPacketSupported"] !== undefined ? _data["isQuicPacketSupported"] : null as any;
+            this.isUdpPacketSupported = _data["isUdpPacketSupported"] !== undefined ? _data["isUdpPacketSupported"] : null as any;
         }
     }
 
@@ -4580,6 +4637,8 @@ export class AppSessionInfo implements IAppSessionInfo {
         }
         data["isTcpProxySupported"] = this.isTcpProxySupported !== undefined ? this.isTcpProxySupported : null as any;
         data["isTcpPacketSupported"] = this.isTcpPacketSupported !== undefined ? this.isTcpPacketSupported : null as any;
+        data["isQuicPacketSupported"] = this.isQuicPacketSupported !== undefined ? this.isQuicPacketSupported : null as any;
+        data["isUdpPacketSupported"] = this.isUdpPacketSupported !== undefined ? this.isUdpPacketSupported : null as any;
         return data;
     }
 }
@@ -4599,6 +4658,8 @@ export interface IAppSessionInfo {
     channelProtocols: ChannelProtocol[];
     isTcpProxySupported: boolean;
     isTcpPacketSupported: boolean;
+    isQuicPacketSupported: boolean;
+    isUdpPacketSupported: boolean;
 }
 
 export class AccessInfo implements IAccessInfo {
@@ -4892,7 +4953,6 @@ export class CurrentServerLocationInfo implements ICurrentServerLocationInfo {
     isAuto!: boolean;
     hasRegion!: boolean;
     hasMultipleRegions!: boolean;
-    translatedCountryName!: string;
 
     constructor(data?: ICurrentServerLocationInfo) {
         if (data) {
@@ -4912,7 +4972,6 @@ export class CurrentServerLocationInfo implements ICurrentServerLocationInfo {
             this.isAuto = _data["isAuto"] !== undefined ? _data["isAuto"] : null as any;
             this.hasRegion = _data["hasRegion"] !== undefined ? _data["hasRegion"] : null as any;
             this.hasMultipleRegions = _data["hasMultipleRegions"] !== undefined ? _data["hasMultipleRegions"] : null as any;
-            this.translatedCountryName = _data["translatedCountryName"] !== undefined ? _data["translatedCountryName"] : null as any;
         }
     }
 
@@ -4932,7 +4991,6 @@ export class CurrentServerLocationInfo implements ICurrentServerLocationInfo {
         data["isAuto"] = this.isAuto !== undefined ? this.isAuto : null as any;
         data["hasRegion"] = this.hasRegion !== undefined ? this.hasRegion : null as any;
         data["hasMultipleRegions"] = this.hasMultipleRegions !== undefined ? this.hasMultipleRegions : null as any;
-        data["translatedCountryName"] = this.translatedCountryName !== undefined ? this.translatedCountryName : null as any;
         return data;
     }
 }
@@ -4945,7 +5003,6 @@ export interface ICurrentServerLocationInfo {
     isAuto: boolean;
     hasRegion: boolean;
     hasMultipleRegions: boolean;
-    translatedCountryName: string;
 }
 
 export enum SessionSuppressType {
@@ -5480,7 +5537,6 @@ export class ServerLocationItem implements IServerLocationItem {
     hasRegion!: boolean;
     isNestedCountry!: boolean;
     isDefault!: boolean;
-    translatedCountryName!: string;
     options!: ServerLocationOptions;
 
     constructor(data?: IServerLocationItem) {
@@ -5513,7 +5569,6 @@ export class ServerLocationItem implements IServerLocationItem {
             this.hasRegion = _data["hasRegion"] !== undefined ? _data["hasRegion"] : null as any;
             this.isNestedCountry = _data["isNestedCountry"] !== undefined ? _data["isNestedCountry"] : null as any;
             this.isDefault = _data["isDefault"] !== undefined ? _data["isDefault"] : null as any;
-            this.translatedCountryName = _data["translatedCountryName"] !== undefined ? _data["translatedCountryName"] : null as any;
             this.options = _data["options"] ? ServerLocationOptions.fromJS(_data["options"]) : new ServerLocationOptions();
         }
     }
@@ -5540,7 +5595,6 @@ export class ServerLocationItem implements IServerLocationItem {
         data["hasRegion"] = this.hasRegion !== undefined ? this.hasRegion : null as any;
         data["isNestedCountry"] = this.isNestedCountry !== undefined ? this.isNestedCountry : null as any;
         data["isDefault"] = this.isDefault !== undefined ? this.isDefault : null as any;
-        data["translatedCountryName"] = this.translatedCountryName !== undefined ? this.translatedCountryName : null as any;
         data["options"] = this.options ? this.options.toJSON() : null as any;
         return data;
     }
@@ -5556,7 +5610,6 @@ export interface IServerLocationItem {
     hasRegion: boolean;
     isNestedCountry: boolean;
     isDefault: boolean;
-    translatedCountryName: string;
     options: ServerLocationOptions;
 }
 
@@ -5765,6 +5818,7 @@ export class AppUpdateState implements IAppUpdateState {
     downloadedBytes!: number;
     totalBytes!: number | null;
     errorMessage!: string | null;
+    isInstallPermissionNeeded!: boolean;
 
     constructor(data?: IAppUpdateState) {
         if (data) {
@@ -5782,6 +5836,7 @@ export class AppUpdateState implements IAppUpdateState {
             this.downloadedBytes = _data["downloadedBytes"] !== undefined ? _data["downloadedBytes"] : null as any;
             this.totalBytes = _data["totalBytes"] !== undefined ? _data["totalBytes"] : null as any;
             this.errorMessage = _data["errorMessage"] !== undefined ? _data["errorMessage"] : null as any;
+            this.isInstallPermissionNeeded = _data["isInstallPermissionNeeded"] !== undefined ? _data["isInstallPermissionNeeded"] : null as any;
         }
     }
 
@@ -5799,6 +5854,7 @@ export class AppUpdateState implements IAppUpdateState {
         data["downloadedBytes"] = this.downloadedBytes !== undefined ? this.downloadedBytes : null as any;
         data["totalBytes"] = this.totalBytes !== undefined ? this.totalBytes : null as any;
         data["errorMessage"] = this.errorMessage !== undefined ? this.errorMessage : null as any;
+        data["isInstallPermissionNeeded"] = this.isInstallPermissionNeeded !== undefined ? this.isInstallPermissionNeeded : null as any;
         return data;
     }
 }
@@ -5809,6 +5865,7 @@ export interface IAppUpdateState {
     downloadedBytes: number;
     totalBytes: number | null;
     errorMessage: string | null;
+    isInstallPermissionNeeded: boolean;
 }
 
 export enum AppUpdateStage {
@@ -5818,50 +5875,6 @@ export enum AppUpdateStage {
     Downloaded = "Downloaded",
     Installing = "Installing",
     Failed = "Failed",
-}
-
-export class CountryInfo implements ICountryInfo {
-    englishName!: string;
-    translatedName!: string;
-    countryCode!: string;
-
-    constructor(data?: ICountryInfo) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (this as any)[property] = (data as any)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.englishName = _data["englishName"] !== undefined ? _data["englishName"] : null as any;
-            this.translatedName = _data["translatedName"] !== undefined ? _data["translatedName"] : null as any;
-            this.countryCode = _data["countryCode"] !== undefined ? _data["countryCode"] : null as any;
-        }
-    }
-
-    static fromJS(data: any): CountryInfo {
-        data = typeof data === 'object' ? data : {};
-        let result = new CountryInfo();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["englishName"] = this.englishName !== undefined ? this.englishName : null as any;
-        data["translatedName"] = this.translatedName !== undefined ? this.translatedName : null as any;
-        data["countryCode"] = this.countryCode !== undefined ? this.countryCode : null as any;
-        return data;
-    }
-}
-
-export interface ICountryInfo {
-    englishName: string;
-    translatedName: string;
-    countryCode: string;
 }
 
 export class UiCultureInfo implements IUiCultureInfo {
@@ -5992,7 +6005,6 @@ export interface IPrivateDns {
 
 export enum TcpProxyUsageReason {
     None = "None",
-    ClientNotSupported = "ClientNotSupported",
     ServerRequiredOn = "ServerRequiredOn",
     ServerRequiredOff = "ServerRequiredOff",
     SplitDomainRequiredOn = "SplitDomainRequiredOn",
@@ -6176,6 +6188,8 @@ export class UserSettings implements IUserSettings {
     countryCode?: string | null;
     vpnProfileId?: string | null;
     alwaysOn!: boolean;
+    killSwitch!: boolean;
+    killSwitchLockdown!: boolean;
     splitTunneling!: SplitTunnelingSettings;
     channelProtocol!: ChannelProtocol;
     dropUdp!: boolean;
@@ -6215,6 +6229,8 @@ export class UserSettings implements IUserSettings {
             this.countryCode = _data["countryCode"] !== undefined ? _data["countryCode"] : null as any;
             this.vpnProfileId = _data["vpnProfileId"] !== undefined ? _data["vpnProfileId"] : null as any;
             this.alwaysOn = _data["alwaysOn"] !== undefined ? _data["alwaysOn"] : null as any;
+            this.killSwitch = _data["killSwitch"] !== undefined ? _data["killSwitch"] : null as any;
+            this.killSwitchLockdown = _data["killSwitchLockdown"] !== undefined ? _data["killSwitchLockdown"] : null as any;
             this.splitTunneling = _data["splitTunneling"] ? SplitTunnelingSettings.fromJS(_data["splitTunneling"]) : new SplitTunnelingSettings();
             this.channelProtocol = _data["channelProtocol"] !== undefined ? _data["channelProtocol"] : null as any;
             this.dropUdp = _data["dropUdp"] !== undefined ? _data["dropUdp"] : null as any;
@@ -6256,6 +6272,8 @@ export class UserSettings implements IUserSettings {
         data["countryCode"] = this.countryCode !== undefined ? this.countryCode : null as any;
         data["vpnProfileId"] = this.vpnProfileId !== undefined ? this.vpnProfileId : null as any;
         data["alwaysOn"] = this.alwaysOn !== undefined ? this.alwaysOn : null as any;
+        data["killSwitch"] = this.killSwitch !== undefined ? this.killSwitch : null as any;
+        data["killSwitchLockdown"] = this.killSwitchLockdown !== undefined ? this.killSwitchLockdown : null as any;
         data["splitTunneling"] = this.splitTunneling ? this.splitTunneling.toJSON() : null as any;
         data["channelProtocol"] = this.channelProtocol !== undefined ? this.channelProtocol : null as any;
         data["dropUdp"] = this.dropUdp !== undefined ? this.dropUdp : null as any;
@@ -6287,6 +6305,8 @@ export interface IUserSettings {
     countryCode?: string | null;
     vpnProfileId?: string | null;
     alwaysOn: boolean;
+    killSwitch: boolean;
+    killSwitchLockdown: boolean;
     splitTunneling: SplitTunnelingSettings;
     channelProtocol: ChannelProtocol;
     dropUdp: boolean;
