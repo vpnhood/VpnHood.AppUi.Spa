@@ -289,7 +289,7 @@ watch(selectedFilterProxy, () => {
       </div>
 
       <!-- Add proxy buttons -->
-      <v-row class="mt-2" dense>
+      <v-row class="mt-2" density="comfortable">
 
         <!-- Add single proxy -->
         <v-col cols="6">

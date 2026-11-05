@@ -11,7 +11,7 @@ const props = defineProps<{
 </script>
 
 <template>
-<v-row class="text-learn-more mt-3" align="center" dense @click="router.replace(props.action)">
+<v-row class="text-learn-more mt-3" align="center" density="comfortable" @click="router.replace(props.action)">
   <v-col cols="auto">
     <v-icon icon="mdi-book-open-page-variant-outline" />
   </v-col>

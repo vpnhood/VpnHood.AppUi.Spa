@@ -15,7 +15,7 @@ const emits = defineEmits<{
 
 <template>
   <v-row
-    dense
+    density="comfortable"
     v-ripple
     align="center"
     class="px-2 py-1 mx-0 mb-3 rounded-lg card-on-grad-bg"

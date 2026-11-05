@@ -15,7 +15,8 @@
  *
  * Prerequisites (fails loudly if missing):
  *  - The dev server:            npm run dev            (http://localhost:8080)
- *  - The Windows client app,    so the API in .env.development.local answers.
+ *  - The Windows client app,    so the API in .env.development.local answers. To test another app, set
+ *    VITE_API_BASE_URL in the environment, for the dev server and this test alike.
  *  - Chromium once per machine: npx playwright install chromium-headless-shell
  *
  * Usage:
@@ -48,14 +49,15 @@ async function readRoutes() {
   return routes;
 }
 
-// The SPA proxies nothing; the API origin comes from the same env files Vite reads.
+// The SPA proxies nothing; the API origin comes from where Vite reads it: the environment, then its env files.
 async function readApiBase() {
+  if (process.env.VITE_API_BASE_URL?.trim()) return process.env.VITE_API_BASE_URL.trim();
   for (const file of ['.env.development.local', '.env.development']) {
     const content = await fs.readFile(path.join(projectRoot, file), 'utf8').catch(() => null);
     const match = content?.match(/^VITE_API_BASE_URL=(.+)$/m);
     if (match?.[1].trim()) return match[1].trim();
   }
-  throw new Error('VITE_API_BASE_URL is not set in .env.development(.local) — the test needs the client API origin.');
+  throw new Error('VITE_API_BASE_URL is not set in the environment or .env.development(.local) — the test needs the client API origin.');
 }
 
 // node:http instead of fetch: Node 24's undici intermittently hits a parser assertion against

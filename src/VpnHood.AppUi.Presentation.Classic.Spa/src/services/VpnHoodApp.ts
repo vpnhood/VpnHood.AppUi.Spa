@@ -628,8 +628,9 @@ export class VpnHoodApp {
     const accountClient = ClientApiFactory.instance.createAccountClient();
 
     // Best-effort: the portal is often exactly what is blocked here, and a page that cannot reach it
-    // must still show what it knows instead of an error. get() below serves the cached account.
-    if (withRefresh) {
+    // must still show what it knows instead of an error. get() below serves the cached account. A head
+    // with no account provider has nothing to refresh, and its API refuses the call.
+    if (withRefresh && this.data.features.isAccountSupported) {
       try {
         await accountClient.refresh();
       } catch (error: unknown) {

@@ -84,7 +84,7 @@ function actionButtonClick(): void | null {
       <!-- Continue as Free -->
       <v-row
         v-if="isPrivateDnsCustomized"
-        dense
+        density="comfortable"
         v-ripple
         :autofocus="vhApp.data.isTvUi"
         align="center"
@@ -118,7 +118,7 @@ function actionButtonClick(): void | null {
       </div>
 
       <v-row
-        dense
+        density="comfortable"
         v-ripple
         align="center"
         class="px-2 py-1 mx-0 mb-3 rounded-lg card-on-grad-bg"

@@ -295,7 +295,7 @@ export const PLATFORMS = {
     store: 'appStore',
     installDir: 'fastlane/screenshots/ios/<locale>',
     // The fixture IS the iOS capability profile. It was recorded from a Windows Release client, and
-    // WinDevice/WinDeviceUiProvider gate off the same features IosDevice does — no app split, no
+    // WindowsDevice/WindowsDeviceUiProvider gate off the same features IosDevice does — no app split, no
     // Private DNS, no kill switch (see the table in fastlane/README.md). Only osType has to be
     // corrected: the SPA drops the VpnHood! CONNECT pointer on the Servers screen for App Store
     // builds, and with the fixture's recorded 'Windows' the capture would show copy iOS never renders.
@@ -447,8 +447,8 @@ export const PLATFORMS = {
     store: 'microsoftStore',
     // No fastlane lane exists for the Microsoft Store — upload via Partner Center or the msstore CLI.
     installDir: 'store/microsoft/<locale>/screenshots',
-    // No patch: the fixture was recorded from this exact build (WinDevice in Release: no app split,
-    // WinDeviceUiProvider: no settings intents).
+    // No patch: the fixture was recorded from this exact build (WindowsDevice in Release: no app split,
+    // WindowsDeviceUiProvider: no settings intents).
     patch: {},
     devices: {
       'windows-desktop': {

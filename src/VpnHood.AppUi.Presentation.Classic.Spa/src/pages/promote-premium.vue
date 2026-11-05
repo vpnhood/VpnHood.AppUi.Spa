@@ -107,7 +107,7 @@ async function actionByConnectPlan(planId: MyConnectPlanId): Promise<void> {
 
         <!-- Continue as Free -->
         <v-row v-if="isFreeAvailable()"
-           dense
+           density="comfortable"
            v-ripple
            :autofocus="vhApp.data.isTvUi"
            align="center"
@@ -136,7 +136,7 @@ async function actionByConnectPlan(planId: MyConnectPlanId): Promise<void> {
 
         <!-- Free server unlocked by a rewarded ad (longer/uninterrupted free session) -->
         <v-row v-if="isFreeByRewardedAdAvailable()"
-           dense
+           density="comfortable"
            v-ripple
            align="center"
            class="px-2 py-1 mx-0 mt-3 rounded-lg card-on-grad-bg"
