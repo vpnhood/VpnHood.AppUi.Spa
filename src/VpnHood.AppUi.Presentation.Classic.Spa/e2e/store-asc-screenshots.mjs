@@ -27,6 +27,7 @@
  *   node e2e/store-asc-screenshots.mjs --bundle-id com.vpnhood.client.ios [--root <store-repo>]
  *   node e2e/store-asc-screenshots.mjs --bundle-id … --check          report drift, write nothing
  *   node e2e/store-asc-screenshots.mjs --bundle-id … --keys-dir ../.user/vendors/apple
+ *   node e2e/store-asc-screenshots.mjs --bundle-id … --platform TV_OS   the Apple TV's version and set
  */
 import { promises as fs } from 'fs';
 import { createSign, createHash } from 'crypto';
@@ -46,13 +47,29 @@ const root = path.resolve(projectRoot, argValue('--root', null) ?? INSTALL_ROOT 
 const bundleId = argValue('--bundle-id', null) ?? (() => { throw new Error('--bundle-id is required (e.g. com.vpnhood.client.ios).'); })();
 const checkOnly = args.includes('--check');
 const keysDir = argValue('--keys-dir', null);
-const shotsRoot = path.join(root, 'fastlane', 'screenshots', 'ios');
 
-/** Which ASC screenshot set a local file belongs to, by the repo's naming convention. */
-const FAMILIES = [
-  { type: 'APP_IPHONE_67', match: /^(\d+)\.png$/ },
-  { type: 'APP_IPAD_PRO_3GEN_129', match: /^ipad_(\d+)\.png$/ },
-];
+/**
+ * One app record holds a version per platform, each with its own listing, so every call names its
+ * platform: an unfiltered list hands back the Apple TV's draft while the iPhone's version is in review.
+ */
+const PLATFORMS = {
+  IOS: {
+    folder: 'ios',
+    // Which ASC screenshot set a local file belongs to, by the repo's naming convention.
+    families: [
+      { type: 'APP_IPHONE_67', match: /^(\d+)\.png$/ },
+      { type: 'APP_IPAD_PRO_3GEN_129', match: /^ipad_(\d+)\.png$/ },
+    ],
+  },
+  TV_OS: {
+    folder: 'appletv',
+    families: [{ type: 'APP_APPLE_TV', match: /^(\d+)\.png$/ }],
+  },
+};
+const platform = argValue('--platform', 'IOS');
+if (!PLATFORMS[platform]) throw new Error(`--platform must be one of ${Object.keys(PLATFORMS).join(', ')}.`);
+const shotsRoot = path.join(root, 'fastlane', 'screenshots', PLATFORMS[platform].folder);
+const FAMILIES = PLATFORMS[platform].families;
 const familyOf = (name) => FAMILIES.find((f) => f.match.test(name));
 const shotIndex = (family, name) => Number(name.match(family.match)[1]);
 
@@ -151,7 +168,7 @@ async function waitComplete(setId, ids, minutes = 5) {
 
 const app = (await api(`/v1/apps?filter[bundleId]=${bundleId}`)).data[0];
 if (!app) throw new Error(`no app with bundle id ${bundleId}`);
-const versions = (await api(`/v1/apps/${app.id}/appStoreVersions?limit=5`)).data;
+const versions = (await api(`/v1/apps/${app.id}/appStoreVersions?filter[platform]=${platform}&limit=5`)).data;
 // States in which Apple still lets the listing be written. PREPARE_FOR_SUBMISSION is the ordinary
 // one; the rejected states matter just as much, because a rejection is precisely when corrected
 // metadata has to go up — treating them as locked makes the tool refuse at the only moment it is
@@ -366,7 +383,13 @@ for (const u of uploaded) {
   if (!bySet.has(u.plan.set.id)) bySet.set(u.plan.set.id, []);
   bySet.get(u.plan.set.id).push(u.id);
 }
-for (const [setId, ids] of bySet) await waitComplete(setId, ids);
+for (const [setId, ids] of bySet) {
+  try {
+    await waitComplete(setId, ids);
+  } catch (error) {
+    failures.push(String(error.message).split('\n')[0]);
+  }
+}
 
 // Phase 7 — restore display order EVERYWHERE, including sets this run never touched and even when
 // some upload failed: a red run must still leave the listing orderly.

@@ -259,6 +259,9 @@ node e2e/store-publish-state.mjs --root ../Vpnhood.App.Client
 node e2e/store-asc-screenshots.mjs --bundle-id com.vpnhood.client.ios \
   --root ../Vpnhood.App.Client --keys-dir ../.user/vendors/apple --check
 
+# the same for the Apple TV's version: add --platform TV_OS (reads fastlane/screenshots/appletv);
+# without --check it syncs them. publish_listing.yml has no Apple TV pass yet.
+
 # full pipeline, CI: dispatch and watch (vh-ref = the VpnHood ref the shipped app was built from,
 # whose Avalonia UI draws the screens; webui-ref = the engine version)
 gh workflow run publish_listing.yml -R vpnhood/Vpnhood.App.Client
