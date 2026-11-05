@@ -654,6 +654,7 @@
   "REMOTE_ACCESS_OTHER_ADDRESSES": "Другие адреса:",
   "REMOTE_ACCESS_KEEP_OPEN": "Не закрывайте это окно во время настройки. Удаленный доступ завершится при нажатии «Готово» или «Назад».",
   "REMOTE_ACCESS_NO_DEVICE": "Устройства пока не подключены.",
+  "REMOTE_ACCESS_HINT_LOCAL_NETWORK": "Не открывается на телефоне Android? В настройках включите для браузера разрешение «Устройства поблизости».",
   "REMOTE_ACCESS_CONNECTED_FROM": "Подключено с {address}.",
   "REMOTE_ACCESS_HINT_SERVERS": "Откройте раздел «Серверы» на телефоне, чтобы управлять ими.",
   "REMOTE_ACCESS_HINT_SETTINGS": "Откройте Настройки телефона, чтобы изменить их.",

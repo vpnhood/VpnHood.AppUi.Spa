@@ -654,6 +654,7 @@
   "REMOTE_ACCESS_OTHER_ADDRESSES": "Outros endereços:",
   "REMOTE_ACCESS_KEEP_OPEN": "Mantenha esta tela aberta enquanto faz alterações. O acesso remoto termina ao tocar em Concluído ou voltar.",
   "REMOTE_ACCESS_NO_DEVICE": "Nenhum dispositivo conectado ainda.",
+  "REMOTE_ACCESS_HINT_LOCAL_NETWORK": "Não abre no seu telefone Android? Nas Definições, permita Dispositivos próximos para o seu navegador.",
   "REMOTE_ACCESS_CONNECTED_FROM": "Conectado de {address}.",
   "REMOTE_ACCESS_HINT_SERVERS": "No seu telemóvel, abra Servidores para adicionar ou remover.",
   "REMOTE_ACCESS_HINT_SETTINGS": "Abra as Configurações do seu telefone para alterar isso.",

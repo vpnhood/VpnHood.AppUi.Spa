@@ -654,6 +654,7 @@
   "REMOTE_ACCESS_OTHER_ADDRESSES": "其他地址：",
   "REMOTE_ACCESS_KEEP_OPEN": "请保持此页面打开进行修改。点击“完成”或返回后将结束远程访问。",
   "REMOTE_ACCESS_NO_DEVICE": "尚未连接设备。",
+  "REMOTE_ACCESS_HINT_LOCAL_NETWORK": "在 Android 手机上打不开？请在“设置”中允许您的浏览器使用“附近的设备”。",
   "REMOTE_ACCESS_CONNECTED_FROM": "已从 {address} 连接。",
   "REMOTE_ACCESS_HINT_SERVERS": "在手机上打开“服务器”以添加或移除服务器。",
   "REMOTE_ACCESS_HINT_SETTINGS": "请在手机的“设置”中进行更改。",

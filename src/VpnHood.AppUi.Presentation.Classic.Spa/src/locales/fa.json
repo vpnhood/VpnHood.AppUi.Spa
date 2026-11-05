@@ -654,6 +654,7 @@
   "REMOTE_ACCESS_OTHER_ADDRESSES": "سایر آدرس‌ها:",
   "REMOTE_ACCESS_KEEP_OPEN": "این صفحه را تا اعمال تغییرات باز نگه دارید. دسترسی از راه دور با فشردن «انجام شد» یا بازگشت پایان می‌یابد.",
   "REMOTE_ACCESS_NO_DEVICE": "هنوز دستگاهی متصل نشده است.",
+  "REMOTE_ACCESS_HINT_LOCAL_NETWORK": "روی گوشی Android باز نمی‌شود؟ در تنظیمات، «دستگاه‌های اطراف» را برای مرورگرتان مجاز کنید.",
   "REMOTE_ACCESS_CONNECTED_FROM": "متصل شده از {address}.",
   "REMOTE_ACCESS_HINT_SERVERS": "برای افزودن یا حذف سرورها، بخش سرورها را در گوشی خود باز کنید.",
   "REMOTE_ACCESS_HINT_SETTINGS": "برای تغییر این موارد، تنظیمات گوشی خود را باز کنید.",

@@ -654,6 +654,7 @@
   "REMOTE_ACCESS_OTHER_ADDRESSES": "عناوين أخرى:",
   "REMOTE_ACCESS_KEEP_OPEN": "اترك هذه الصفحة مفتوحة أثناء إجراء التعديلات. تنتهي جلسة الوصول عن بُعد عند الضغط على \"تم\" أو العودة للخلف.",
   "REMOTE_ACCESS_NO_DEVICE": "لا يوجد جهاز متصل بعد.",
+  "REMOTE_ACCESS_HINT_LOCAL_NETWORK": "لا يفتح على هاتف Android؟ في الإعدادات، اسمح بـ«الأجهزة المجاورة» لمتصفحك.",
   "REMOTE_ACCESS_CONNECTED_FROM": "متصل من {address}.",
   "REMOTE_ACCESS_HINT_SERVERS": "افتح الخوادم على هاتفك لإضافة أو إزالة الخوادم.",
   "REMOTE_ACCESS_HINT_SETTINGS": "افتح الإعدادات على هاتفك لتغييرها.",

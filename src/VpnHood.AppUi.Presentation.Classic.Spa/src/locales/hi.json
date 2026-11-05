@@ -654,6 +654,7 @@
   "REMOTE_ACCESS_OTHER_ADDRESSES": "अन्य पते:",
   "REMOTE_ACCESS_KEEP_OPEN": "बदलाव करते समय इसे खुला रखें। 'हो गया' दबाने या वापस जाने पर रिमोट एक्सेस समाप्त हो जाता है।",
   "REMOTE_ACCESS_NO_DEVICE": "अभी तक कोई डिवाइस कनेक्ट नहीं है।",
+  "REMOTE_ACCESS_HINT_LOCAL_NETWORK": "आपके Android फोन पर नहीं खुल रहा? सेटिंग में अपने ब्राउज़र के लिए 'आस-पास मौजूद डिवाइस' की अनुमति दें।",
   "REMOTE_ACCESS_CONNECTED_FROM": "{address} से कनेक्टेड।",
   "REMOTE_ACCESS_HINT_SERVERS": "सर्वर जोड़ने या हटाने के लिए अपने फोन पर 'सर्वर' खोलें।",
   "REMOTE_ACCESS_HINT_SETTINGS": "इन्हें बदलने के लिए अपने फ़ोन पर सेटिंग्स खोलें।",

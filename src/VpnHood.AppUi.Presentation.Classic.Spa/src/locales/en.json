@@ -654,6 +654,7 @@
   "REMOTE_ACCESS_OTHER_ADDRESSES": "Other addresses:",
   "REMOTE_ACCESS_KEEP_OPEN": "Keep this open while you make changes. Remote access ends when you press Done or go back.",
   "REMOTE_ACCESS_NO_DEVICE": "No device connected yet.",
+  "REMOTE_ACCESS_HINT_LOCAL_NETWORK": "Won't open on your Android phone? In Settings, allow Nearby devices for your browser.",
   "REMOTE_ACCESS_CONNECTED_FROM": "Connected from {address}.",
   "REMOTE_ACCESS_HINT_SERVERS": "On your phone, open Servers to add or remove servers.",
   "REMOTE_ACCESS_HINT_SETTINGS": "On your phone, open Settings to change these.",

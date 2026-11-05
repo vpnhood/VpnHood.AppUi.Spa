@@ -654,6 +654,7 @@
   "REMOTE_ACCESS_OTHER_ADDRESSES": "Diğer adresler:",
   "REMOTE_ACCESS_KEEP_OPEN": "Değişiklik yaparken bu sayfayı açık tutun. Tamam'a bastığınızda veya geri döndüğünüzde uzaktan erişim sonlandırılır.",
   "REMOTE_ACCESS_NO_DEVICE": "Henüz bağlı cihaz yok.",
+  "REMOTE_ACCESS_HINT_LOCAL_NETWORK": "Android telefonunuzda açılmıyor mu? Ayarlar'da tarayıcınız için Yakındaki cihazlar iznini verin.",
   "REMOTE_ACCESS_CONNECTED_FROM": "{address} adresinden bağlanıldı.",
   "REMOTE_ACCESS_HINT_SERVERS": "Sunucu ekleyip çıkarmak için telefonunuzda Sunucular'ı açın.",
   "REMOTE_ACCESS_HINT_SETTINGS": "Değiştirmek için telefonunuzda Ayarlar'ı açın.",
