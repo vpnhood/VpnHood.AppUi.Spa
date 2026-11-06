@@ -4,7 +4,6 @@
     <File Path="CLAUDE.md" />
     <File Path="Directory.Build.props" />
     <File Path="global.json" />
-    <File Path="action.yml" />
   </Folder>
   <Folder Name="/src/">
     <File Path="src/SpaAssets.targets" />

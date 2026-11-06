@@ -15,8 +15,7 @@
     "type-check": "vue-tsc --build --force",
     "lint": "eslint . --fix",
     "i18n:unused": "node scripts/find-unused-i18n-keys.mjs",
-    "test:e2e": "node e2e/smoke.mjs",
-    "store:screenshots": "npm run build && node e2e/store-screenshots.mjs"
+    "test:e2e": "node e2e/smoke.mjs"
   },
   "dependencies": {
     "@types/async-lock": "^1.4.2",
@@ -48,7 +47,6 @@
     "markdown-it": "^15.0.0",
     "npm-run-all2": "^9.0.2",
     "playwright": "^1.62.0",
-    "pngjs": "^7.0.0",
     "postcss": "^8.5.23",
     "postcss-preset-env": "^11.3.2",
     "subset-font": "^2.7.0",

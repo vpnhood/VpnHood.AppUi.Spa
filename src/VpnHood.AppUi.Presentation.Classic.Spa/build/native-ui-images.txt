@@ -1,7 +1,7 @@
 # Images the native (Avalonia) UI asks the assets folder for, by name: every "{res:AppImage x}" in
 # its XAML and every image name in its C#. The SPA build fails when one of these is not a file in
 # src/assets/images, so a rename on either side is caught there rather than on a device.
-# Written by _sync-native-assets.ps1 in that project - do not edit by hand.
+# Kept from when the two UIs shared one assets folder.
 access-local-network.webp
 always-on.webp
 body-bg.png

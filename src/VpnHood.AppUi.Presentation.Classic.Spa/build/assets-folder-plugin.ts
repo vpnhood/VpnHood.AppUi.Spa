@@ -14,7 +14,7 @@ import type { Plugin } from 'vite';
  *
  *   - this SPA's names: the "/assets/..." URLs and the bare file names in src (Util.getAssetPath,
  *     the constants it is handed, the url()s in styles);
- *   - the native UI's names: build/native-ui-images.txt, written from its C# by _sync-native-assets.ps1.
+ *   - the native UI's names: build/native-ui-images.txt, kept from when the two UIs shared this folder.
  *
  * `virtual:vh-locales` names the locales shipped, known at build time without loading any of them.
  */
@@ -199,7 +199,7 @@ function referencedNames(root: string): Map<string, string> {
   for (const theme of readdirSync(path.join(root, themesFolder), { withFileTypes: true }).filter(entry => entry.isDirectory()))
     names.set(`images/future-apps-${theme.name}.png`, `${themesFolder}/${theme.name}`);
 
-  // the native UI's names, exported from its C# by _sync-native-assets.ps1
+  // the native UI's names
   const nativeFile = path.join(root, nativeUiImages);
   for (const line of readFileSync(nativeFile, 'utf8').split('\n')) {
     const name = line.trim();
