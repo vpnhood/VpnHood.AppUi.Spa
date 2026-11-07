@@ -64,9 +64,23 @@ const cloakMode = computed({
   }
 });
 
+// a server that does not carry UDP enforces the block on it
+const isDropUdpEnforcedByServer = computed<boolean>(() => vhApp.data.state.sessionInfo?.isUdpPacketSupported === false);
+
+const dropUdp = computed({
+  get: () => {
+    return isDropUdpEnforcedByServer.value || vhApp.data.userSettings.dropUdp;
+  },
+  set: async (value: boolean) => {
+    vhApp.data.userSettings.dropUdp = value;
+    await vhApp.saveUserSetting();
+  }
+});
+
+// QUIC runs over UDP, so a block on UDP holds this switch on
 const dropQuic = computed({
   get: () => {
-    return vhApp.data.state.sessionStatus?.isDropQuic ?? vhApp.data.userSettings.dropQuic;
+    return dropUdp.value || (vhApp.data.state.sessionStatus?.isDropQuic ?? vhApp.data.userSettings.dropQuic);
   },
   set: async (value: boolean) => {
 
@@ -90,8 +104,6 @@ const isCloakEnforecedByServer = computed<boolean>(() =>
 <template>
   <v-sheet>
     <app-bar />
-
-    <p class="text-disabled text-body-small mb-4">{{ locale("PROTOCOL_DESC") }}</p>
 
     <!-- Cloak Mode -->
     <config-card class="pb-3">
@@ -126,7 +138,7 @@ const isCloakEnforecedByServer = computed<boolean>(() =>
         <!-- Switch button -->
         <div class="d-flex align-center justify-space-between" data-tv-row>
           <span>{{ locale('PROTOCOL_BLOCK_QUIC') }}</span>
-          <v-switch v-model="dropQuic" hide-details />
+          <v-switch v-model="dropQuic" :disabled="dropUdp" hide-details />
         </div>
 
         <!-- Description and learn more button -->
@@ -135,7 +147,30 @@ const isCloakEnforecedByServer = computed<boolean>(() =>
         </v-card-subtitle>
       </v-card-item>
 
+      <!-- Block UDP -->
+      <v-card-item v-if="cloakMode">
+        <v-divider opacity=".1" class="mb-2" />
+
+        <!-- Switch button -->
+        <div class="d-flex align-center justify-space-between" data-tv-row>
+          <span>{{ locale('PROTOCOL_BLOCK_UDP') }}</span>
+          <v-switch v-model="dropUdp" :disabled="isDropUdpEnforcedByServer" hide-details />
+        </div>
+
+        <!-- Enforced by server alert -->
+        <alert-warning v-if="isDropUdpEnforcedByServer" :text="locale('ENFORCED_BY_SERVER')" class="mb-2" />
+
+        <!-- Description -->
+        <v-card-subtitle class="pb-0">
+          <p>{{ locale("PROTOCOL_BLOCK_UDP_DESC") }}</p>
+        </v-card-subtitle>
+      </v-card-item>
+
     </config-card>
+
+    <!-- Tunnel protocol: a heading of its own, as the QUIC here is not the QUIC blocked above -->
+    <p class="font-weight-bold mt-4 mb-1">{{ locale("PROTOCOL_TUNNEL_TITLE") }}</p>
+    <p class="text-disabled text-body-small mb-4">{{ locale("PROTOCOL_DESC") }}</p>
 
     <!-- Protocols radio buttons -->
     <config-card class="pt-3">
