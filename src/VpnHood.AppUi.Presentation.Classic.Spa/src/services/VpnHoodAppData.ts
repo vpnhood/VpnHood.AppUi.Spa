@@ -284,6 +284,11 @@ export class VpnHoodAppData {
     return this.userSettings.channelProtocol;
   }
 
+  // The TCP forwarding switch: what the session does, else the setting
+  get isTcpForwardingSwitchOn(): boolean {
+    return this.state.sessionStatus?.isTcpProxy ?? this.userSettings.useTcpProxy;
+  }
+
   public isProtocolEnabled(protocol: ChannelProtocol): boolean {
     if (this.state.sessionInfo)
       return this.state.sessionInfo.channelProtocols.includes(protocol);

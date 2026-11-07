@@ -5,7 +5,7 @@ import { VpnHoodApp } from '@/services/VpnHoodApp';
 // is not usable as it comes: it treats anything with a click handler as a focus target, and Vuetify
 // puts click handlers on radio labels, switch tracks and control wrappers, so the ring landed on a
 // label as a rectangle or on an invisible wrapper as nothing, and the jumps followed the geometry
-// of those (from the cloak switch, Down went to the QUIC row because its text was the widest).
+// of those (from the TCP forwarding switch, Down went to the QUIC row because its text was the widest).
 // Verified on the protocols page, 2026-09-12. The same rules apply on the TV itself.
 //
 // So the app decides, and cancels the browser's own move by handling the arrows first:

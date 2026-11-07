@@ -205,8 +205,8 @@ function connectButtonText(): string {
             {{ locale(Util.protocolTitle(vhApp.data.activeProtocol)) }}
           </span>
 
-          <!-- Cloak mode -->
-          <template v-if="vhApp.data.userSettings.useTcpProxy" v-slot:append>
+          <!-- TCP forwarding -->
+          <template v-if="vhApp.data.isTcpForwardingSwitchOn" v-slot:append>
             <v-chip
               :text="locale('CLOAK')"
               color="white"

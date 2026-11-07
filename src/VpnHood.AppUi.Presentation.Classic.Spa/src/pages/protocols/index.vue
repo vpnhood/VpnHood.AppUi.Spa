@@ -47,10 +47,8 @@ const activeProtocol = computed<ChannelProtocol>({
   }
 });
 
-const cloakMode = computed({
-  get: () => {
-    return vhApp.data.state.sessionStatus?.isTcpProxy ?? vhApp.data.userSettings.useTcpProxy;
-  },
+const tcpForwarding = computed({
+  get: () => vhApp.data.isTcpForwardingSwitchOn,
   set: async (value: boolean) => {
     if (!vhApp.data.userSettings.isTcpProxyPrompted)
       await router.push({ name: 'CLOAK_MODE' });
@@ -92,9 +90,9 @@ const dropQuic = computed({
   }
 });
 
-const canChangeCloakMode = computed<boolean>(() => vhApp.data.state.tcpProxyUsageReason === TcpProxyUsageReason.None);
-const isCloakEnforcedByDomainFilter = computed<boolean>(() => vhApp.data.state.tcpProxyUsageReason === TcpProxyUsageReason.SplitDomainRequiredOn);
-const isCloakEnforecedByServer = computed<boolean>(() =>
+const canChangeTcpForwarding = computed<boolean>(() => vhApp.data.state.tcpProxyUsageReason === TcpProxyUsageReason.None);
+const isTcpForwardingEnforcedByDomainFilter = computed<boolean>(() => vhApp.data.state.tcpProxyUsageReason === TcpProxyUsageReason.SplitDomainRequiredOn);
+const isTcpForwardingEnforcedByServer = computed<boolean>(() =>
   vhApp.data.state.tcpProxyUsageReason === TcpProxyUsageReason.ServerRequiredOff ||
   vhApp.data.state.tcpProxyUsageReason === TcpProxyUsageReason.ServerRequiredOn);
 
@@ -105,21 +103,21 @@ const isCloakEnforecedByServer = computed<boolean>(() =>
   <v-sheet>
     <app-bar />
 
-    <!-- Cloak Mode -->
+    <!-- TCP forwarding -->
     <config-card class="pb-3">
 
       <!-- Switch button. data-tv-row: on the TV the whole title row is the step and wears the ring,
            not the switch at its edge (helpers/SpatialNavigation.ts, general.css). -->
       <v-card-item class="pb-0">
-        <div class="d-flex align-center justify-space-between" data-tv-row :class="{ 'opacity-60': !canChangeCloakMode }">
+        <div class="d-flex align-center justify-space-between" data-tv-row :class="{ 'opacity-60': !canChangeTcpForwarding }">
           <span>{{ locale('CLOAK_MODE') }}</span>
-          <v-switch v-model="cloakMode" :disabled="!canChangeCloakMode" hide-details />
+          <v-switch v-model="tcpForwarding" :disabled="!canChangeTcpForwarding" hide-details />
         </div>
 
 
         <!-- Enforced by server alert -->
-        <alert-warning v-if="isCloakEnforecedByServer" :text="locale('ENFORCED_BY_SERVER')" class="mb-2" />
-        <alert-warning v-else-if="isCloakEnforcedByDomainFilter" :text="locale('ENFORCED_BY_DOMAIN_FILTER')"
+        <alert-warning v-if="isTcpForwardingEnforcedByServer" :text="locale('ENFORCED_BY_SERVER')" class="mb-2" />
+        <alert-warning v-else-if="isTcpForwardingEnforcedByDomainFilter" :text="locale('ENFORCED_BY_DOMAIN_FILTER')"
           class="mb-2" />
 
         <!-- Description and learn more button. overflow-visible: a subtitle clips its overflow, and
@@ -132,7 +130,7 @@ const isCloakEnforecedByServer = computed<boolean>(() =>
       </v-card-item>
 
       <!-- Block QUIC -->
-      <v-card-item v-if="cloakMode">
+      <v-card-item v-if="tcpForwarding">
         <v-divider opacity=".1" class="mb-2" />
 
         <!-- Switch button -->
@@ -148,7 +146,7 @@ const isCloakEnforecedByServer = computed<boolean>(() =>
       </v-card-item>
 
       <!-- Block UDP -->
-      <v-card-item v-if="cloakMode">
+      <v-card-item v-if="tcpForwarding">
         <v-divider opacity=".1" class="mb-2" />
 
         <!-- Switch button -->
