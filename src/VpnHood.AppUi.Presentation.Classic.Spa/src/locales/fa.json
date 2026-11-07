@@ -46,7 +46,7 @@
   "GENERAL": "عمومی",
   "CONFIRM_REMOVE_SERVER": "آیا از حذف این سرور اطمینان دارید؟",
   "ADD_ACCESS_KEY_TITLE": "افزودن کلید دسترسی",
-  "ADD_ACCESS_KEY_SUBTITLE": "برای افزودن سرور، یک کلید دسترسی را کپی و جای‌گذاری کنید.",
+  "ADD_ACCESS_KEY_SUBTITLE": "برای افزودن سرور، یک کلید دسترسی (کانفیگ VpnHood) را کپی و جای‌گذاری کنید.",
   "INVALID_ACCESS_KEY_FORMAT": "کلید دسترسی نامعتبر است.",
   "HOME": "صفحه اصلی",
   "SERVERS": "سرورها",
