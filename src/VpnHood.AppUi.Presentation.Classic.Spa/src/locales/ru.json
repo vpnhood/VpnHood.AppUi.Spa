@@ -271,7 +271,7 @@
   "QUICK_LAUNCH_COLORED": "<span class=\"text-promote-premium-color-premium\">Быстрый</span> запуск",
   "QUICK_LAUNCH_DESC": "Подключайтесь к VPN в один клик прямо из панели уведомлений.",
   "QUICK_LAUNCH_TURN_ON": "Включите быстрый запуск",
-  "QUICK_LAUNCH_TURN_ON_ERROR": "Не удалось добавить Quick Launch. Попробуйте позже или добавьте вручную.",
+  "QUICK_LAUNCH_TURN_ON_ERROR": "Не удалось добавить быстрый запуск. Попробуйте позже или добавьте вручную.",
   "QUICK_LAUNCH_HOW_TO_TURN_ON_STEP_1": "Нажмите кнопку ниже.",
   "QUICK_LAUNCH_HOW_TO_TURN_ON_STEP_2": "Нажмите кнопку <strong>Добавить</strong>.",
   "QUICK_LAUNCH_HOW_TO_TURN_ON_ALTERNATIVE_STEP_1": "Проведите вниз от верхней части экрана, чтобы открыть панель быстрых настроек.",

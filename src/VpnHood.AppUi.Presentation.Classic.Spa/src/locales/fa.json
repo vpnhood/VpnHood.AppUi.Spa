@@ -590,7 +590,7 @@
   "CUSTOM_ENDPOINT_PLACE_HOLDER": "IP و پورت سرور",
   "CUSTOM_ENDPOINT_DESC": "یک IP و پورت سرور را با قالب زیر وارد کنید:",
   "CUSTOM_ENDPOINT_VALIDATION_ERROR": "لطفاً یک آدرس IP معتبر (IPv4 یا IPv6) وارد کنید.",
-  "QUICK_LAUNCH_NOT_SUPPORTED_MSG": "اجرای سریع یک قابلیت ویژه است. برای فعال‌سازی ارتقاء دهید!",
+  "QUICK_LAUNCH_NOT_SUPPORTED_MSG": "راه‌اندازی سریع یک قابلیت ویژه است. برای فعال‌سازی ارتقاء دهید!",
   "ALWAYS_ON_NOT_SUPPORTED_MSG": "فعال بودن دائمی یک قابلیت ویژه است. برای فعال‌سازی ارتقاء دهید!",
   "KILL_SWITCH_NOT_SUPPORTED_MSG": "کلید قطع یک ویژگی ویژه است. برای فعال‌سازی آن، ارتقاء دهید!",
   "UNSAVED_CHANGES_MESSAGE": "تغییرات ذخیره‌نشده دارید. آیا می‌خواهید بدون ذخیره کردن خارج شوید؟",

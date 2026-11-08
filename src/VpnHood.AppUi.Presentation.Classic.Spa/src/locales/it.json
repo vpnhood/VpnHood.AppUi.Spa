@@ -590,7 +590,7 @@
   "CUSTOM_ENDPOINT_PLACE_HOLDER": "IP e porta del server",
   "CUSTOM_ENDPOINT_DESC": "Inserisci un IP e una porta del server nel formato seguente:",
   "CUSTOM_ENDPOINT_VALIDATION_ERROR": "Inserisci un indirizzo IP valido (IPv4 o IPv6).",
-  "QUICK_LAUNCH_NOT_SUPPORTED_MSG": "Quick Launch è una funzionalità premium. Aggiorna per sbloccarla!",
+  "QUICK_LAUNCH_NOT_SUPPORTED_MSG": "L'Avvio rapido è una funzionalità premium. Aggiorna per sbloccarlo!",
   "ALWAYS_ON_NOT_SUPPORTED_MSG": "Always On è una funzionalità premium. Aggiorna per sbloccarla!",
   "KILL_SWITCH_NOT_SUPPORTED_MSG": "Kill Switch è una funzionalità premium. Aggiorna per sbloccarla!",
   "UNSAVED_CHANGES_MESSAGE": "Hai modifiche non salvate. Vuoi uscire senza salvare?",
