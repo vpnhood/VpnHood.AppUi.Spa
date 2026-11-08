@@ -1,5 +1,5 @@
 // account-ui.mjs — the access-code keyring, driven THROUGH THE UI with Playwright against the real
-// Windows CONNECT debug app and the real dev portal (whmcs-dev). Nothing is mocked: every click
+// Windows CONNECT debug app and the real dev portal. Nothing is mocked: every click
 // goes to the live app, every account call reaches the live portal.
 //
 // The flows (access-code-keyring-plan.md):
@@ -39,8 +39,15 @@ const APP = process.env.VH_E2E_APP ?? envApi;
 const SPA = process.env.VH_E2E_SPA ?? 'http://localhost:8080';
 if (!APP) { console.error('!! no API base: set VH_E2E_APP or VITE_API_BASE_URL'); process.exit(1); }
 
-const secretsPath = path.join(root, '..', '.user/account-dev.vpnhood.com/secrets.json');
-if (!existsSync(secretsPath)) {
+// The dev portal's logins live in the private .user repo beside this one, whose whmcs/dev.env
+// names their file: this public repo never names the server.
+const userDir = path.join(root, '..', '..', '..', '.user');
+const devEnvPath = path.join(userDir, 'whmcs', 'dev.env');
+const secretsFile = existsSync(devEnvPath)
+  ? readFileSync(devEnvPath, 'utf8').match(/^WHMCS_DEV_SECRETS=(.+)$/m)?.[1]?.trim()
+  : undefined;
+const secretsPath = secretsFile ? path.join(userDir, secretsFile) : devEnvPath;
+if (!secretsFile || !existsSync(secretsPath)) {
   console.error(`!! dev secrets not found: ${secretsPath}\n   this suite needs the private .user repo beside this one.`);
   process.exit(1);
 }

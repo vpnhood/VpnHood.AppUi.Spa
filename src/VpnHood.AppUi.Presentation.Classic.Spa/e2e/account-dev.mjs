@@ -1,5 +1,5 @@
 // account-dev.mjs — the access-code keyring rules, driven through the REAL Windows CONNECT debug
-// app signed into the REAL dev portal (whmcs-dev). Only the access-server refusal is mocked (route
+// app signed into the REAL dev portal. Only the access-server refusal is mocked (route
 // interception patches /api/app/state), because a live refusal cannot be provoked on demand.
 //
 // What it pins (keyring plan §5–§8):
@@ -32,8 +32,15 @@ const APP = process.env.VH_E2E_APP ?? envApi;
 const SPA = process.env.VH_E2E_SPA ?? 'http://localhost:8080';
 if (!APP) { console.error('!! no API base: set VH_E2E_APP or VITE_API_BASE_URL'); process.exit(1); }
 
-const secretsPath = path.join(root, '..', '.user/account-dev.vpnhood.com/secrets.json');
-if (!existsSync(secretsPath)) {
+// The dev portal's logins live in the private .user repo beside this one, whose whmcs/dev.env
+// names their file: this public repo never names the server.
+const userDir = path.join(root, '..', '..', '..', '.user');
+const devEnvPath = path.join(userDir, 'whmcs', 'dev.env');
+const secretsFile = existsSync(devEnvPath)
+  ? readFileSync(devEnvPath, 'utf8').match(/^WHMCS_DEV_SECRETS=(.+)$/m)?.[1]?.trim()
+  : undefined;
+const secretsPath = secretsFile ? path.join(userDir, secretsFile) : devEnvPath;
+if (!secretsFile || !existsSync(secretsPath)) {
   console.error(`!! dev secrets not found: ${secretsPath}\n   this suite needs the private .user repo beside this one.`);
   process.exit(1);
 }
@@ -81,7 +88,7 @@ try {
   const signIn = await api('POST', '/api/account/sign-in',
     { providerId: 'password', userName: 'test-buyer@vpnhood.com', password: secrets.testClientPassword });
   check(signIn.json?.state === 'SignedIn',
-    'signed into whmcs-dev through the app (password provider)',
+    'signed into the dev portal through the app (password provider)',
     `sign-in failed: ${signIn.status} ${JSON.stringify(signIn.json?.state ?? null)}`);
 
   const account = (await api('GET', '/api/account')).json;
