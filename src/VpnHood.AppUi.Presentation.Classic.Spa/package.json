@@ -57,7 +57,8 @@
     "vue-tsc": "^3.3.8"
   },
   "overrides": {
-    "@grpc/grpc-js": "^1.14.5"
+    "@grpc/grpc-js": "^1.14.5",
+    "minimatch": "^11.0.1"
   },
   "browserslist": [
     "chrome >= 66",
